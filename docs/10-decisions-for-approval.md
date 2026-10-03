@@ -12,6 +12,7 @@
 | D8 | Windows distribution channel | itch.io zip for MVP |
 | D9 | Name "Nocturne Annex" and world (Imre, Annex, Indexer) acceptable? | Approve as working names |
 | D10 | Initialise git repo with `.gitignore` for Unity? | Yes |
+| D11 | Remote repo URL | Provided: github.com/ajaykumarjsr5521-beep/LaminalHorror |
 
 ## Next step after your approval
 Begin **F-00** (needs D1), then F-01/F-02, each preceded by a short "what will be built / how verified" note.
