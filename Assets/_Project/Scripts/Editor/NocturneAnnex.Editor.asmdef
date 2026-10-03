@@ -1,0 +1,5 @@
+{
+  "name": "NocturneAnnex.Editor",
+  "references": ["NocturneAnnex.Core"],
+  "includePlatforms": ["Editor"]
+}
