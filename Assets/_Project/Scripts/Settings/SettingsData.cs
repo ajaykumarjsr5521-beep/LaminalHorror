@@ -31,6 +31,20 @@ namespace NocturneAnnex.Settings
 
         public SettingsData Clone() => (SettingsData)MemberwiseClone();
 
+        /// <summary>Copies all user-facing values in place, so UI bound to this object keeps working.</summary>
+        public void CopyFrom(SettingsData o)
+        {
+            LookSensitivity = o.LookSensitivity;
+            InvertY = o.InvertY;
+            MasterVolume = o.MasterVolume;
+            MusicVolume = o.MusicVolume;
+            SfxVolume = o.SfxVolume;
+            CaptionsEnabled = o.CaptionsEnabled;
+            TouchControlsScale = o.TouchControlsScale;
+            StoryMode = o.StoryMode;
+            QualityLevel = o.QualityLevel;
+        }
+
         /// <summary>True if every user-facing value matches. Version is ignored.</summary>
         public bool ValueEquals(SettingsData o) =>
             o != null
