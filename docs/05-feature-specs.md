@@ -78,8 +78,13 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **AC:** pause sets `Time.timeScale` to 0 and restores the previous value on resume; double pause/resume are idempotent; focus loss pauses; resume after focus return does not auto-resume; restoring does not change input state beyond a reset.
 - **Test:** PlayMode.
 
-### F-07c Screens (main menu, pause, settings, confirm dialog, credits)
-- **Scope:** uGUI screens driven by the models above; New Game confirmation; error message display for save/settings problems. Status: TODO (needs Canvas prefabs and device layout checks).
+### F-07c Screens (main menu, pause, settings, confirm dialog, credits) — IN_PROGRESS
+- **Scope:** (1) UI-independent models: `MainMenuModel` (Continue availability, save warnings, New Game with confirmation), `SettingsScreenModel` (working copy, live preview, save, revert, reset to defaults, dirty tracking). (2) Thin uGUI views built on them: main menu, pause menu (Resume, Restart, Settings, Main Menu, Quit on Windows), settings screen, confirm dialog, credits/licences. **Excl.:** language selection, key rebinding, final art.
+- **Design:** models are plain C# and unit-tested; views only bind and forward taps, and every label comes from `Loc`. New Game asks for confirmation only when a save exists (a corrupt or unsupported save counts as existing and is preserved via the F-06 quarantine). A save that cannot be read shows its warning on the main menu and disables Continue; it never crashes or hides the problem. Settings changes preview live; Back without Save asks nothing but reverts, and Save persists through `SettingsStore`, showing the error message if the write fails. Quit exists on Windows only.
+- **AC (models):** Continue enabled only when the save loads Ok; New Game with an existing save needs explicit confirmation and cancelling changes nothing; New Game with no save starts at once; failed clearing reports an error and does not start; corrupt save warning is surfaced; settings dirty tracking is accurate; revert restores originals and re-applies them; reset restores defaults; failed save keeps the screen open with an error.
+- **AC (views, manual):** every screen usable at 5-inch phone and 1080p PC; touch targets at least 48 dp; no overlap with the safe area; Back button returns up one level; all text via `Loc`.
+- **Test:** EditMode (models), manual device review for views.
+- **Sub-steps (one commit per file):** 1 spec, 2 strings, 3 `SettingsData` clone/equality, 4 `MainMenuModel` + tests, 5 `SettingsScreenModel` + tests, 6 views and scene builder (next step), 7 docs.
 
 ### F-07d Keypad and journal screens
 - **Scope:** keypad UI for `CodeLock`; journal list and note reader (at most 3 taps to read a note). Status: TODO.
