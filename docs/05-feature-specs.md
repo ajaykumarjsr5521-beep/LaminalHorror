@@ -188,7 +188,7 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **AC:** min gap between scare events at least the configured value (default 45 s) verified by log; events fire once when flagged; events never fire during note reading/pause/menus; event data editable without code; debug overlay in dev builds.
 - **Test:** EditMode simulation of director over time; manual pacing playtest.
 
-### F-09a Tension director and event picker (logic only) — IN_PROGRESS (spec written, nothing built yet)
+### F-09a Tension director and event picker (logic only) — DONE (EditMode 247/247 incl. 24 new: 30-minute simulation keeps every gap at 45 s or more, safe zone drains and never fires, blocked time changes nothing and does not count towards the gap, one-shots and cooldowns honoured, story mode halves rise and doubles gap, bad config throws. Pure logic, no device-dependent criteria. Real events and the pacing playtest are F-09b)
 - **Scope:** plain C# `TensionDirector` (0-1 tension that rises in unsafe zones and decays in safe ones, throttles events by a minimum gap) and `EventPicker` (chooses which authored event may fire now). **Excl.:** the event actions, `HorrorEvent` assets, triggers and scene wiring (F-09b), debug overlay.
 - **Design:** the caller passes elapsed time, whether the player is in an unsafe zone, and whether gameplay is blocked (pause, modal screen, menu). Blocked time changes nothing: no rise, no decay, no gap progress. `TryTakeEvent` fires only when tension is at or above the threshold and the gap since the last event has passed, then lowers tension by a relief amount. Story mode halves the rise rate and doubles the gap. Settings are validated (rates and gap must be positive, threshold in 0-1) and a bad config throws. `EventPicker` takes candidates (id, once, cooldown, minimum tension) and skips fired one-shots, events on cooldown and events above current tension; among eligible ones it picks the one with the highest minimum tension, ties by list order, so results are deterministic and testable.
 - **AC:**
@@ -199,6 +199,7 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
   5. Story mode halves the rise rate and doubles the minimum gap.
   6. Invalid settings throw; tension always stays within 0-1.
 - **Test:** EditMode only (pure logic, simulated time).
+- **Also added:** `EventPicker` can snapshot and restore which one-shot events already fired, for saving (hooked up in F-09b). `Reset()` clears tension and the gap for a respawn.
 - **Sub-steps (one commit per file):** spec, `TensionSettings` + `TensionDirector` + tests, `EventPicker` + tests, docs.
 
 ## F-10 Lighting, audio & level art pass — TODO
