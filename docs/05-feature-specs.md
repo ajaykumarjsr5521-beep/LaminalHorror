@@ -43,10 +43,14 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Test:** EditMode unit tests (model, database), PlayMode (door+inventory integration).
 - **Sub-steps (one commit each):** 1 spec, 2 item definitions, 3 InventoryModel + tests, 4 PlayerInventory + tests, 5 key consumption in Door, 6 Note to journal, 7 docs.
 
-## F-05 Puzzle: "Three Dates" — TODO
-- **Scope:** 3 notes + 3 in-world date props → 4-digit code lock → opens Records Office exit door. Clue redundancy: if player missed a prop, the note text still points to its location. **Excl.:** hints system, timers.
-- **AC:** only the correct code opens; wrong code never locks player out; puzzle solvable from in-game info alone (verified by a fresh tester without help ≥ 4 of 5 testers); state saved/restored.
-- **Test:** unit test code validation; playtest sheet.
+## F-05 Puzzle: "Three Dates" — IN_PROGRESS
+- **Scope (this feature):** `CodeLockModel` (digit entry, validation, no lockout), `CodeLock` interactable that unlocks a target `Door` and raises `Solved`, state snapshot/restore. **Excl.:** keypad UI (F-07), actual note/prop content and placement (level build), hint system, timers.
+- **Scope (level content, later):** 3 notes + 3 in-world date props give the digits of a 4-digit code that opens the Records Office exit. Clue redundancy: each note text also points to the location of its date prop.
+- **Deps:** F-03 (Door, Interactor), F-04 (notes in journal).
+- **Design:** model is plain C#, unit-tested. Wrong code clears the entry and gives feedback, with no attempt limit or lockout. The code is configured per lock and validated at startup (length and digits only); a bad config is logged as an error, not silently accepted. `Door.Unlock()` added so a solved lock can open a door without a key.
+- **AC:** only the correct code solves it; wrong code never locks the player out and can be retried at once; solved lock stays solved and unlocks its door; snapshot/restore keeps solved state; invalid config reported. Fresh-tester solvability (4 of 5 without help) is checked at playtest once level content exists.
+- **Test:** EditMode (model), PlayMode (lock + door); playtest sheet later.
+- **Sub-steps (one commit each):** 1 spec, 2 model + tests, 3 Door.Unlock + test, 4 CodeLock + tests, 5 docs.
 
 ## F-06 Save / checkpoint — TODO
 - **Scope:** JSON versioned save, checkpoints at lamp rooms, autosave, continue/new game, error surfacing. **Excl.:** cloud, multiple slots.
