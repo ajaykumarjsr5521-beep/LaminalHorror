@@ -76,6 +76,29 @@ namespace NocturneAnnex.Tests.EditMode
             Assert.AreEqual(1f, r.Data.MasterVolume);
         }
 
+        [Test]
+        public void FileFromEarlierBuild_WithoutAccessibilityFields_LoadsDefaultsForThem()
+        {
+            Directory.CreateDirectory(_dir);
+            File.WriteAllText(_file, "{\"Version\":1,\"LookSensitivity\":2}");
+            var r = _store.Load();
+            Assert.AreEqual(SettingsLoadStatus.Ok, r.Status);
+            Assert.AreEqual(2f, r.Data.LookSensitivity, 1e-4f);
+            Assert.AreEqual(1, r.Data.TextSize);
+            Assert.IsFalse(r.Data.ReduceFlicker);
+            Assert.IsFalse(r.Data.ReduceMotion);
+        }
+
+        [Test]
+        public void AccessibilityFields_RoundTrip()
+        {
+            _store.Write(new SettingsData { TextSize = 2, ReduceFlicker = true, ReduceMotion = true });
+            var r = _store.Load();
+            Assert.AreEqual(2, r.Data.TextSize);
+            Assert.IsTrue(r.Data.ReduceFlicker);
+            Assert.IsTrue(r.Data.ReduceMotion);
+        }
+
         [TestCase("garbage")]
         [TestCase("")]
         [TestCase("{}")]
