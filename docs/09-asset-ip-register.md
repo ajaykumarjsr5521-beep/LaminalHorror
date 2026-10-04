@@ -11,6 +11,7 @@ CLEARED · REQUIRES_REVIEW · ORIGINAL (made by team) · REJECTED
 | UP-01 | Unity Input System | Package | Unity Registry | Unity Companion Licence/Package terms | Yes (to verify at install) | No | — | Input | REQUIRES_REVIEW | — |
 | UP-02 | Universal RP | Package | Unity Registry | Unity package terms | Yes (to verify) | No | — | Rendering | REQUIRES_REVIEW | — |
 | UP-03 | TextMeshPro | Package | Unity Registry | Unity package terms | Yes (to verify) | No | — | UI | REQUIRES_REVIEW | — |
+| UP-04 | Liberation Sans (TMP default font, in TMP Essential Resources) | Font | Bundled in Unity package com.unity.ugui | SIL Open Font License 1.1 (text in Assets/TextMesh Pro/Fonts) | Believed yes; not yet verified | OFL notice and licence text must accompany redistribution; list on credits screen | OFL permits bundling; no standalone sale of the font | UI text | REQUIRES_REVIEW | — |
 
 (Rows for models, textures, SFX, music, fonts added as acquired. Greybox geometry and primitives: ORIGINAL.)
 

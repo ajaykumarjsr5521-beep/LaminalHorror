@@ -57,7 +57,19 @@ namespace NocturneAnnex.Save
             catch (Exception e) when (e is IOException || e is UnauthorizedAccessException) { return null; }
         }
 
-        /// <summary>Removes the live save (used by New Game after the player confirmed).</summary>
+        /// <summary>
+        /// Prepares the slot for a new game after the player confirmed: an unreadable save is moved aside
+        /// (never deleted), a healthy one is removed. Returns false if that failed.
+        /// </summary>
+        public bool ClearForNewGame()
+        {
+            var status = Load().Status;
+            if (status == LoadStatus.Corrupt || status == LoadStatus.UnsupportedVersion)
+                return Quarantine() != null;
+            return Delete();
+        }
+
+        /// <summary>Removes the live save.</summary>
         public bool Delete()
         {
             try { if (File.Exists(_path)) File.Delete(_path); return true; }

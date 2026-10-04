@@ -1,5 +1,16 @@
 {
   "name": "NocturneAnnex.Editor",
-  "references": ["NocturneAnnex.Core", "NocturneAnnex.Controls", "NocturneAnnex.Player"],
+  "references": [
+    "NocturneAnnex.Core",
+    "NocturneAnnex.Controls",
+    "NocturneAnnex.Player",
+    "NocturneAnnex.Flow",
+    "NocturneAnnex.Save",
+    "NocturneAnnex.Settings",
+    "NocturneAnnex.UI",
+    "Unity.InputSystem",
+    "Unity.TextMeshPro",
+    "UnityEngine.UI"
+  ],
   "includePlatforms": ["Editor"]
 }
