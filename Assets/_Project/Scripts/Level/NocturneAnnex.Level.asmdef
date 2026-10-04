@@ -1,6 +1,6 @@
 {
   "name": "NocturneAnnex.Level",
   "rootNamespace": "NocturneAnnex.Level",
-  "references": ["NocturneAnnex.Core", "NocturneAnnex.Flow", "NocturneAnnex.Player", "NocturneAnnex.Puzzle", "NocturneAnnex.Save"],
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Flow", "NocturneAnnex.Player", "NocturneAnnex.Puzzle", "NocturneAnnex.Save", "NocturneAnnex.UI", "UnityEngine.UI"],
   "autoReferenced": true
 }
