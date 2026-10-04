@@ -35,10 +35,13 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Test:** PlayMode raycast/occlusion/door/pickup tests; manual on devices.
 - **Sub-steps (one commit each):** 1 spec, 2 interfaces + Interactor, 3 Door/Pickup/Note, 4 prompt view, 5 docs.
 
-## F-04 Inventory & journal — TODO
-- **Scope:** item definitions (SO), pick up/use, notes list (re-readable), cross-reference collectibles, simple UI. **Excl.:** crafting, weight, stacking.
-- **AC:** items persist through save/load; used key removed; notes re-readable any time; UI usable at 5" phone and 1080p PC; ≤3 taps to read a note.
-- **Test:** EditMode unit tests (add/remove/has), save round-trip, manual UI.
+## F-04 Inventory & journal — IN_PROGRESS
+- **Scope:** `ItemDefinition` (ScriptableObject) and `ItemDatabase`; `InventoryModel` (plain C#, capacity, add/remove/has); `PlayerInventory` component implementing `IKeyProvider` + `IItemReceiver`; used keys are consumed; collected notes form a re-readable journal list. **Excl.:** crafting, weight, stacking; inventory/journal UI (moved to F-07 menus); save/load (hooks `Snapshot`/`Restore` here, persistence in F-06).
+- **Deps:** F-03 (interfaces).
+- **Design:** state is a list of item ids, so save is a string list. Unknown item ids are refused and logged, never silently added. `Door` consumes its key on unlock via `IKeyProvider.ConsumeKey`.
+- **AC:** add/remove/has behave correctly incl. capacity and duplicates; used key removed; notes stay readable after pickup; snapshot/restore round-trips; unknown ids refused with an error log. (UI usability and persistence ACs are covered by F-07 and F-06.)
+- **Test:** EditMode unit tests (model, database), PlayMode (door+inventory integration).
+- **Sub-steps (one commit each):** 1 spec, 2 item definitions, 3 InventoryModel + tests, 4 PlayerInventory + tests, 5 key consumption in Door, 6 Note to journal, 7 docs.
 
 ## F-05 Puzzle: "Three Dates" — TODO
 - **Scope:** 3 notes + 3 in-world date props → 4-digit code lock → opens Records Office exit door. Clue redundancy: if player missed a prop, the note text still points to its location. **Excl.:** hints system, timers.
