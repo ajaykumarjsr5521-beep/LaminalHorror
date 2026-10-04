@@ -1,6 +1,6 @@
 {
   "name": "NocturneAnnex.Tests.EditMode",
-  "references": ["NocturneAnnex.Core", "NocturneAnnex.Controls", "NocturneAnnex.Player", "NocturneAnnex.Inventory", "NocturneAnnex.Puzzle", "NocturneAnnex.Save", "NocturneAnnex.Settings", "NocturneAnnex.Flow","NocturneAnnex.UI", "NocturneAnnex.Editor"],
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Controls", "NocturneAnnex.Player", "NocturneAnnex.Inventory", "NocturneAnnex.Puzzle", "NocturneAnnex.Save", "NocturneAnnex.Settings", "NocturneAnnex.Flow", "NocturneAnnex.Level", "NocturneAnnex.UI", "NocturneAnnex.Editor"],
   "includePlatforms": ["Editor"],
   "optionalUnityReferences": ["TestAssemblies"],
   "defineConstraints": ["UNITY_INCLUDE_TESTS"]
