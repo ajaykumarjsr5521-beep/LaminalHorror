@@ -21,6 +21,9 @@ Verification status per change lives in [docs/12-progress-log.md](docs/12-progre
 - Localisation-ready strings: `Loc` table, all current player-facing text migrated, guard tests (X-04).
 - Engineering process docs, `.editorconfig`, README, ADRs, PR/issue templates (X-01).
 
+### Decisions
+- iOS recorded as future scope; current targets are Windows and Android.
+
 ### Known limitations
 - Nothing has been verified on an Android device; Android build not yet produced.
 - No UI screens yet (menus, keypad, journal); no level content, art or audio.
