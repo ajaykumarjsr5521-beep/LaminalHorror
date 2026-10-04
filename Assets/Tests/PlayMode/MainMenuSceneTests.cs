@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
+using NocturneAnnex.Core;
 using NocturneAnnex.Save;
 using NocturneAnnex.Settings;
 using NocturneAnnex.UI;
@@ -43,6 +44,7 @@ namespace NocturneAnnex.Tests.PlayMode
         public void TearDown()
         {
             if (Directory.Exists(_dir)) Directory.Delete(_dir, true);
+            Accessibility.Reset();   // the settings screen applies accessibility state globally
         }
 
         void Start(bool validSave = false, bool corruptSave = false)
@@ -162,6 +164,44 @@ namespace NocturneAnnex.Tests.PlayMode
             var scroll = _boot.SettingsPanel.GetComponentInChildren<ScrollRect>();
             Assert.Less(scroll.verticalScrollbar.size, 0.99f, "content taller than the viewport must give a partial-size handle");
             Assert.Greater(scroll.verticalScrollbar.size, 0.1f);
+        }
+
+        [UnityTest]
+        public IEnumerator Settings_AccessibilityRows_PreviewLive_AndPersist()
+        {
+            Start();
+            _boot.ShowSettings();
+            yield return null;
+            var view = _boot.Settings;
+
+            view.TextSize.value = Accessibility.LargeText;
+            view.ReduceFlicker.isOn = true;
+            view.ReduceMotion.isOn = true;
+            view.Captions.isOn = false;
+            Assert.AreEqual(Accessibility.LargeText, Accessibility.TextSize, "text size previews immediately");
+            Assert.IsTrue(Accessibility.ReduceFlicker);
+            Assert.IsTrue(Accessibility.ReduceMotion);
+            Assert.IsFalse(Accessibility.CaptionsEnabled);
+
+            view.SaveButton.onClick.Invoke();
+            var stored = new SettingsStore(_settingsPath, QualitySettings.names.Length).Load().Data;
+            Assert.AreEqual(2, stored.TextSize);
+            Assert.IsTrue(stored.ReduceFlicker);
+            Assert.IsTrue(stored.ReduceMotion);
+            Assert.IsFalse(stored.CaptionsEnabled);
+        }
+
+        [UnityTest]
+        public IEnumerator Settings_BackRevertsAccessibilityPreview()
+        {
+            Start();
+            _boot.ShowSettings();
+            yield return null;
+            _boot.Settings.TextSize.value = Accessibility.LargeText;
+            _boot.Settings.ReduceFlicker.isOn = true;
+            _boot.Settings.BackButton.onClick.Invoke();
+            Assert.AreEqual(Accessibility.MediumText, Accessibility.TextSize, "unsaved preview must be undone");
+            Assert.IsFalse(Accessibility.ReduceFlicker);
         }
 
         [UnityTest]
