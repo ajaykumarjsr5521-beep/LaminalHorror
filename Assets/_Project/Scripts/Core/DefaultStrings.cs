@@ -47,6 +47,7 @@ namespace NocturneAnnex.Core
 
             // Keypad, note reader, journal
             { "menu.close", "Close" },
+            { "menu.pause", "Pause" },
             { "keypad.title", "Enter code" },
             { "keypad.enter", "Enter" },
             { "keypad.clear", "Delete" },
@@ -61,6 +62,13 @@ namespace NocturneAnnex.Core
             { "notice.body", "This game contains frightening themes, dark scenes and sudden loud sounds. It can include flashing lights.\n\nIn Settings you can turn on Reduce flicker and flashing, Reduce camera motion, Captions and larger text. You can pause at any time." },
             { "notice.ok", "I understand" },
             { "menu.content_notice", "Content notice" },
+
+            // Level flow
+            { "level.checkpoint_saved", "Checkpoint saved." },
+            { "level.save_failed", "Couldn't save your progress." },
+            { "level.exit_locked", "The way out is still locked." },
+            { "level.end.title", "Floor B1 complete" },
+            { "level.end.body", "You made it out. For now." },
 
             // Settings screen labels
             { "settings.look_sensitivity", "Look sensitivity" },

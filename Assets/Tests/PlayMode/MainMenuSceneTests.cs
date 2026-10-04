@@ -38,6 +38,7 @@ namespace NocturneAnnex.Tests.PlayMode
             yield return null;
             _boot = Object.FindFirstObjectByType<MenuBootstrap>();
             Assert.IsNotNull(_boot, "MainMenu scene must contain a MenuBootstrap");
+            _boot.GetComponent<MenuFlow>().SceneLoader = _ => { };   // these tests check events, not scene changes
         }
 
         [TearDown]
