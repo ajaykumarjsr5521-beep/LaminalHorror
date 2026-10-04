@@ -24,7 +24,7 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 | 2026-10-03 | initial commit | Discovery report + specs 00-10 | n/a |
 
 ## In progress
-- F-07 split: F-07a settings DONE; F-07b pause logic done (Android Back device check open); F-07c menu and settings MODELS done, uGUI views next (render-check plan: capture screenshots in the Editor); then F-07d keypad/journal.
+- F-07 split: F-07a settings DONE; F-07b pause logic done (Android Back device check open); F-07c models and views done (Windows-side), reviewed via Editor screenshots; remaining: phone check, pause overlay in gameplay scene; then F-07d keypad/journal.
 
 ## In progress (older notes)
 - Nothing active. F-06 remaining: level checkpoint triggers, menu wiring (F-07), Android force-stop test.
