@@ -12,6 +12,8 @@ Status: DRAFT. **Play policy specifics below are NOT yet verified against curren
 ## Accessibility (design commitments)
 Captions, text size, reduce flicker/flash, reduce camera motion, scalable touch controls, colour-independent UI, content warning screen at first launch (fear themes, flashing lights, intense sounds), pause anywhere. Photosensitivity: flash limits per F-08.
 
+**Status 2026-10-04:** implemented and tested on Windows (F-08). Not yet verified: flash rate of real lighting events (none exist yet), caption coverage of real audio (none yet), anything on a phone. No claim of compliance with any accessibility standard or store policy is made; WCAG AA contrast of the UI palette is tested, the rest is a design commitment until reviewed.
+
 ## Content rating
 Complete the IARC questionnaire in Play Console honestly (horror themes, fear, mild violence implied). Outcome determines audience; do not target children. VERIFY Families/target-audience policy implications: target age group selected as 13+/18+ per D3.
 

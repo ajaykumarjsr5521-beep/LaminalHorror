@@ -69,6 +69,7 @@ namespace NocturneAnnex.Settings
         {
             try
             {
+                PreserveUnreadableFile();
                 data.Clamp(_qualityLevelCount);
                 data.Version = SettingsData.CurrentVersion;
                 AtomicFile.Write(_path, JsonUtility.ToJson(data), written =>
@@ -82,6 +83,18 @@ namespace NocturneAnnex.Settings
             {
                 return new WriteResult(false, Loc.Format("settings.write_failed", e.Message));
             }
+        }
+
+        /// <summary>
+        /// A corrupt or newer-version file was reported as "kept" at load time, so it must survive the first write:
+        /// it is moved aside (never deleted) before the new file takes its place.
+        /// </summary>
+        void PreserveUnreadableFile()
+        {
+            if (!File.Exists(_path)) return;
+            var status = Load().Status;
+            if (status != SettingsLoadStatus.Corrupt && status != SettingsLoadStatus.UnsupportedVersion) return;
+            File.Move(_path, _path + ".corrupt-" + DateTime.UtcNow.ToString("yyyyMMddHHmmssfff"));
         }
 
         static SettingsLoadResult Defaulted(SettingsLoadStatus status, string warning) =>

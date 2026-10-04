@@ -56,6 +56,12 @@ namespace NocturneAnnex.Core
             { "journal.empty", "You haven't found any notes yet." },
             { "journal.select_hint", "Select a note to read it." },
 
+            // Content notice (first launch)
+            { "notice.title", "Before you play" },
+            { "notice.body", "This game contains frightening themes, dark scenes and sudden loud sounds. It can include flashing lights.\n\nIn Settings you can turn on Reduce flicker and flashing, Reduce camera motion, Captions and larger text. You can pause at any time." },
+            { "notice.ok", "I understand" },
+            { "menu.content_notice", "Content notice" },
+
             // Settings screen labels
             { "settings.look_sensitivity", "Look sensitivity" },
             { "settings.invert_y", "Invert vertical look" },
@@ -66,6 +72,12 @@ namespace NocturneAnnex.Core
             { "settings.touch_scale", "Touch control size" },
             { "settings.story_mode", "Story mode (gentler pacing)" },
             { "settings.quality", "Graphics quality" },
+            { "settings.text_size", "Text size" },
+            { "settings.text_size.small", "Small" },
+            { "settings.text_size.medium", "Medium" },
+            { "settings.text_size.large", "Large" },
+            { "settings.reduce_flicker", "Reduce flicker and flashing" },
+            { "settings.reduce_motion", "Reduce camera motion" },
 
             // Settings (shown to the player)
             { "settings.corrupt", "Your settings file could not be read, so default settings are being used. The old file was kept." },

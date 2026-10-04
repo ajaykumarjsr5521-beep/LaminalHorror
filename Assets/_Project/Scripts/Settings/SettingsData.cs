@@ -24,6 +24,14 @@ namespace NocturneAnnex.Settings
         public float TouchControlsScale = 1f;
         public bool StoryMode;
 
+        /// <summary>0 small, 1 medium, 2 large (see Accessibility). Added after v1; older files load the default.</summary>
+        public int TextSize = 1;
+        public bool ReduceFlicker;
+        public bool ReduceMotion;
+
+        /// <summary>True once the player has seen the first-launch content notice. Added after v1; older files load false.</summary>
+        public bool ContentNoticeAccepted;
+
         /// <summary>-1 means "use the project default quality level".</summary>
         public int QualityLevel = -1;
 
@@ -43,6 +51,10 @@ namespace NocturneAnnex.Settings
             TouchControlsScale = o.TouchControlsScale;
             StoryMode = o.StoryMode;
             QualityLevel = o.QualityLevel;
+            TextSize = o.TextSize;
+            ReduceFlicker = o.ReduceFlicker;
+            ReduceMotion = o.ReduceMotion;
+            ContentNoticeAccepted = o.ContentNoticeAccepted;
         }
 
         /// <summary>True if every user-facing value matches. Version is ignored.</summary>
@@ -51,7 +63,9 @@ namespace NocturneAnnex.Settings
             && LookSensitivity == o.LookSensitivity && InvertY == o.InvertY
             && MasterVolume == o.MasterVolume && MusicVolume == o.MusicVolume && SfxVolume == o.SfxVolume
             && CaptionsEnabled == o.CaptionsEnabled && TouchControlsScale == o.TouchControlsScale
-            && StoryMode == o.StoryMode && QualityLevel == o.QualityLevel;
+            && StoryMode == o.StoryMode && QualityLevel == o.QualityLevel
+            && TextSize == o.TextSize && ReduceFlicker == o.ReduceFlicker && ReduceMotion == o.ReduceMotion
+            && ContentNoticeAccepted == o.ContentNoticeAccepted;
 
         /// <summary>Forces all values into range. NaN and infinity fall back to the default value.</summary>
         public void Clamp(int qualityLevelCount)
@@ -63,6 +77,7 @@ namespace NocturneAnnex.Settings
             SfxVolume = Clamp(SfxVolume, 0f, 1f, d.SfxVolume);
             TouchControlsScale = Clamp(TouchControlsScale, InputMath.MinControlsScale, InputMath.MaxControlsScale, d.TouchControlsScale);
             if (QualityLevel < -1 || QualityLevel >= qualityLevelCount) QualityLevel = -1;
+            TextSize = Mathf.Clamp(TextSize, 0, 2);
         }
 
         static float Clamp(float v, float min, float max, float fallback) =>

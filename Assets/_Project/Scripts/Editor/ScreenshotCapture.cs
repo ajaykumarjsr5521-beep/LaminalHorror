@@ -28,6 +28,33 @@ namespace NocturneAnnex.Editor
 
         const string OutDir = "Builds/screens";
 
+        // Set by CaptureAtTextSize so every screen can be reviewed at Small and Large text.
+        static int _textSize = Accessibility.MediumText;
+        static string _suffix = "";
+
+        [MenuItem("Build/Capture All Screens At Large Text")]
+        public static void CaptureLargeText() => CaptureAtTextSize(Accessibility.LargeText, "_large");
+
+        [MenuItem("Build/Capture All Screens At Small Text")]
+        public static void CaptureSmallText() => CaptureAtTextSize(Accessibility.SmallText, "_small");
+
+        static void CaptureAtTextSize(int size, string suffix)
+        {
+            _textSize = size;
+            _suffix = suffix;
+            try
+            {
+                CaptureMenus();
+                CaptureGameplayUi();
+            }
+            finally
+            {
+                _textSize = Accessibility.MediumText;
+                _suffix = "";
+                Accessibility.Reset();
+            }
+        }
+
         [MenuItem("Build/Capture Menu Screenshots")]
         public static void CaptureMenus()
         {
@@ -53,6 +80,11 @@ namespace NocturneAnnex.Editor
                     b => b.MainMenu.NewGameButton.onClick.Invoke());
                 Capture("settings", Setup(bootstrap, temp, save: SaveKind.None), bootstrap, canvas, cam, b => b.ShowSettings());
                 Capture("credits", Setup(bootstrap, temp, save: SaveKind.None), bootstrap, canvas, cam, b => b.ShowCredits());
+                Capture("notice", Setup(bootstrap, temp, save: SaveKind.None), bootstrap, canvas, cam, b =>
+                {
+                    b.MainPanel.SetActive(false);
+                    b.NoticePanel.SetActive(true);
+                });
                 Capture("pause", Setup(bootstrap, temp, save: SaveKind.None), bootstrap, canvas, cam, b =>
                 {
                     b.ShowMain();
@@ -109,6 +141,13 @@ namespace NocturneAnnex.Editor
             jv.EmptyText.gameObject.SetActive(false);
             Render("journal", canvas, cam);
 
+            var captions = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(GameplayUiBuilder.CaptionsPath), canvas.transform);
+            var cv = captions.GetComponent<CaptionView>();
+            cv.Label.text = string.Join("\n", Loc.Get("door.message.locked"), Loc.Get("pickup.refused"), Loc.Get("keypad.incorrect"));
+            cv.Panel.SetActive(true);
+            Render("captions", canvas, cam);
+            UnityEngine.Object.DestroyImmediate(captions);
+
             // empty state
             var toRemove = new System.Collections.Generic.List<GameObject>();   // collect first: destroying while iterating skips children
             foreach (Transform child in jv.ListRoot)
@@ -150,6 +189,10 @@ namespace NocturneAnnex.Editor
         /// <summary>Renders the canvas to PNGs at every resolution. The canvas keeps its original settings afterwards.</summary>
         static void Render(string name, Canvas canvas, Camera cam)
         {
+            // text size: set the shared state, then let every ScalableText recompute from its authored size
+            Accessibility.Set(true, _textSize, false, false);
+            foreach (var st in canvas.GetComponentsInChildren<ScalableText>(true)) st.Apply();
+
             var scaler = canvas.GetComponent<CanvasScaler>();
             var oldMode = scaler.uiScaleMode;
             var oldScale = scaler.scaleFactor;
@@ -180,7 +223,7 @@ namespace NocturneAnnex.Editor
                 tex.ReadPixels(new Rect(0, 0, res.x, res.y), 0, 0);
                 tex.Apply();
                 RenderTexture.active = prev;
-                File.WriteAllBytes(Path.Combine(OutDir, $"{name}_{res.x}x{res.y}.png"), tex.EncodeToPNG());
+                File.WriteAllBytes(Path.Combine(OutDir, $"{name}{_suffix}_{res.x}x{res.y}.png"), tex.EncodeToPNG());
 
                 UnityEngine.Object.DestroyImmediate(tex);
                 cam.targetTexture = oldTarget;

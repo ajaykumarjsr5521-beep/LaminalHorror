@@ -76,6 +76,39 @@ namespace NocturneAnnex.Tests.EditMode
             Assert.AreEqual(1f, r.Data.MasterVolume);
         }
 
+        [Test]
+        public void FileFromEarlierBuild_WithoutAccessibilityFields_LoadsDefaultsForThem()
+        {
+            Directory.CreateDirectory(_dir);
+            File.WriteAllText(_file, "{\"Version\":1,\"LookSensitivity\":2}");
+            var r = _store.Load();
+            Assert.AreEqual(SettingsLoadStatus.Ok, r.Status);
+            Assert.AreEqual(2f, r.Data.LookSensitivity, 1e-4f);
+            Assert.AreEqual(1, r.Data.TextSize);
+            Assert.IsFalse(r.Data.ReduceFlicker);
+            Assert.IsFalse(r.Data.ReduceMotion);
+        }
+
+        [Test]
+        public void ContentNoticeFlag_RoundTrips_AndOlderFilesReadAsNotAccepted()
+        {
+            _store.Write(new SettingsData { ContentNoticeAccepted = true });
+            Assert.IsTrue(_store.Load().Data.ContentNoticeAccepted);
+
+            File.WriteAllText(_file, "{\"Version\":1}");
+            Assert.IsFalse(_store.Load().Data.ContentNoticeAccepted);
+        }
+
+        [Test]
+        public void AccessibilityFields_RoundTrip()
+        {
+            _store.Write(new SettingsData { TextSize = 2, ReduceFlicker = true, ReduceMotion = true });
+            var r = _store.Load();
+            Assert.AreEqual(2, r.Data.TextSize);
+            Assert.IsTrue(r.Data.ReduceFlicker);
+            Assert.IsTrue(r.Data.ReduceMotion);
+        }
+
         [TestCase("garbage")]
         [TestCase("")]
         [TestCase("{}")]
@@ -102,6 +135,29 @@ namespace NocturneAnnex.Tests.EditMode
             Assert.AreEqual(Loc.Get("settings.newer"), r.Warning);
             Assert.AreEqual(1f, r.Data.LookSensitivity);
             Assert.AreEqual(content, File.ReadAllText(_file));
+        }
+
+        [TestCase("garbage")]
+        [TestCase("{\"Version\":99}")]
+        public void WritingOverAnUnreadableFile_MovesItAside_NeverDeletesIt(string content)
+        {
+            Directory.CreateDirectory(_dir);
+            File.WriteAllText(_file, content);
+            Assert.IsTrue(_store.Write(new SettingsData { LookSensitivity = 2f }).Ok);
+
+            var kept = Directory.GetFiles(_dir, "settings.json.corrupt-*");
+            Assert.AreEqual(1, kept.Length);
+            Assert.AreEqual(content, File.ReadAllText(kept[0]));
+            Assert.AreEqual(SettingsLoadStatus.Ok, _store.Load().Status);
+            Assert.AreEqual(2f, _store.Load().Data.LookSensitivity, 1e-4f);
+        }
+
+        [Test]
+        public void WritingOverAHealthyFile_DoesNotCreateCorruptCopies()
+        {
+            _store.Write(new SettingsData { LookSensitivity = 2f });
+            _store.Write(new SettingsData { LookSensitivity = 2.5f });
+            Assert.AreEqual(0, Directory.GetFiles(_dir, "settings.json.corrupt-*").Length);
         }
 
         [Test]

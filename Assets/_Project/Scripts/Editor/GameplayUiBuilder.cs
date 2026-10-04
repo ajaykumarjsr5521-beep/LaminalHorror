@@ -14,6 +14,7 @@ namespace NocturneAnnex.Editor
         public const string KeypadPath = PrefabDir + "/Keypad.prefab";
         public const string NoteReaderPath = PrefabDir + "/NoteReader.prefab";
         public const string JournalPath = PrefabDir + "/Journal.prefab";
+        public const string CaptionsPath = PrefabDir + "/Captions.prefab";
 
         static readonly Color Dim = new Color(0f, 0f, 0f, 0.82f);
 
@@ -24,6 +25,7 @@ namespace NocturneAnnex.Editor
             Save(BuildKeypad(), KeypadPath);
             Save(BuildNoteReader(), NoteReaderPath);
             Save(BuildJournal(), JournalPath);
+            Save(BuildCaptions(), CaptionsPath);
             AssetDatabase.SaveAssets();
         }
 
@@ -92,6 +94,30 @@ namespace NocturneAnnex.Editor
             return b;
         }
 
+        static GameObject BuildCaptions()
+        {
+            var root = new GameObject("Captions", typeof(RectTransform));
+            UiKit.Stretch(root);
+            var view = root.AddComponent<CaptionView>();
+
+            // bottom-centre strip; the dark backing keeps text readable over any scene (contrast is checked in tests)
+            var panel = UiKit.Child("Panel", root.transform);
+            var rt = (RectTransform)panel.transform;
+            rt.anchorMin = new Vector2(0.5f, 0f);
+            rt.anchorMax = new Vector2(0.5f, 0f);
+            rt.pivot = new Vector2(0.5f, 0f);
+            rt.anchoredPosition = new Vector2(0f, 60f);
+            rt.sizeDelta = new Vector2(1300f, 0f);
+            UiKit.Fill(panel, new Color(0f, 0f, 0f, 0.78f)).raycastTarget = false;
+            UiKit.Column(panel, 4f, TextAnchor.MiddleCenter, 16);
+            panel.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            view.Panel = panel;
+            view.Label = UiKit.Label(panel.transform, null, 40, TextAlignmentOptions.Center, UiKit.Text, "Lines");
+            UiKit.Size(view.Label.gameObject, 1260f, -1);
+            return root;
+        }
+
         static GameObject BuildNoteReader()
         {
             var root = new GameObject("NoteReader", typeof(RectTransform));
@@ -144,8 +170,10 @@ namespace NocturneAnnex.Editor
 
             // left: scrollable list of notes
             var listArea = UiKit.Child("ListArea", body.transform);
-            UiKit.Size(listArea, 560f, -1);
-            listArea.GetComponent<LayoutElement>().flexibleHeight = 1f;
+            UiKit.Size(listArea, 720f, -1);
+            var listLe = listArea.GetComponent<LayoutElement>();
+            listLe.flexibleHeight = 1f;
+            listLe.minWidth = 720f;   // without a minimum, the reader's wide text squeezes the list and note titles get cut off
             var scroll = listArea.AddComponent<ScrollRect>();
             var viewport = UiKit.Child("Viewport", listArea.transform);
             UiKit.Stretch(viewport);
@@ -165,13 +193,13 @@ namespace NocturneAnnex.Editor
             scroll.movementType = ScrollRect.MovementType.Clamped;
             view.ListRoot = content.transform;
 
-            var template = UiKit.MakeButton(content.transform, "journal.title", -1f, 100f);
+            var template = UiKit.MakeButton(content.transform, "journal.title", -1f, 112f);
             template.name = "EntryTemplate";
             var tl = template.GetComponentInChildren<TextMeshProUGUI>();
             Object.DestroyImmediate(tl.GetComponent<NocturneAnnex.UI.LocalizedText>());
             tl.alignment = TextAlignmentOptions.MidlineLeft;
             tl.fontSize = 38;
-            tl.textWrappingMode = TextWrappingModes.NoWrap;
+            tl.textWrappingMode = TextWrappingModes.Normal;   // long titles wrap to two lines instead of being cut off
             tl.overflowMode = TextOverflowModes.Ellipsis;
             template.GetComponent<LayoutElement>().flexibleWidth = 1f;
             view.EntryTemplate = template;

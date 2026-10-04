@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using NocturneAnnex.Controls;
+using NocturneAnnex.Core;
 using NocturneAnnex.Settings;
 
 namespace NocturneAnnex.Tests.PlayMode
@@ -30,6 +31,7 @@ namespace NocturneAnnex.Tests.PlayMode
             AudioListener.volume = _oldVolume;
             ControlsLayout.Scale = _oldScale;
             QualitySettings.SetQualityLevel(_oldQuality, true);
+            Accessibility.Reset();
         }
 
         [Test]
@@ -41,6 +43,16 @@ namespace NocturneAnnex.Tests.PlayMode
             Assert.IsTrue(_router.InvertY);
             Assert.AreEqual(1.2f, ControlsLayout.Scale, 1e-4f);
             Assert.AreEqual(0.4f, AudioListener.volume, 1e-4f);
+        }
+
+        [Test]
+        public void Apply_UpdatesAccessibilityState()
+        {
+            SettingsApplier.Apply(new SettingsData { CaptionsEnabled = false, TextSize = 2, ReduceFlicker = true, ReduceMotion = true }, _router);
+            Assert.IsFalse(Accessibility.CaptionsEnabled);
+            Assert.AreEqual(Accessibility.LargeText, Accessibility.TextSize);
+            Assert.IsTrue(Accessibility.ReduceFlicker);
+            Assert.IsTrue(Accessibility.ReduceMotion);
         }
 
         [Test]

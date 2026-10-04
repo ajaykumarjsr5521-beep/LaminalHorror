@@ -96,6 +96,7 @@ namespace NocturneAnnex.Editor
             t.color = color;
             t.textWrappingMode = TextWrappingModes.Normal;
             t.raycastTarget = false;
+            go.AddComponent<ScalableText>();   // every label follows the text size setting
             if (key != null)
             {
                 go.AddComponent<LocalizedText>().Key = key;
