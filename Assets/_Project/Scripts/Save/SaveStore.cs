@@ -18,7 +18,6 @@ namespace NocturneAnnex.Save
     public class SaveStore
     {
         readonly string _path;
-        string TempPath => _path + ".tmp";
 
         public SaveStore(string path) { _path = path; }
 
@@ -30,17 +29,12 @@ namespace NocturneAnnex.Save
             try
             {
                 data.SavedAtUtc = DateTime.UtcNow.ToString("o");
-                var json = SaveSerializer.ToJson(data);
-                var dir = System.IO.Path.GetDirectoryName(_path);
-                if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
-
-                File.WriteAllText(TempPath, json);
-                if (!SaveSerializer.FromJson(File.ReadAllText(TempPath)).Ok)
-                    return new WriteResult(false, Loc.Get("save.verify_failed"));
-
-                if (File.Exists(_path)) File.Replace(TempPath, _path, null);
-                else File.Move(TempPath, _path);
+                AtomicFile.Write(_path, SaveSerializer.ToJson(data), written => SaveSerializer.FromJson(written).Ok);
                 return new WriteResult(true, null);
+            }
+            catch (InvalidDataException)
+            {
+                return new WriteResult(false, Loc.Get("save.verify_failed"));
             }
             catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
             {
