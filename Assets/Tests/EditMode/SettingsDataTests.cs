@@ -62,7 +62,8 @@ namespace NocturneAnnex.Tests.EditMode
             {
                 s => s.LookSensitivity = 2f, s => s.InvertY = true, s => s.MasterVolume = 0.1f,
                 s => s.MusicVolume = 0.1f, s => s.SfxVolume = 0.1f, s => s.CaptionsEnabled = false,
-                s => s.TouchControlsScale = 1.2f, s => s.StoryMode = true, s => s.QualityLevel = 1
+                s => s.TouchControlsScale = 1.2f, s => s.StoryMode = true, s => s.QualityLevel = 1,
+                s => s.TextSize = 2, s => s.ReduceFlicker = true, s => s.ReduceMotion = true
             })
             {
                 var b = a.Clone();
@@ -80,6 +81,28 @@ namespace NocturneAnnex.Tests.EditMode
             Assert.IsTrue(target.ValueEquals(source));
             source.LookSensitivity = 1f;
             Assert.AreEqual(2.5f, target.LookSensitivity);
+        }
+
+        [Test]
+        public void TextSize_DefaultsToMedium_AndClamps()
+        {
+            Assert.AreEqual(1, SettingsData.CreateDefault().TextSize);
+            var low = new SettingsData { TextSize = -4 };
+            var high = new SettingsData { TextSize = 9 };
+            low.Clamp(3);
+            high.Clamp(3);
+            Assert.AreEqual(0, low.TextSize);
+            Assert.AreEqual(2, high.TextSize);
+        }
+
+        [Test]
+        public void CopyFrom_IncludesAccessibilityFields()
+        {
+            var target = SettingsData.CreateDefault();
+            target.CopyFrom(new SettingsData { TextSize = 2, ReduceFlicker = true, ReduceMotion = true });
+            Assert.AreEqual(2, target.TextSize);
+            Assert.IsTrue(target.ReduceFlicker);
+            Assert.IsTrue(target.ReduceMotion);
         }
 
         [TestCase(-5, 3, -1)]
