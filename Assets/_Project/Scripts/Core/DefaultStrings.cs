@@ -56,6 +56,12 @@ namespace NocturneAnnex.Core
             { "journal.empty", "You haven't found any notes yet." },
             { "journal.select_hint", "Select a note to read it." },
 
+            // Content notice (first launch)
+            { "notice.title", "Before you play" },
+            { "notice.body", "This game contains frightening themes, dark scenes and sudden loud sounds. It can include flashing lights.\n\nIn Settings you can turn on Reduce flicker and flashing, Reduce camera motion, Captions and larger text. You can pause at any time." },
+            { "notice.ok", "I understand" },
+            { "menu.content_notice", "Content notice" },
+
             // Settings screen labels
             { "settings.look_sensitivity", "Look sensitivity" },
             { "settings.invert_y", "Invert vertical look" },
