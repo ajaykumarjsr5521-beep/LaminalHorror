@@ -45,5 +45,6 @@ No PR review or branch protection, no CI, no README/CHANGELOG/ADRs, no style rul
 ## Known blockers / risks
 - Owner actions pending: enable branch protection on `main` (X-01), add Unity CI secrets (X-02), install Git LFS (X-03).
 - Android Build Support not installed (blocks APK/AAB and on-device touch testing).
-- No physical-device testing yet; touch behaviour is unverified until then.
+- No physical-device testing yet; touch behaviour is unverified until then. The owner has an iPhone only, and iOS is out of scope for now, so an Android device (or at least the Android emulator) is still needed. Release blocker until an Android device test is done.
+- iOS is future scope (doc 03); no iOS work is planned or started.
 - Unity 6000.6 is a newer stream than first assumed; package versions were fixed via registry lookup and compile checks.
