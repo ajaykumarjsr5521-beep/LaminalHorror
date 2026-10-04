@@ -48,6 +48,9 @@ namespace NocturneAnnex.Core
             // Keypad, note reader, journal
             { "menu.close", "Close" },
             { "menu.pause", "Pause" },
+            { "touch.interact", "Use" },
+            { "touch.sprint", "Run" },
+            { "touch.crouch", "Crouch" },
             { "keypad.title", "Enter code" },
             { "keypad.enter", "Enter" },
             { "keypad.clear", "Delete" },
