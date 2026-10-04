@@ -88,6 +88,7 @@ namespace NocturneAnnex.Editor
             var b = UiKit.MakeButton(parent, key, 260f, 100f);
             var rt = (RectTransform)b.transform;
             rt.anchorMin = rt.anchorMax = rt.pivot = anchor;
+            rt.sizeDelta = new Vector2(260f, 100f);   // anchors are a point, so the size must be explicit
             rt.anchoredPosition = offset;
             return b;
         }
