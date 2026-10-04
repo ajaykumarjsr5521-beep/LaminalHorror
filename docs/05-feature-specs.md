@@ -97,10 +97,34 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 
 - **Sub-steps for F-07a (one commit per file):** 1 spec, 2 `AtomicFile` + test, 3 `SaveStore` refactor to use it, 4 `SettingsData` + tests, 5 `SettingsStore` + tests, 6 string keys, 7 `SettingsApplier` + tests, 8 docs.
 
-## F-08 Captions & accessibility basics — TODO
-- **Scope:** captions for key sounds/events, text size options (S/M/L), colour-safe UI, reduce flicker/flash option (disables strobe-like lighting), reduce camera motion option, no information conveyed by audio only. **Excl.:** screen-reader support, full localisation.
-- **AC:** no flashing >3 per second in any event when Reduce Flicker on; all gameplay-critical audio cues have captions; contrast ≥ 4.5:1 for text.
-- **Test:** checklist + manual review, flash-rate check by frame capture.
+## F-08 Captions & accessibility basics — IN_PROGRESS (split into sub-features)
+- **Purpose/experience:** players who cannot hear, are sensitive to light or motion, or need larger text can play the whole game; no information is conveyed by audio or colour alone.
+- **Scope overall:** captions for gameplay-relevant sounds/events, text size options (Small/Medium/Large), contrast-checked UI palette, Reduce Flicker (limits flashes), Reduce Camera Motion, first-launch content warning, pause anywhere (done in F-07b). **Excl.:** screen-reader support, full localisation, per-caption styling options beyond size.
+- **Deps:** F-07a/c (settings and screens), X-04 (strings). Audio cues arrive with F-10, so cue-to-caption wiring for real sounds happens there; this feature delivers the system and its tests.
+- **Overall AC:** with Reduce Flicker on, no light or screen effect changes state more than 3 times per second; every gameplay-critical audio cue has a caption key (checked when F-10 lands); UI text contrast at least 4.5:1 against its background (WCAG AA); text size changes apply to every screen without clipping at 1280x720; settings persist; content warning shown once before first play and re-readable from settings.
+- **Test:** EditMode (state, budget, caption queue, contrast), PlayMode (views), screenshots at all text sizes, checklist review; frame-capture flash-rate check once real lighting events exist.
+
+### F-08a Accessibility state and settings
+- **Scope:** `Accessibility` static state in Core (captions on, text scale, reduce flicker, reduce motion) set by `SettingsApplier`; new `SettingsData` fields `TextSize` (0 small, 1 medium, 2 large), `ReduceFlicker`, `ReduceMotion`; settings screen rows and strings.
+- **Design:** consumers read `Accessibility`, never `SettingsData`, so game systems do not depend on the settings screen. New fields are additive: files saved by earlier builds load with defaults (no version bump needed; `Version` stays 1 until a breaking change).
+- **AC:** values round-trip through `settings.json`; out-of-range `TextSize` clamps; older files without the fields load with defaults; applying settings updates `Accessibility`.
+
+### F-08b Flash budget and flicker-safe lighting math
+- **Scope:** `FlashBudget` (pure logic: at most 3 flashes in any rolling 1-second window) and `SafeFlicker` (flicker waveform that, with Reduce Flicker on, becomes a slow fade). **Excl.:** actual horror light events (F-09, F-10) which must use these.
+- **AC:** budget never permits a 4th flash inside any 1-second window; waveform with Reduce Flicker on crosses its midpoint at most 3 times per second; with it off, behaviour is unchanged.
+
+### F-08c Captions
+- **Scope:** `CaptionService` (queue with priority, de-duplication, maximum visible lines, per-cue duration, honours the Captions setting) and `CaptionView` prefab at the bottom of the screen, scaled by text size. **Excl.:** speaker names, positional arrows.
+- **AC:** posted cue shows for its duration then disappears; same cue posted again while visible refreshes rather than stacks; at most 3 lines visible, lower priority dropped first; nothing shows when captions are off; text readable at all three sizes.
+
+### F-08d Text size and contrast
+- **Scope:** `ScalableText` component applying the text scale to TMP labels (base size remembered, so scaling is reversible and not cumulative); contrast check test over the UI palette.
+- **AC:** switching sizes never compounds; every screen fits at the Large size at 1280x720 (screenshot review); all palette text/background pairs at least 4.5:1.
+
+### F-08e Content warning screen
+- **Scope:** first-launch screen naming fear themes, flashing lights and intense sounds, with a continue button and a link to the settings; accepted flag stored in settings; re-readable from the credits/settings area. Status: TODO.
+
+- **Sub-steps for F-08a-d (one commit per file):** spec, `Accessibility` + tests, `SettingsData` fields + tests, `SettingsApplier` + tests, `FlashBudget`/`SafeFlicker` + tests, `CaptionService` + tests, `ScalableText`, caption prefab and settings rows in the builders, contrast test, screenshots, docs.
 
 ## F-09 Tension director & horror events — TODO
 - **Scope:** `TensionDirector`, `HorrorEvent` SO, ≥6 event types (light flicker, door slam, prop shift, audio cue, Misfile corridor reveal, shadow figure). **Excl.:** procedural events.
