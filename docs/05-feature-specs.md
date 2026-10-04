@@ -52,10 +52,13 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Test:** EditMode (model), PlayMode (lock + door); playtest sheet later.
 - **Sub-steps (one commit each):** 1 spec, 2 model + tests, 3 Door.Unlock + test, 4 CodeLock + tests, 5 docs.
 
-## F-06 Save / checkpoint — TODO
-- **Scope:** JSON versioned save, checkpoints at lamp rooms, autosave, continue/new game, error surfacing. **Excl.:** cloud, multiple slots.
-- **AC:** kill app mid-play → Continue restores last checkpoint with inventory & puzzle flags; interrupted write cannot corrupt existing save (atomic replace test); corrupt file → clear message, file preserved; New Game requires confirmation.
-- **Test:** EditMode serialization tests incl. corrupt/old-version files; manual force-stop on Android.
+## F-06 Save / checkpoint — IN_PROGRESS
+- **Scope:** `SaveData` (versioned), `SaveSerializer` (JSON, explicit load results), `SaveStore` (file I/O, atomic replace, corrupt-file quarantine), `SaveGame` (capture/apply inventory + solved locks + checkpoint id). **Excl.:** checkpoint trigger volumes and autosave triggers (wired with the level / F-07 pause), cloud, multiple slots, New Game confirmation UI (F-07).
+- **Deps:** F-04, F-05.
+- **Design:** one slot at `persistentDataPath/save.json`. Write goes to `save.json.tmp`, then replaces the live file, so an interrupted write leaves the previous save intact. Load returns Ok / Missing / Corrupt / UnsupportedVersion with a human-readable message; a corrupt file is never deleted or overwritten silently (it is renamed to `save.json.corrupt-<time>` only when the player explicitly starts a new game). Write failures return an error message to the caller to show; they are never swallowed.
+- **AC:** round-trip keeps checkpoint, inventory and solved puzzle flags; interrupted write cannot corrupt the existing save; corrupt file gives a clear result and stays on disk; future-version file refused, not parsed blindly; unknown inventory ids on load are dropped and logged.
+- **Test:** EditMode (serializer incl. corrupt/old/new version, store incl. atomic and quarantine), PlayMode (capture/apply). Manual force-stop on Android pending device.
+- **Sub-steps (one commit each):** 1 spec, 2 SaveData + serializer + tests, 3 SaveStore + tests, 4 SaveGame + tests, 5 docs.
 
 ## F-07 Menus, pause, settings — TODO
 - **Scope:** main menu, pause (also auto-pause on app focus loss), settings (sensitivity, volume, captions, touch scale, Story mode, quality), quit (Windows), restart, credits/licences screen. **Excl.:** language selection.
