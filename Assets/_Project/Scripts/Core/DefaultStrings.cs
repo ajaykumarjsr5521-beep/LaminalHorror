@@ -62,6 +62,13 @@ namespace NocturneAnnex.Core
             { "notice.ok", "I understand" },
             { "menu.content_notice", "Content notice" },
 
+            // Level flow
+            { "level.checkpoint_saved", "Checkpoint saved." },
+            { "level.save_failed", "Couldn't save your progress." },
+            { "level.exit_locked", "The way out is still locked." },
+            { "level.end.title", "Floor B1 complete" },
+            { "level.end.body", "You made it out. For now." },
+
             // Settings screen labels
             { "settings.look_sensitivity", "Look sensitivity" },
             { "settings.invert_y", "Invert vertical look" },
