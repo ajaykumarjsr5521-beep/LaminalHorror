@@ -38,6 +38,7 @@ namespace NocturneAnnex.UI
             BackspaceButton.onClick.AddListener(() => _lock?.Backspace());
             EnterButton.onClick.AddListener(() => _lock?.Submit());
             CloseButton.onClick.AddListener(Close);
+            gameObject.SetActive(false);   // the prefab starts hidden; Open shows it
         }
 
         /// <summary>Opens this keypad whenever the lock asks for it (player interacts with it).</summary>
