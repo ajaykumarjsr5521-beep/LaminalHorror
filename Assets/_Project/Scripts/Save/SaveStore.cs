@@ -4,13 +4,6 @@ using NocturneAnnex.Core;
 
 namespace NocturneAnnex.Save
 {
-    public readonly struct WriteResult
-    {
-        public readonly bool Ok;
-        public readonly string Error;
-        public WriteResult(bool ok, string error) { Ok = ok; Error = error; }
-    }
-
     /// <summary>
     /// Single-slot file store. Writes go to a temp file first and replace the live file only after the
     /// temp content verifies, so an interrupted write can never damage the existing save.
