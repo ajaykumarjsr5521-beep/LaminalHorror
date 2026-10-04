@@ -34,6 +34,7 @@ namespace NocturneAnnex.Editor
             safe.AddComponent<SafeAreaFitter>();
 
             var bootstrap = new GameObject("MenuBootstrap").AddComponent<MenuBootstrap>();
+            bootstrap.gameObject.AddComponent<MenuFlow>();
 
             var main = BuildMainPanel(safe.transform, out var menuView, out var confirm);
             var settingsPanel = BuildSettingsPanel(safe.transform, out var settingsView);
