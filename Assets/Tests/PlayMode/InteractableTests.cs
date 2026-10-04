@@ -92,6 +92,17 @@ namespace NocturneAnnex.Tests.PlayMode
         }
 
         [Test]
+        public void Unlock_RemovesLock_WithoutOpening()
+        {
+            var d = SpawnDoor("brass_key");
+            d.Unlock();
+            Assert.IsFalse(d.IsLocked);
+            Assert.IsFalse(d.IsOpen);
+            d.Interact(null);
+            Assert.IsTrue(d.IsOpen);
+        }
+
+        [Test]
         public void LockedDoor_WithWrongKey_StaysLocked()
         {
             var d = SpawnDoor("brass_key");

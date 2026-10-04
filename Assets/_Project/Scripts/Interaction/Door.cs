@@ -43,6 +43,9 @@ namespace NocturneAnnex.Interaction
             if (IsOpen) OnOpened.Invoke();
         }
 
+        /// <summary>Unlocks without a key (e.g. a solved code lock). Does not open the door.</summary>
+        public void Unlock() => IsLocked = false;
+
         void Update()
         {
             float target = IsOpen ? OpenAngle : 0f;
