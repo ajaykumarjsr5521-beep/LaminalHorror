@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using NocturneAnnex.Core;
 
 namespace NocturneAnnex.Interaction
 {
@@ -10,9 +11,6 @@ namespace NocturneAnnex.Interaction
         public float OpenAngle = 100f;
         public float AngularSpeed = 180f;
         public string RequiredKeyId = "";
-
-        /// <summary>Generic, spoiler-free feedback shown when a locked door is tried.</summary>
-        public const string LockedMessage = "It's locked.";
 
         public UnityEvent<string> OnMessage = new UnityEvent<string>();
         public UnityEvent OnOpened = new UnityEvent();
@@ -28,14 +26,14 @@ namespace NocturneAnnex.Interaction
             IsLocked = !string.IsNullOrEmpty(RequiredKeyId);
         }
 
-        public string Prompt => IsLocked ? "Locked" : (IsOpen ? "Close" : "Open");
+        public string Prompt => Loc.Get(IsLocked ? "door.prompt.locked" : (IsOpen ? "door.prompt.close" : "door.prompt.open"));
 
         public void Interact(Interactor interactor)
         {
             if (IsLocked)
             {
                 bool hasKey = interactor != null && interactor.Keys != null && interactor.Keys.HasKey(RequiredKeyId);
-                if (!hasKey) { OnMessage.Invoke(LockedMessage); return; }
+                if (!hasKey) { OnMessage.Invoke(Loc.Get("door.message.locked")); return; }
                 interactor.Keys.ConsumeKey(RequiredKeyId);
                 IsLocked = false;
             }

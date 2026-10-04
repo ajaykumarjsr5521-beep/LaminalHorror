@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using NocturneAnnex.Core;
 
 namespace NocturneAnnex.Interaction
 {
@@ -13,7 +14,7 @@ namespace NocturneAnnex.Interaction
 
         public static event Action<Note> Opened;
 
-        public string Prompt => "Read";
+        public string Prompt => Loc.Get("note.prompt");
 
         public void Interact(Interactor interactor)
         {

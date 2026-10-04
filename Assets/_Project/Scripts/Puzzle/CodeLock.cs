@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using NocturneAnnex.Core;
 using NocturneAnnex.Interaction;
 
 namespace NocturneAnnex.Puzzle
@@ -28,7 +29,7 @@ namespace NocturneAnnex.Puzzle
         public string Entry => _model?.Entry ?? "";
         public int CodeLength => _model?.Length ?? 0;
 
-        public string Prompt => !IsConfigured ? "" : (IsSolved ? "Unlocked" : "Use keypad");
+        public string Prompt => !IsConfigured ? "" : Loc.Get(IsSolved ? "codelock.prompt.unlocked" : "codelock.prompt.use");
 
         void Awake()
         {

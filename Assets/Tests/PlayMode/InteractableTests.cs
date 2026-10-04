@@ -2,6 +2,7 @@ using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using NocturneAnnex.Core;
 using NocturneAnnex.Interaction;
 
 namespace NocturneAnnex.Tests.PlayMode
@@ -65,7 +66,7 @@ namespace NocturneAnnex.Tests.PlayMode
             d.Interact(i);
             Assert.IsFalse(d.IsOpen);
             Assert.IsTrue(d.IsLocked);
-            Assert.AreEqual(Door.LockedMessage, msg);
+            Assert.AreEqual(Loc.Get("door.message.locked"), msg);
             StringAssert.DoesNotContain("brass", msg);
             StringAssert.DoesNotContain("key", msg.ToLowerInvariant());
         }

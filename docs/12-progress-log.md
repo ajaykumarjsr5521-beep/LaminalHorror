@@ -5,12 +5,13 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 ## Current status
 - Phase: **P1 Controller** (P0 setup done except the Android build check)
 - Engine: Unity 6000.6.4f1 (Windows + WebGL modules installed; **Android module missing**)
-- Active branch: `chore/engineering-process` (process baseline); next: X-04 strings, then F-07
+- Active branch: `main` (X-04 merged); next: F-07 Menus, pause, settings
 
 ## Changelog
 | Date | Branch / merge | Change | Verified |
 |---|---|---|---|
-| 2026-10-04 | `chore/engineering-process` | README, CHANGELOG, .editorconfig, PR/issue templates, CODEOWNERS, ADRs 0001-0004, gated CI workflow, doc 13 process + gap analysis, X-01..X-04 specs | Docs/config only; CI not yet run |
+| 2026-10-04 | `feature/X-04-localisation` (merged) | `Loc` string table, default English, Door/Pickup/Note/CodeLock/Save messages migrated, guard tests, ADR 0005 | 83/83 EditMode, 47/47 PlayMode pass |
+| 2026-10-04 | `chore/engineering-process` (merged) | README, CHANGELOG, .editorconfig, PR/issue templates, CODEOWNERS, ADRs 0001-0004, gated CI workflow, doc 13 process + gap analysis, X-01..X-04 specs | Docs/config only; CI not yet run |
 | 2026-10-04 | `feature/F-06-save` (merged) | SaveData v1, SaveSerializer (Ok/Missing/Corrupt/UnsupportedVersion), SaveStore (atomic write, quarantine), SaveGame (checkpoint, inventory, puzzles); inventory restore drops unknown ids; CodeLock.PuzzleId | 64/64 EditMode, 47/47 PlayMode pass. No device test |
 | 2026-10-04 | `feature/F-05-puzzle` (merged) | CodeLockModel (no lockout, validated config), CodeLock interactable, Door.Unlock | 43/43 EditMode, 39/39 PlayMode pass |
 | 2026-10-04 | `feature/F-04-inventory` (merged) | ItemDefinition/ItemDatabase (validated), InventoryModel, PlayerInventory (keys consumed, journal notes, snapshot/restore), Note to journal | 31/31 EditMode, 32/32 PlayMode pass |

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using NocturneAnnex.Core;
 
 namespace NocturneAnnex.Interaction
 {
@@ -12,13 +13,13 @@ namespace NocturneAnnex.Interaction
         public event Action<Pickup, Interactor> Collected;
         public event Action<Pickup, string> Refused;
 
-        public string Prompt => "Take " + DisplayName;
+        public string Prompt => Loc.Format("pickup.prompt", DisplayName);
 
         public void Interact(Interactor interactor)
         {
             if (interactor != null && interactor.Items != null && !interactor.Items.TryAdd(ItemId))
             {
-                Refused?.Invoke(this, "You can't carry any more.");
+                Refused?.Invoke(this, Loc.Get("pickup.refused"));
                 return;
             }
             Collected?.Invoke(this, interactor);
