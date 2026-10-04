@@ -13,6 +13,7 @@ Verification status per change lives in [docs/12-progress-log.md](docs/12-progre
 - "Three Dates" code lock logic with no-lockout retries (F-05).
 - Versioned single-slot save with atomic writes and corrupt-file handling (F-06).
 - Settings: versioned `settings.json`, clamping, safe fallback on corrupt files, applier for input/audio/quality; shared `AtomicFile` helper (F-07a).
+- Pause controller: freezes time and audio, auto-pauses on focus loss, restores exact state (F-07b).
 - Commit-message hook and template; one-commit-per-file practice (X-01).
 - Localisation-ready strings: `Loc` table, all current player-facing text migrated, guard tests (X-04).
 - Engineering process docs, `.editorconfig`, README, ADRs, PR/issue templates (X-01).
