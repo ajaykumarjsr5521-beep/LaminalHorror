@@ -66,6 +66,9 @@ namespace NocturneAnnex.Horror
             return true;
         }
 
+        /// <summary>Forgets cooldown timestamps, for when the game clock restarts (new run, respawn). Fired one-shots stay fired.</summary>
+        public void ClearCooldowns() => _lastFired.Clear();
+
         /// <summary>Ids of one-shot events that already fired, for saving.</summary>
         public string[] SnapshotFiredOnce()
         {
