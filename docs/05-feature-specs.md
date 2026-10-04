@@ -27,7 +27,7 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **AC:** same gameplay reachable on KB+M, gamepad, touch; touch controls sit inside safe area on notched devices; multi-touch (move + look + button) works simultaneously; no input stuck after app pause/resume; controls size adjustable 80–130%.
 - **Test:** EditMode (router mapping), manual on ≥2 phones (different aspect ratios), Windows.
 
-### F-02b Touch controls on the level HUD — IN_PROGRESS (spec written, nothing built yet)
+### F-02b Touch controls on the level HUD — IN_PROGRESS (built and tested with simulated pointers: EditMode 227/227, PlayMode 128/128; screenshots reviewed at 3 sizes. NOT tested with real fingers)
 - **Why:** F-13 left the level unplayable on a phone: the F-02 widgets exist but no HUD uses them.
 - **Scope:** a generated `TouchControls` group in the level HUD: floating move stick (left half), look drag area (right half), Interact, Sprint (held) and Crouch (held) buttons; shown only on touch devices; scaled by the Touch control size setting (80-130%); inside the safe area; behind the pause/journal buttons and all modal screens. **Excl.:** relocating or rebinding controls, gyro look, haptics.
 - **Deps:** F-02 widgets, F-07 settings (`ControlsLayout.Scale`), F-13 level HUD.
@@ -41,6 +41,9 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
   6. A modal screen (keypad, note, journal, pause) blocks touches to the controls underneath.
 - **Test:** EditMode (visibility rule), PlayMode on the real level scene, screenshots. Not testable here: real finger feel, accidental touches, thumb reach (needs a phone, D13).
 - **Sub-steps (one commit per file):** spec, `TouchControlsVisibility` + tests, `TouchControlsScaler`, builder, level builder wiring, scene, PlayMode tests, screenshots, docs.
+- **Results (2026-10-04):** AC1-AC4 and AC6 pass in PlayMode on the real level scene using simulated pointer events (stick, look and Sprint held together; Interact is a one-frame press; Crouch released when the controls hide; size setting clamps to 80-130%; an open keypad catches the touch first). AC3 is covered by the visibility rule test and an override, not by running on a device. AC5: screenshots at 2400x1080, 1920x1080 and 1280x720 show no overlap with Pause, Journal or the caption strip.
+- **Open:** real thumb reach, accidental touches, the fixed ring versus the floating stick origin, and whether Sprint should be a toggle all need a phone (D13). The Pause button is a corner button, not a TouchButton, so Android Back is still unchecked.
+
 
 ## F-03 Interaction system — IN_PROGRESS (code complete; 22 PlayMode tests pass. Not yet tested: input-scheme parity on devices, prompt placement in a real HUD canvas, inventory integration (F-04))
 - **Scope:** `IInteractable`, focus detection (`Interactor`), prompt view, `Door` (open/close/locked), `Pickup`, `Note`. **Excl.:** physics grab/throw, hold-to-interact (post-MVP).
