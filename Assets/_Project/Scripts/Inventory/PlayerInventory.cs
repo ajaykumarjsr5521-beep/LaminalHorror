@@ -53,8 +53,15 @@ namespace NocturneAnnex.Inventory
 
         public void Restore(IEnumerable<string> ids)
         {
-            int dropped = Model.Restore(ids);
-            if (dropped > 0) Debug.LogWarning($"PlayerInventory: dropped {dropped} invalid saved item(s).", this);
+            var valid = new List<string>();
+            int unknown = 0;
+            foreach (var id in ids ?? new string[0])
+            {
+                if (Database != null && Database.TryGet(id, out _)) valid.Add(id);
+                else unknown++;
+            }
+            int dropped = Model.Restore(valid) + unknown;
+            if (dropped > 0) Debug.LogWarning($"PlayerInventory: dropped {dropped} invalid or unknown saved item(s).", this);
             Changed?.Invoke();
         }
 

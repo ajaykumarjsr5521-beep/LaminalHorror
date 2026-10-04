@@ -12,6 +12,8 @@ namespace NocturneAnnex.Puzzle
     {
         [Tooltip("Digits only. Validated on startup; an invalid code disables the lock and logs an error.")]
         public string Code = "";
+        [Tooltip("Stable id used by saves. Must be unique per lock in the game.")]
+        public string PuzzleId = "";
         public Door TargetDoor;
 
         public event Action<CodeLock> KeypadRequested;
