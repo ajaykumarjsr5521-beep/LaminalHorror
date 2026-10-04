@@ -1,5 +1,7 @@
 # 11 — Git Workflow
 
+> Commit rules (one commit per file, message format, hook) are in doc 13 section 3.
+>
 > Superseded in part by [13-engineering-process.md](13-engineering-process.md): merges to `main` go through reviewed pull requests with passing tests. Local merges were used up to F-06 (no PR tooling or branch protection existed yet).
 
 - `main`: always in a reviewed, consistent state. No direct feature commits.
