@@ -29,6 +29,9 @@ namespace NocturneAnnex.Settings
         public bool ReduceFlicker;
         public bool ReduceMotion;
 
+        /// <summary>True once the player has seen the first-launch content notice. Added after v1; older files load false.</summary>
+        public bool ContentNoticeAccepted;
+
         /// <summary>-1 means "use the project default quality level".</summary>
         public int QualityLevel = -1;
 
@@ -51,6 +54,7 @@ namespace NocturneAnnex.Settings
             TextSize = o.TextSize;
             ReduceFlicker = o.ReduceFlicker;
             ReduceMotion = o.ReduceMotion;
+            ContentNoticeAccepted = o.ContentNoticeAccepted;
         }
 
         /// <summary>True if every user-facing value matches. Version is ignored.</summary>
@@ -60,7 +64,8 @@ namespace NocturneAnnex.Settings
             && MasterVolume == o.MasterVolume && MusicVolume == o.MusicVolume && SfxVolume == o.SfxVolume
             && CaptionsEnabled == o.CaptionsEnabled && TouchControlsScale == o.TouchControlsScale
             && StoryMode == o.StoryMode && QualityLevel == o.QualityLevel
-            && TextSize == o.TextSize && ReduceFlicker == o.ReduceFlicker && ReduceMotion == o.ReduceMotion;
+            && TextSize == o.TextSize && ReduceFlicker == o.ReduceFlicker && ReduceMotion == o.ReduceMotion
+            && ContentNoticeAccepted == o.ContentNoticeAccepted;
 
         /// <summary>Forces all values into range. NaN and infinity fall back to the default value.</summary>
         public void Clamp(int qualityLevelCount)
