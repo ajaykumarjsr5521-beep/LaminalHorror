@@ -52,7 +52,7 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Test:** EditMode (model), PlayMode (lock + door); playtest sheet later.
 - **Sub-steps (one commit each):** 1 spec, 2 model + tests, 3 Door.Unlock + test, 4 CodeLock + tests, 5 docs.
 
-## F-06 Save / checkpoint — IN_PROGRESS
+## F-06 Save / checkpoint — IN_PROGRESS (logic complete: 64 EditMode + 47 PlayMode tests pass. Pending: checkpoint/autosave triggers in level, Continue/New Game menu + confirmation (F-07), real force-stop test on Android)
 - **Scope:** `SaveData` (versioned), `SaveSerializer` (JSON, explicit load results), `SaveStore` (file I/O, atomic replace, corrupt-file quarantine), `SaveGame` (capture/apply inventory + solved locks + checkpoint id). **Excl.:** checkpoint trigger volumes and autosave triggers (wired with the level / F-07 pause), cloud, multiple slots, New Game confirmation UI (F-07).
 - **Deps:** F-04, F-05.
 - **Design:** one slot at `persistentDataPath/save.json`. Write goes to `save.json.tmp`, then replaces the live file, so an interrupted write leaves the previous save intact. Load returns Ok / Missing / Corrupt / UnsupportedVersion with a human-readable message; a corrupt file is never deleted or overwritten silently (it is renamed to `save.json.corrupt-<time>` only when the player explicitly starts a new game). Write failures return an error message to the caller to show; they are never swallowed.

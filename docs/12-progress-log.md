@@ -5,11 +5,12 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 ## Current status
 - Phase: **P1 Controller** (P0 setup done except the Android build check)
 - Engine: Unity 6000.6.4f1 (Windows + WebGL modules installed; **Android module missing**)
-- Active branch: `main` (F-05 merged; next: Android check, F-06 Save)
+- Active branch: `main` (F-06 merged; next: F-07 Menus, pause, settings)
 
 ## Changelog
 | Date | Branch / merge | Change | Verified |
 |---|---|---|---|
+| 2026-10-04 | `feature/F-06-save` (merged) | SaveData v1, SaveSerializer (Ok/Missing/Corrupt/UnsupportedVersion), SaveStore (atomic write, quarantine), SaveGame (checkpoint, inventory, puzzles); inventory restore drops unknown ids; CodeLock.PuzzleId | 64/64 EditMode, 47/47 PlayMode pass. No device test |
 | 2026-10-04 | `feature/F-05-puzzle` (merged) | CodeLockModel (no lockout, validated config), CodeLock interactable, Door.Unlock | 43/43 EditMode, 39/39 PlayMode pass |
 | 2026-10-04 | `feature/F-04-inventory` (merged) | ItemDefinition/ItemDatabase (validated), InventoryModel, PlayerInventory (keys consumed, journal notes, snapshot/restore), Note to journal | 31/31 EditMode, 32/32 PlayMode pass |
 | 2026-10-04 | `feature/F-03-interaction` (merged) | IInteractable, Interactor (2 m raycast, wall occlusion), Door (locked, generic message), Pickup, Note, prompt view, IKeyProvider/IItemReceiver hooks for F-04, run-tests.sh | 18/18 EditMode, 22/22 PlayMode pass. No device testing |
@@ -20,7 +21,7 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 | 2026-10-03 | initial commit | Discovery report + specs 00-10 | n/a |
 
 ## In progress
-- Nothing active. F-05 remaining: keypad UI (F-07), level content, persistence (F-06), playtest.
+- Nothing active. F-06 remaining: level checkpoint triggers, menu wiring (F-07), Android force-stop test.
 
 ## Upcoming (in order)
 1. (done) F-02 input code merged; device ACs pending
@@ -28,7 +29,7 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 3. (done) F-01 controller code merged; device and profiler ACs pending
 4. (done, test scene only) Greybox level; the real 6-space level comes later
 5. (done) P2: F-03, F-04, F-05 merged
-6. P3: F-06 Save, F-07 Menus, F-08 Accessibility
+6. P3: (F-06 merged) F-07 Menus, F-08 Accessibility
 7. P4: F-09 Tension director, F-10 Lighting/audio, F-11 Indexer (if D4)
 8. P5 polish/perf, P6 release (F-12)
 
