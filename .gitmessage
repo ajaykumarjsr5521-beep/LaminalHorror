@@ -1,0 +1,11 @@
+type(scope): imperative summary, 72 characters or fewer
+
+# Why this change is needed (the problem), not a list of edits.
+#
+# What changed in THIS file (one commit per file or per tightly coupled pair).
+#
+# Verification: tests run and their real results, or "not run: reason".
+#
+# Refs: F-XX / X-XX, issue #
+#
+# types: feat fix docs test refactor chore perf ci build
