@@ -21,6 +21,9 @@ namespace NocturneAnnex.UI
         public Slider TouchScale;
         public Toggle StoryMode;
         public TMP_Dropdown Quality;
+        public TMP_Dropdown TextSize;
+        public Toggle ReduceFlicker;
+        public Toggle ReduceMotion;
         public Button SaveButton;
         public Button BackButton;
         public Button ResetButton;
@@ -45,6 +48,9 @@ namespace NocturneAnnex.UI
                 Listen(InvertY, v => _model.Working.InvertY = v);
                 Listen(Captions, v => _model.Working.CaptionsEnabled = v);
                 Listen(StoryMode, v => _model.Working.StoryMode = v);
+                Listen(ReduceFlicker, v => _model.Working.ReduceFlicker = v);
+                Listen(ReduceMotion, v => _model.Working.ReduceMotion = v);
+                TextSize.onValueChanged.AddListener(i => { _model.Working.TextSize = i; _model.NotifyChanged(); Render(); });
                 Quality.onValueChanged.AddListener(i => { _model.Working.QualityLevel = i - 1; _model.NotifyChanged(); Render(); });
                 SaveButton.onClick.AddListener(() => { _model.Save(); Render(); });
                 ResetButton.onClick.AddListener(() => { _model.ResetToDefaults(); Render(); });
@@ -66,6 +72,12 @@ namespace NocturneAnnex.UI
             options.AddRange(qualityNames);
             Quality.ClearOptions();
             Quality.AddOptions(options);
+
+            TextSize.ClearOptions();
+            TextSize.AddOptions(new List<string>
+            {
+                Loc.Get("settings.text_size.small"), Loc.Get("settings.text_size.medium"), Loc.Get("settings.text_size.large")
+            });
         }
 
         void Back()
@@ -90,6 +102,9 @@ namespace NocturneAnnex.UI
             TouchScale.SetValueWithoutNotify(w.TouchControlsScale);
             StoryMode.SetIsOnWithoutNotify(w.StoryMode);
             Quality.SetValueWithoutNotify(w.QualityLevel + 1);
+            TextSize.SetValueWithoutNotify(w.TextSize);
+            ReduceFlicker.SetIsOnWithoutNotify(w.ReduceFlicker);
+            ReduceMotion.SetIsOnWithoutNotify(w.ReduceMotion);
 
             SaveButton.interactable = _model.IsDirty;
             ErrorText.text = _model.Error ?? string.Empty;
