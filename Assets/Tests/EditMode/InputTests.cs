@@ -28,6 +28,23 @@ namespace NocturneAnnex.Tests.EditMode
         public void ControlsScale_IsClampedTo80To130Percent(float input, float expected) =>
             Assert.AreEqual(expected, InputMath.ClampControlsScale(input), 1e-4f);
 
+        [Test]
+        public void BlockForModal_DropsGameplayInput_ButKeepsPause()
+        {
+            var s = new PlayerInputState
+            {
+                Move = Vector2.one, Look = Vector2.one, Sprint = true, Crouch = true,
+                InteractPressed = true, PausePressed = true
+            };
+            var r = InputMath.BlockForModal(s);
+            Assert.AreEqual(Vector2.zero, r.Move);
+            Assert.AreEqual(Vector2.zero, r.Look);
+            Assert.IsFalse(r.Sprint);
+            Assert.IsFalse(r.Crouch);
+            Assert.IsFalse(r.InteractPressed);
+            Assert.IsTrue(r.PausePressed);
+        }
+
         class FixedSource : IInputSource
         {
             public PlayerInputState State;
