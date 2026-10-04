@@ -23,7 +23,13 @@ Status: **pre-alpha, logic layer under construction.** See [docs/12-progress-log
 5. Try the movement test level: open `Assets/_Project/Scenes/Greybox.unity` and press Play (WASD, mouse, Shift, Ctrl/C, E).
 
 ## Contributing
-Read [docs/13-engineering-process.md](docs/13-engineering-process.md). Short version: one feature per branch, spec first, small Conventional Commits, PR with tests passing, update docs and the changelog.
+Read [docs/13-engineering-process.md](docs/13-engineering-process.md). Short version: one feature per branch, spec first, **one commit per file** with a Conventional Commit message, PR with tests passing, update docs and the changelog.
+
+After cloning, enable the commit checks once:
+```
+git config core.hooksPath .githooks
+git config commit.template .gitmessage
+```
 
 ## Assets and licences
 Only original or properly licensed assets. Every third-party asset is registered in [docs/09-asset-ip-register.md](docs/09-asset-ip-register.md). No licence has been chosen for the code yet (all rights reserved by default).
