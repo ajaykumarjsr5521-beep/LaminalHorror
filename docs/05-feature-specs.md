@@ -60,10 +60,31 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Test:** EditMode (serializer incl. corrupt/old/new version, store incl. atomic and quarantine), PlayMode (capture/apply). Manual force-stop on Android pending device.
 - **Sub-steps (one commit each):** 1 spec, 2 SaveData + serializer + tests, 3 SaveStore + tests, 4 SaveGame + tests, 5 docs.
 
-## F-07 Menus, pause, settings — TODO
-- **Scope:** main menu, pause (also auto-pause on app focus loss), settings (sensitivity, volume, captions, touch scale, Story mode, quality), quit (Windows), restart, credits/licences screen. **Excl.:** language selection.
-- **AC:** time scale 0 and audio ducked in pause; resume restores state exactly; restart/menu loops 20× without errors or leaks (memory delta < 5 MB); Android Back button handled; settings persist.
-- **Test:** PlayMode loop test, manual.
+## F-07 Menus, pause, settings — IN_PROGRESS (split into sub-features)
+- **Purpose/experience:** the player can start, pause, resume, adjust comfort settings and leave without friction or lost progress.
+- **Scope overall:** main menu, pause (also auto-pause on app focus loss), settings (look sensitivity, invert-Y, volumes, captions on/off, touch control scale, Story mode, quality), quit (Windows), restart, credits/licences screen, Continue/New Game with confirmation (uses F-06), keypad and journal screens (use F-05/F-04). **Excl.:** language selection, key rebinding.
+- **Deps:** F-02, F-04, F-05, F-06, X-04 (all text via `Loc`).
+- **Overall AC:** time scale 0 and audio ducked in pause; resume restores state exactly; restart/menu loops 20 times without errors or leaks (memory delta under 5 MB); Android Back button handled; settings persist; every screen usable at 5-inch phone and 1080p PC; all text via `Loc`.
+- **Test:** EditMode (settings logic), PlayMode (pause, loop test), manual device checks.
+
+### F-07a Settings model and persistence
+- **Scope:** `SettingsData` (versioned, defaults, clamping), `SettingsStore` (settings.json, atomic write, separate from the save file), `SettingsApplier` (pushes values into `InputRouter`, `ControlsLayout`, audio volume, quality level). **Excl.:** UI.
+- **Design:** values are clamped on load and set (sensitivity 0.2-3, volumes 0-1, touch scale 0.8-1.3, quality within available levels). A missing file gives defaults silently (first run). A corrupt or newer-version file gives defaults and an explicit warning result for the UI to show; the bad file is kept, as with saves. The atomic temp-file write is shared with `SaveStore` through one `AtomicFile` helper (no duplicated I/O code).
+- **AC:** round trip keeps all values; out-of-range values clamp; corrupt file returns defaults plus warning and the file stays on disk; failed write returns an error message; `SaveStore` tests still pass after the shared-helper refactor; applier changes `InputRouter.LookSensitivity`, `InvertY` and `ControlsLayout.Scale`.
+- **Test:** EditMode (data, store), PlayMode (applier).
+
+### F-07b Pause controller
+- **Scope:** `PauseController` (pause/resume, time scale, audio pause/duck, auto-pause on focus loss and app pause, Android Back key toggles pause). **Excl.:** UI view.
+- **AC:** pause sets `Time.timeScale` to 0 and restores the previous value on resume; double pause/resume are idempotent; focus loss pauses; resume after focus return does not auto-resume; restoring does not change input state beyond a reset.
+- **Test:** PlayMode.
+
+### F-07c Screens (main menu, pause, settings, confirm dialog, credits)
+- **Scope:** uGUI screens driven by the models above; New Game confirmation; error message display for save/settings problems. Status: TODO (needs Canvas prefabs and device layout checks).
+
+### F-07d Keypad and journal screens
+- **Scope:** keypad UI for `CodeLock`; journal list and note reader (at most 3 taps to read a note). Status: TODO.
+
+- **Sub-steps for F-07a (one commit per file):** 1 spec, 2 `AtomicFile` + test, 3 `SaveStore` refactor to use it, 4 `SettingsData` + tests, 5 `SettingsStore` + tests, 6 string keys, 7 `SettingsApplier` + tests, 8 docs.
 
 ## F-08 Captions & accessibility basics — TODO
 - **Scope:** captions for key sounds/events, text size options (S/M/L), colour-safe UI, reduce flicker/flash option (disables strobe-like lighting), reduce camera motion option, no information conveyed by audio only. **Excl.:** screen-reader support, full localisation.
