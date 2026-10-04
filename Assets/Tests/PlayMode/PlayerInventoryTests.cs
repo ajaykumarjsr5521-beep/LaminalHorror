@@ -140,6 +140,14 @@ namespace NocturneAnnex.Tests.PlayMode
         }
 
         [Test]
+        public void Restore_DropsUnknownIds_AndLogsWarning()
+        {
+            LogAssert.Expect(LogType.Warning, new System.Text.RegularExpressions.Regex("dropped 1 invalid or unknown"));
+            _inv.Restore(new[] { "brass_key", "removed_item_from_old_build" });
+            CollectionAssert.AreEqual(new[] { "brass_key" }, _inv.Ids);
+        }
+
+        [Test]
         public void Capacity_IsEnforced()
         {
             _inv.Capacity = 1;   // model is created lazily on first use
