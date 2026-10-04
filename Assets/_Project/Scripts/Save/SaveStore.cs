@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using NocturneAnnex.Core;
 
 namespace NocturneAnnex.Save
 {
@@ -35,7 +36,7 @@ namespace NocturneAnnex.Save
 
                 File.WriteAllText(TempPath, json);
                 if (!SaveSerializer.FromJson(File.ReadAllText(TempPath)).Ok)
-                    return new WriteResult(false, "The save could not be verified after writing; your previous save was kept.");
+                    return new WriteResult(false, Loc.Get("save.verify_failed"));
 
                 if (File.Exists(_path)) File.Replace(TempPath, _path, null);
                 else File.Move(TempPath, _path);
@@ -43,17 +44,17 @@ namespace NocturneAnnex.Save
             }
             catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
             {
-                return new WriteResult(false, "Saving failed: " + e.Message + " Your previous save was kept.");
+                return new WriteResult(false, Loc.Format("save.write_failed", e.Message));
             }
         }
 
         public LoadResult Load()
         {
-            if (!File.Exists(_path)) return new LoadResult(LoadStatus.Missing, null, "No save found.");
+            if (!File.Exists(_path)) return new LoadResult(LoadStatus.Missing, null, Loc.Get("save.missing"));
             try { return SaveSerializer.FromJson(File.ReadAllText(_path)); }
             catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
             {
-                return new LoadResult(LoadStatus.Corrupt, null, "The save file could not be opened: " + e.Message);
+                return new LoadResult(LoadStatus.Corrupt, null, Loc.Format("save.open_failed", e.Message));
             }
         }
 

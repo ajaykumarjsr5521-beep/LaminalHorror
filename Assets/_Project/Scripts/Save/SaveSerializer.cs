@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using NocturneAnnex.Core;
 
 namespace NocturneAnnex.Save
 {
@@ -31,23 +32,23 @@ namespace NocturneAnnex.Save
         public static LoadResult FromJson(string json)
         {
             if (string.IsNullOrWhiteSpace(json))
-                return new LoadResult(LoadStatus.Corrupt, null, "The save file is empty.");
+                return new LoadResult(LoadStatus.Corrupt, null, Loc.Get("save.empty"));
 
             SaveData data;
             try { data = JsonUtility.FromJson<SaveData>(json); }
             catch (Exception e)
             {
-                return new LoadResult(LoadStatus.Corrupt, null, "The save file could not be read: " + e.Message);
+                return new LoadResult(LoadStatus.Corrupt, null, Loc.Format("save.unreadable", e.Message));
             }
 
             if (data == null || data.Version <= 0)
-                return new LoadResult(LoadStatus.Corrupt, null, "The save file is damaged or incomplete.");
+                return new LoadResult(LoadStatus.Corrupt, null, Loc.Get("save.damaged"));
             if (data.Version > SaveData.CurrentVersion)
                 return new LoadResult(LoadStatus.UnsupportedVersion, null,
-                    $"This save was made by a newer version of the game (save v{data.Version}, game supports v{SaveData.CurrentVersion}).");
+                    Loc.Format("save.newer", data.Version, SaveData.CurrentVersion));
             if (data.Version < SaveData.CurrentVersion)
                 return new LoadResult(LoadStatus.UnsupportedVersion, null,
-                    $"This save is from an older, unsupported version (v{data.Version}).");
+                    Loc.Format("save.older", data.Version));
 
             data.InventoryIds ??= new string[0];
             data.SolvedPuzzleIds ??= new string[0];
