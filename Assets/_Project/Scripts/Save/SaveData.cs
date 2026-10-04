@@ -14,6 +14,8 @@ namespace NocturneAnnex.Save
         public string CheckpointId = "";
         public string[] InventoryIds = new string[0];
         public string[] SolvedPuzzleIds = new string[0];
+        // Added after the first release of the format. Absent in older saves, which then read as "nothing fired yet", so Version stays 1.
+        public string[] FiredEventIds = new string[0];
         public string SavedAtUtc = "";
     }
 }

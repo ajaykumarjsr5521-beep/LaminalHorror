@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using NocturneAnnex.Inventory;
+using NocturneAnnex.Horror;
 using NocturneAnnex.Puzzle;
 
 namespace NocturneAnnex.Save
@@ -15,6 +16,8 @@ namespace NocturneAnnex.Save
     {
         public PlayerInventory Inventory;
         public CodeLock[] Locks = new CodeLock[0];
+        [Tooltip("Optional: saves which one-shot horror events already fired.")]
+        public HorrorEventRunner Horror;
         [Tooltip("Leave empty to use persistentDataPath/save.json.")]
         public string FilePathOverride = "";
 
@@ -49,7 +52,8 @@ namespace NocturneAnnex.Save
             {
                 CheckpointId = checkpointId ?? "",
                 InventoryIds = Inventory != null ? Inventory.Snapshot() : new string[0],
-                SolvedPuzzleIds = solved.ToArray()
+                SolvedPuzzleIds = solved.ToArray(),
+                FiredEventIds = Horror != null && Horror.Picker != null ? Horror.Picker.SnapshotFiredOnce() : new string[0]
             };
         }
 
@@ -75,6 +79,7 @@ namespace NocturneAnnex.Save
             var solved = new HashSet<string>(data.SolvedPuzzleIds);
             foreach (var l in Locks)
                 if (l != null && !string.IsNullOrEmpty(l.PuzzleId)) l.RestoreSolved(solved.Contains(l.PuzzleId));
+            Horror?.Picker?.RestoreFiredOnce(data.FiredEventIds);
             LastCheckpointId = data.CheckpointId;
         }
 
