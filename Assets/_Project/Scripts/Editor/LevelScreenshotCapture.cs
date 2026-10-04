@@ -14,7 +14,7 @@ namespace NocturneAnnex.Editor
     public static class LevelScreenshotCapture
     {
         const string OutDir = "Builds/screens";
-        static readonly Vector2Int[] Resolutions = { new Vector2Int(1920, 1080), new Vector2Int(1280, 720) };
+        static readonly Vector2Int[] Resolutions = { new Vector2Int(1920, 1080), new Vector2Int(2400, 1080), new Vector2Int(1280, 720) };
 
         static readonly (string name, Vector3 pos, Vector3 euler)[] Views =
         {

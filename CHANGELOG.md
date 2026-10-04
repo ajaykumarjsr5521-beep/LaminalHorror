@@ -20,6 +20,7 @@ Verification status per change lives in [docs/12-progress-log.md](docs/12-progre
 - Accessibility: captions system and prefab, text size setting (Small/Medium/Large), reduce flicker and reduce camera motion settings, flash budget (max 3 per second) and safe flicker waveform, WCAG AA contrast tests, first-launch content notice (F-08).
 - Settings files with an unreadable or newer-version content are now moved aside before the next write instead of being overwritten.
 - Level "Night Shift: Floor B1" greybox (generated scene): break room, reading hall, stacks, records office, loading dock, Three Dates puzzle readable from in-world props, 4 checkpoints with save and resume, exit gating, HUD with pause and journal buttons, end card (F-13).
+- Touch controls on the level HUD: move stick, look area, Use / Run / Crouch buttons, shown on mobile or touchscreens, scaled by the control size setting (F-02b).
 - Boot scene opens the main menu; menu Continue and New Game start the level (F-13).
 - Commit-message hook and template; one-commit-per-file practice (X-01).
 - Localisation-ready strings: `Loc` table, all current player-facing text migrated, guard tests (X-04).
@@ -34,5 +35,5 @@ Verification status per change lives in [docs/12-progress-log.md](docs/12-progre
 
 ### Known limitations
 - Nothing has been verified on an Android device; Android build not yet produced.
-- The level has no touch controls on its HUD yet, so it cannot be played on a phone. Level art, lighting, audio, scare events and the enemy are not built (greybox only).
+- Touch controls have only been tested with simulated pointer events, not on a phone. Level art, lighting, audio, scare events and the enemy are not built (greybox only).
 - Level note and item text is placeholder prose awaiting owner review.

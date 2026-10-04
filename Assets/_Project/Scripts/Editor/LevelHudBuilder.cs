@@ -36,6 +36,7 @@ namespace NocturneAnnex.Editor
             UiKit.Stretch(safe);
             safe.AddComponent<SafeAreaFitter>();
 
+            TouchControlsBuilder.Build(safe.transform);   // first sibling: everything else draws and catches touches above it
             var hud = canvasGo.AddComponent<LevelHud>();
             hud.Level = level;
 
