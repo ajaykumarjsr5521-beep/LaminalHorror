@@ -4,6 +4,7 @@ using UnityEngine;
 using NocturneAnnex.Controls;
 using NocturneAnnex.Core;
 using NocturneAnnex.Flow;
+using NocturneAnnex.Horror;
 using NocturneAnnex.Puzzle;
 using NocturneAnnex.Save;
 using NocturneAnnex.Settings;
@@ -22,6 +23,7 @@ namespace NocturneAnnex.Level
         public CodeLock FinalLock;
         public SaveGame SaveGame;
         public Transform Player;
+        public HorrorEventRunner Horror;
         public ProgressGate[] Gates = new ProgressGate[0];
         /// <summary>Overridable for tests; defaults to settings.json in persistentDataPath.</summary>
         public SettingsStore SettingsStore;
@@ -41,7 +43,9 @@ namespace NocturneAnnex.Level
         void ApplySavedSettings()
         {
             SettingsStore ??= new SettingsStore(Path.Combine(Application.persistentDataPath, "settings.json"), QualitySettings.names.Length);
-            SettingsApplier.Apply(SettingsStore.Load().Data, InputRouter.Instance);
+            var settings = SettingsStore.Load().Data;
+            SettingsApplier.Apply(settings, InputRouter.Instance);
+            if (Horror != null) Horror.StoryMode = settings.StoryMode;
         }
 
         /// <summary>Starts the run, resuming the save when asked. Safe to call again (tests restart a level this way).</summary>
@@ -64,6 +68,7 @@ namespace NocturneAnnex.Level
             }
             ApplyGates();
             MovePlayerTo(Progress.CurrentId);
+            Horror?.ResetPacing();   // a fresh start or respawn never inherits old tension
         }
 
         void ApplyGates()
