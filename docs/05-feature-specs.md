@@ -182,11 +182,24 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
   - Item and note prose is placeholder text for owner review. Lighting and look are greybox only (F-10).
   - Process note: `ProgressGate.cs` was committed inside the asmdef commit after a subject-length rejection, and the data and material assets were committed as folders, not one file each.
 
-## F-09 Tension director & horror events — TODO
+## F-09 Tension director & horror events — IN_PROGRESS (split: a = director logic, b = events and scene wiring)
 - **Accessibility requirement (from F-08):** every flashing or strobing light/screen effect must go through `FlashBudget` and `SafeFlicker`, and every camera shake/sway must be multiplied by `Accessibility.MotionScale`. Tests must prove no more than 3 state changes per second with Reduce Flicker on.
-- **Scope:** `TensionDirector`, `HorrorEvent` SO, ≥6 event types (light flicker, door slam, prop shift, audio cue, Misfile corridor reveal, shadow figure). **Excl.:** procedural events.
-- **AC:** min gap between scare events ≥ configured (default 45 s) verified by log; events fire once when flagged; events never fire during note reading/pause/menus; event data editable without code; debug overlay in dev builds.
+- **Scope:** `TensionDirector`, `HorrorEvent` SO, at least 6 event types (light flicker, door slam, prop shift, audio cue, Misfile corridor reveal, shadow figure). **Excl.:** procedural events.
+- **AC:** min gap between scare events at least the configured value (default 45 s) verified by log; events fire once when flagged; events never fire during note reading/pause/menus; event data editable without code; debug overlay in dev builds.
 - **Test:** EditMode simulation of director over time; manual pacing playtest.
+
+### F-09a Tension director and event picker (logic only) — IN_PROGRESS (spec written, nothing built yet)
+- **Scope:** plain C# `TensionDirector` (0-1 tension that rises in unsafe zones and decays in safe ones, throttles events by a minimum gap) and `EventPicker` (chooses which authored event may fire now). **Excl.:** the event actions, `HorrorEvent` assets, triggers and scene wiring (F-09b), debug overlay.
+- **Design:** the caller passes elapsed time, whether the player is in an unsafe zone, and whether gameplay is blocked (pause, modal screen, menu). Blocked time changes nothing: no rise, no decay, no gap progress. `TryTakeEvent` fires only when tension is at or above the threshold and the gap since the last event has passed, then lowers tension by a relief amount. Story mode halves the rise rate and doubles the gap. Settings are validated (rates and gap must be positive, threshold in 0-1) and a bad config throws. `EventPicker` takes candidates (id, once, cooldown, minimum tension) and skips fired one-shots, events on cooldown and events above current tension; among eligible ones it picks the one with the highest minimum tension, ties by list order, so results are deterministic and testable.
+- **AC:**
+  1. Over a simulated 30-minute run in an unsafe zone, no two events are closer than the minimum gap (default 45 s).
+  2. In a safe zone tension falls to 0 and no event fires.
+  3. No change at all while blocked, however long the block lasts.
+  4. A one-shot event never repeats; a cooldown event waits its cooldown; an event needing more tension than present is not picked.
+  5. Story mode halves the rise rate and doubles the minimum gap.
+  6. Invalid settings throw; tension always stays within 0-1.
+- **Test:** EditMode only (pure logic, simulated time).
+- **Sub-steps (one commit per file):** spec, `TensionSettings` + `TensionDirector` + tests, `EventPicker` + tests, docs.
 
 ## F-10 Lighting, audio & level art pass — TODO
 - **Accessibility requirement (from F-08):** every gameplay-relevant sound has a caption key in `DefaultStrings` and posts it through `Captions.Post`; an EditMode test lists the cues and fails if one lacks a caption. Flicker uses `SafeFlicker`; camera motion uses `Accessibility.MotionScale`.
