@@ -109,7 +109,7 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 - **Needs:** owner installs Git LFS and runs `git lfs install`; confirm the GitHub LFS quota is sufficient.
 - **AC:** a test binary commit appears as an LFS pointer; clone and checkout works on a clean machine.
 
-## X-04 Localisation-ready strings — IN_PROGRESS
+## X-04 Localisation-ready strings — DONE (EditMode: 83/83 incl. key-existence and literal-string guards; PlayMode 47/47; no device-dependent criteria)
 - **Scope:** `Loc` (Core) with `Get`, `Format`, `Has`, `SetTable`, `ResetToDefault`; default English table in code; migrate every existing player-facing string: Door (prompts, locked message), Pickup (prompt, refusal), Note (prompt), CodeLock (prompts), Save (all load/write messages). **Excl.:** additional languages, font fallback, RTL, translation workflow, ScriptableObject table asset (added when a second language is approved).
 - **Design:** keys are `area.name` (e.g. `door.prompt.open`). A missing key returns `[key]` and logs an error once per key, never an empty string. `Format` uses `string.Format` with the table text. Tests that assert English text use `Loc.Get`, not literals, except where the wording is the thing under test.
 - **AC:** every key used in code exists in the default table (EditMode test); missing key reported explicitly; `SetTable` changes displayed text (EditMode test); a guard test fails if migrated areas reintroduce literal player-facing strings; all existing tests still pass.
