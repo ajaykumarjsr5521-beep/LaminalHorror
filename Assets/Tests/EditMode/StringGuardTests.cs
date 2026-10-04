@@ -12,7 +12,7 @@ namespace NocturneAnnex.Tests.EditMode
     /// </summary>
     public class StringGuardTests
     {
-        static readonly string[] GuardedAreas = { "Interaction", "Puzzle", "Save", "Inventory" };
+        static readonly string[] GuardedAreas = { "Interaction", "Puzzle", "Save", "Inventory", "Settings" };
 
         static string ScriptsRoot => Path.Combine(Application.dataPath, "_Project", "Scripts");
 
