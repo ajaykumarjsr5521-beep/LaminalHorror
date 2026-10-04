@@ -13,7 +13,9 @@ namespace NocturneAnnex.Tests.PlayMode
             public string Key = "";
             public bool Accepts = true;
             public string Added;
+            public string Consumed;
             public bool HasKey(string keyId) => keyId == Key;
+            public bool ConsumeKey(string keyId) { Consumed = keyId; return keyId == Key; }
             public bool TryAdd(string itemId) { if (Accepts) Added = itemId; return Accepts; }
         }
 
@@ -77,6 +79,16 @@ namespace NocturneAnnex.Tests.PlayMode
             d.Interact(i);
             Assert.IsFalse(d.IsLocked);
             Assert.IsTrue(d.IsOpen);
+        }
+
+        [Test]
+        public void LockedDoor_Unlocking_ConsumesTheKey()
+        {
+            var d = SpawnDoor("brass_key");
+            var i = SpawnInteractor(out var inv);
+            inv.Key = "brass_key";
+            d.Interact(i);
+            Assert.AreEqual("brass_key", inv.Consumed);
         }
 
         [Test]
