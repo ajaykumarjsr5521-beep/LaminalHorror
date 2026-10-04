@@ -27,7 +27,8 @@ namespace NocturneAnnex.Editor
         public const string ScenePath = "Assets/_Project/Scenes/Level_B1.unity";
         const string MatDir = "Assets/_Project/Materials";
 
-        const float WallH = 3f, WallT = 0.3f, DoorW = 1.2f, DoorH = 2.2f;
+        const float OpenAngle = 100f;
+        const float WallH = 3f, WallT = 0.3f, DoorW = 1.5f, DoorH = 2.2f;
         static Material _wall, _floor, _prop, _paper;
 
         [MenuItem("Build/Create Level B1 Scene")]
@@ -71,6 +72,16 @@ namespace NocturneAnnex.Editor
             level.FinalLock = finalLock;
             level.SaveGame = save;
             level.Player = player.transform;
+            level.Gates = new[]
+            {
+                // once the player is inside the Records Office its door stays open to them and the used stamp stays gone
+                new ProgressGate
+                {
+                    CheckpointId = "records",
+                    Unlock = new[] { doors.records },
+                    Hide = new[] { props.transform.Find("BrassStamp").gameObject },
+                },
+            };
 
             LevelHudBuilder.Build(interactor, inventory, finalLock, level);
 
@@ -130,11 +141,11 @@ namespace NocturneAnnex.Editor
         {
             return new DoorSet
             {
-                a = MakeDoor(parent, "Door_BreakToHall", new Vector3(0f, 0f, 10f), alongX: true, key: ""),
-                stacks = MakeDoor(parent, "Door_HallToStacks", new Vector3(-6f, 0f, 18f), alongX: false, key: ""),
-                records = MakeDoor(parent, "Door_HallToRecords", new Vector3(6f, 0f, 18f), alongX: false, key: LevelItems.StampId),
+                a = MakeDoor(parent, "Door_BreakToHall", new Vector3(0f, 0f, 10f), alongX: true, key: "", openAngle: -OpenAngle),
+                stacks = MakeDoor(parent, "Door_HallToStacks", new Vector3(-6f, 0f, 18f), alongX: false, key: "", openAngle: -OpenAngle),
+                records = MakeDoor(parent, "Door_HallToRecords", new Vector3(6f, 0f, 18f), alongX: false, key: LevelItems.StampId, openAngle: OpenAngle),
                 // locked with a key that does not exist; only the solved keypad unlocks it
-                codeDoor = MakeDoor(parent, "Door_HallToDock", new Vector3(0f, 0f, 26f), alongX: true, key: "__code_lock__"),
+                codeDoor = MakeDoor(parent, "Door_HallToDock", new Vector3(0f, 0f, 26f), alongX: true, key: "__code_lock__", openAngle: -OpenAngle),
             };
         }
 
@@ -299,7 +310,8 @@ namespace NocturneAnnex.Editor
         }
 
         /// <summary>A hinged door filling a doorway. The hinge is a child so the Door can rotate it without losing the base orientation.</summary>
-        static Door MakeDoor(Transform parent, string name, Vector3 doorwayCentre, bool alongX, string key)
+        /// <remarks>The sign of openAngle picks the swing side: every door is set to swing away from the side the player approaches from.</remarks>
+        static Door MakeDoor(Transform parent, string name, Vector3 doorwayCentre, bool alongX, string key, float openAngle)
         {
             var root = new GameObject(name).transform;
             root.SetParent(parent, false);
@@ -320,6 +332,7 @@ namespace NocturneAnnex.Editor
             var door = root.gameObject.AddComponent<Door>();
             door.Hinge = hinge;
             door.RequiredKeyId = key;
+            door.OpenAngle = openAngle;
             return door;
         }
 
