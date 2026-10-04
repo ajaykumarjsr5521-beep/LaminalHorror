@@ -27,10 +27,13 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **AC:** same gameplay reachable on KB+M, gamepad, touch; touch controls sit inside safe area on notched devices; multi-touch (move + look + button) works simultaneously; no input stuck after app pause/resume; controls size adjustable 80–130%.
 - **Test:** EditMode (router mapping), manual on ≥2 phones (different aspect ratios), Windows.
 
-## F-03 Interaction system — TODO
-- **Scope:** `IInteractable`, focus detection, prompt UI, doors (open/locked), pickups, readable notes, hold-to-interact optional. **Excl.:** physics grab/throw.
-- **AC:** prompt appears within 2.0 m and ≤ ~1 frame after focus; locked door gives feedback and states needed item generically (no spoilers); interaction can't trigger through walls; works with all three input schemes.
-- **Test:** PlayMode raycast/occlusion tests; manual.
+## F-03 Interaction system — IN_PROGRESS
+- **Scope:** `IInteractable`, focus detection (`Interactor`), prompt view, `Door` (open/close/locked), `Pickup`, `Note`. **Excl.:** physics grab/throw, hold-to-interact (post-MVP).
+- **Deps:** F-01, F-02. Inventory (F-04) plugs in through `IKeyProvider` / `IItemReceiver`, so F-03 does not depend on it.
+- **Design:** `Interactor` raycasts from the camera (2.0 m). The first hit decides focus, so walls block interaction. A locked door asks the interactor's `IKeyProvider` for its key id. Doors show a generic "Locked" message with no spoilers. Pickups and notes raise C# events.
+- **AC:** prompt appears within 2.0 m and about one frame after focus; locked door gives feedback and does not name the item; cannot interact through walls; works with all three input schemes.
+- **Test:** PlayMode raycast/occlusion/door/pickup tests; manual on devices.
+- **Sub-steps (one commit each):** 1 spec, 2 interfaces + Interactor, 3 Door/Pickup/Note, 4 prompt view, 5 docs.
 
 ## F-04 Inventory & journal — TODO
 - **Scope:** item definitions (SO), pick up/use, notes list (re-readable), cross-reference collectibles, simple UI. **Excl.:** crafting, weight, stacking.
