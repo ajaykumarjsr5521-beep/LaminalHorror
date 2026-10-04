@@ -63,7 +63,8 @@ namespace NocturneAnnex.Tests.EditMode
                 s => s.LookSensitivity = 2f, s => s.InvertY = true, s => s.MasterVolume = 0.1f,
                 s => s.MusicVolume = 0.1f, s => s.SfxVolume = 0.1f, s => s.CaptionsEnabled = false,
                 s => s.TouchControlsScale = 1.2f, s => s.StoryMode = true, s => s.QualityLevel = 1,
-                s => s.TextSize = 2, s => s.ReduceFlicker = true, s => s.ReduceMotion = true
+                s => s.TextSize = 2, s => s.ReduceFlicker = true, s => s.ReduceMotion = true,
+                s => s.ContentNoticeAccepted = true
             })
             {
                 var b = a.Clone();
@@ -103,6 +104,15 @@ namespace NocturneAnnex.Tests.EditMode
             Assert.AreEqual(2, target.TextSize);
             Assert.IsTrue(target.ReduceFlicker);
             Assert.IsTrue(target.ReduceMotion);
+        }
+
+        [Test]
+        public void ContentNotice_DefaultsToNotAccepted_AndIsCopied()
+        {
+            Assert.IsFalse(SettingsData.CreateDefault().ContentNoticeAccepted);
+            var target = SettingsData.CreateDefault();
+            target.CopyFrom(new SettingsData { ContentNoticeAccepted = true });
+            Assert.IsTrue(target.ContentNoticeAccepted);
         }
 
         [TestCase(-5, 3, -1)]
