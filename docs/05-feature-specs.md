@@ -35,7 +35,7 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Test:** PlayMode raycast/occlusion/door/pickup tests; manual on devices.
 - **Sub-steps (one commit each):** 1 spec, 2 interfaces + Interactor, 3 Door/Pickup/Note, 4 prompt view, 5 docs.
 
-## F-04 Inventory & journal — IN_PROGRESS
+## F-04 Inventory & journal — IN_PROGRESS (logic complete: 31 EditMode + 32 PlayMode tests pass. Pending: inventory/journal UI (F-07), save persistence (F-06), real item assets, on-device check)
 - **Scope:** `ItemDefinition` (ScriptableObject) and `ItemDatabase`; `InventoryModel` (plain C#, capacity, add/remove/has); `PlayerInventory` component implementing `IKeyProvider` + `IItemReceiver`; used keys are consumed; collected notes form a re-readable journal list. **Excl.:** crafting, weight, stacking; inventory/journal UI (moved to F-07 menus); save/load (hooks `Snapshot`/`Restore` here, persistence in F-06).
 - **Deps:** F-03 (interfaces).
 - **Design:** state is a list of item ids, so save is a string list. Unknown item ids are refused and logged, never silently added. `Door` consumes its key on unlock via `IKeyProvider.ConsumeKey`.
