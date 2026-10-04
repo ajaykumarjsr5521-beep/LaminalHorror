@@ -114,6 +114,28 @@ namespace NocturneAnnex.Tests.EditMode
             Assert.IsNull(_store.Quarantine());
 
         [Test]
+        public void ClearForNewGame_DeletesHealthySave()
+        {
+            _store.Write(Sample("lamp_1"));
+            Assert.IsTrue(_store.ClearForNewGame());
+            Assert.IsFalse(_store.Exists);
+        }
+
+        [Test]
+        public void ClearForNewGame_MovesCorruptSaveAside_NeverDeletesIt()
+        {
+            Directory.CreateDirectory(_dir);
+            File.WriteAllText(_file, "garbage");
+            Assert.IsTrue(_store.ClearForNewGame());
+            Assert.IsFalse(File.Exists(_file));
+            Assert.AreEqual(1, Directory.GetFiles(_dir, "save.json.corrupt-*").Length);
+        }
+
+        [Test]
+        public void ClearForNewGame_WithNoSave_Succeeds() =>
+            Assert.IsTrue(_store.ClearForNewGame());
+
+        [Test]
         public void Delete_RemovesSave_AndIsSafeWhenAbsent()
         {
             _store.Write(Sample("lamp_1"));
