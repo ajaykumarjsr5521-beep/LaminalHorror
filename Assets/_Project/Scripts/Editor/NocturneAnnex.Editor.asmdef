@@ -9,6 +9,7 @@
     "NocturneAnnex.Inventory",
     "NocturneAnnex.Puzzle",
     "NocturneAnnex.Level",
+    "NocturneAnnex.Horror",
     "NocturneAnnex.Save",
     "NocturneAnnex.Settings",
     "NocturneAnnex.UI",
