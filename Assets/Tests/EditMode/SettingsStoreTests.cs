@@ -137,6 +137,29 @@ namespace NocturneAnnex.Tests.EditMode
             Assert.AreEqual(content, File.ReadAllText(_file));
         }
 
+        [TestCase("garbage")]
+        [TestCase("{\"Version\":99}")]
+        public void WritingOverAnUnreadableFile_MovesItAside_NeverDeletesIt(string content)
+        {
+            Directory.CreateDirectory(_dir);
+            File.WriteAllText(_file, content);
+            Assert.IsTrue(_store.Write(new SettingsData { LookSensitivity = 2f }).Ok);
+
+            var kept = Directory.GetFiles(_dir, "settings.json.corrupt-*");
+            Assert.AreEqual(1, kept.Length);
+            Assert.AreEqual(content, File.ReadAllText(kept[0]));
+            Assert.AreEqual(SettingsLoadStatus.Ok, _store.Load().Status);
+            Assert.AreEqual(2f, _store.Load().Data.LookSensitivity, 1e-4f);
+        }
+
+        [Test]
+        public void WritingOverAHealthyFile_DoesNotCreateCorruptCopies()
+        {
+            _store.Write(new SettingsData { LookSensitivity = 2f });
+            _store.Write(new SettingsData { LookSensitivity = 2.5f });
+            Assert.AreEqual(0, Directory.GetFiles(_dir, "settings.json.corrupt-*").Length);
+        }
+
         [Test]
         public void FailedWrite_ReturnsMessage_AndKeepsExistingFile()
         {
