@@ -10,7 +10,10 @@ Level "Night Shift: Floor B1", first-person controller, dual input, interaction,
 **Conditional:** The Indexer (D4).
 
 ## Out of scope
-Multi-level, online, accounts, analytics, ads, IAP, localisation beyond English, controller rumble, VR, procedural generation.
+Multi-level, online, accounts, analytics, ads, IAP, localisation beyond English, controller rumble, VR, procedural generation, **iOS (see Future scope)**.
+
+## Future scope (post-MVP, not scheduled)
+- **iOS release.** Decided 2026-10-04: build for Windows and Android now. iOS needs, before it can be planned: a Mac with Xcode for builds, an Apple Developer Program account (paid yearly), App Store review and privacy requirements checked against current Apple documentation, and an iOS device test plan. Code written now should stay platform-neutral (input layer, safe-area fitter and settings already are) so the later port is mostly build, store and device work.
 
 ## Phases
 | Phase | Goal | Exit criteria | Est. (solo) |

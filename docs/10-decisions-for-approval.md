@@ -14,5 +14,8 @@
 | D10 | Initialise git repo with `.gitignore` for Unity? | Yes |
 | D11 | Remote repo URL | Provided: github.com/ajaykumarjsr5521-beep/LaminalHorror |
 
+| D12 | iOS support | Decided 2026-10-04: future scope. Build for Windows and Android now. Revisit after the Android release, with a Mac, Apple Developer account and a plan. |
+| D13 | Android test device | Owner has no Android phone yet. Options: buy or borrow one (recommended), or use the Android emulator for smoke tests only. |
+
 ## Next step after your approval
 Begin **F-00** (needs D1), then F-01/F-02, each preceded by a short "what will be built / how verified" note.
