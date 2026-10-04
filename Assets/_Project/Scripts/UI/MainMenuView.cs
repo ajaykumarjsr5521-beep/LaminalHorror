@@ -51,6 +51,7 @@ namespace NocturneAnnex.UI
                 _wired = true;
             }
             _model.Refresh();
+            Confirm.gameObject.SetActive(false);   // a stale dialog must not survive re-binding
             Render();
         }
 
@@ -58,6 +59,7 @@ namespace NocturneAnnex.UI
         {
             if (_model == null) return;
             _model.Refresh();
+            Confirm.gameObject.SetActive(false);
             Render();
         }
 
