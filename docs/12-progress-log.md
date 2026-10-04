@@ -5,11 +5,12 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 ## Current status
 - Phase: **P1 Controller** (P0 setup done except the Android build check)
 - Engine: Unity 6000.6.4f1 (Windows + WebGL modules installed; **Android module missing**)
-- Active branch: `feature/F-02b-touch-hud`
+- Active branch: `feature/F-09a-tension-director`
 
 ## Changelog
 | Date | Branch / merge | Change | Verified |
 |---|---|---|---|
+| 2026-10-04 | `feature/F-09a-tension-director` | New Horror assembly: `TensionDirector`, `TensionSettings`, `EventPicker` (pure logic) | EditMode 247/247. No events, triggers or scene wiring yet (F-09b) |
 | 2026-10-04 | `feature/F-02b-touch-hud` | Touch controls on the level HUD: move stick, look area, Use/Run/Crouch buttons, visibility rule, size scaler | EditMode 227/227, PlayMode 128/128 with simulated pointers; screenshots at 3 sizes. Not tested with real fingers |
 | 2026-10-04 | `feature/F-13-level-b1` | F-13 greybox level "Night Shift: Floor B1": 5 areas, Three Dates puzzle, checkpoints, resume, HUD, end card; Boot and menu flow; URP assets assigned; generated items and scene; screenshot tool | EditMode 223/223, PlayMode 122/122, Windows x64 build OK. Not on a phone; no touch controls in the level yet; no Android build |
 | 2026-10-04 | `chore/commit-practice` (merged) | One-commit-per-file rule, message format, commit-msg hook, commit template, PR/README/doc updates | Hook tested by hand (3 accept, 3 reject) |

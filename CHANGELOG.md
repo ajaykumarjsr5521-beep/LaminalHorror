@@ -21,6 +21,7 @@ Verification status per change lives in [docs/12-progress-log.md](docs/12-progre
 - Settings files with an unreadable or newer-version content are now moved aside before the next write instead of being overwritten.
 - Level "Night Shift: Floor B1" greybox (generated scene): break room, reading hall, stacks, records office, loading dock, Three Dates puzzle readable from in-world props, 4 checkpoints with save and resume, exit gating, HUD with pause and journal buttons, end card (F-13).
 - Touch controls on the level HUD: move stick, look area, Use / Run / Crouch buttons, shown on mobile or touchscreens, scaled by the control size setting (F-02b).
+- Tension director and event picker logic: tension rises in unsafe zones, events spaced by a minimum gap, nothing changes while paused or in a modal screen, story mode paces gentler (F-09a, logic only; no scare events yet).
 - Boot scene opens the main menu; menu Continue and New Game start the level (F-13).
 - Commit-message hook and template; one-commit-per-file practice (X-01).
 - Localisation-ready strings: `Loc` table, all current player-facing text migrated, guard tests (X-04).
