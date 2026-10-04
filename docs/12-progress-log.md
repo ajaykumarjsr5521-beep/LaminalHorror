@@ -24,7 +24,7 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 | 2026-10-03 | initial commit | Discovery report + specs 00-10 | n/a |
 
 ## In progress
-- F-07 split: F-07a settings DONE; F-07b pause logic done (Android Back device check open); F-07c and F-07d done Windows-side (menus, keypad, note reader, journal; screenshot-reviewed). Remaining for F-07: phone check, placing pause overlay/journal button/keypad in the real level. Next: F-08 captions and accessibility.
+- F-07 split: F-07a settings DONE; F-07b pause logic done (Android Back device check open); F-07 done Windows-side. F-08 (captions, text size, contrast, reduce flicker/motion state and math, content notice) done and tested on Windows. Remaining: phone checks, placing HUD pieces in the real level. Next: P4 horror systems (F-09 tension director, F-10 lighting/audio), which must use the F-08 safeguards, or build the real level first (owner choice).
 
 ## In progress (older notes)
 - Nothing active. F-06 remaining: level checkpoint triggers, menu wiring (F-07), Android force-stop test.
