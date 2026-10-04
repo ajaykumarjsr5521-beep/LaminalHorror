@@ -1,6 +1,6 @@
 {
   "name": "NocturneAnnex.Tests.PlayMode",
-  "references": ["NocturneAnnex.Core", "NocturneAnnex.Controls", "NocturneAnnex.Player", "NocturneAnnex.Interaction", "NocturneAnnex.Inventory", "NocturneAnnex.Puzzle", "NocturneAnnex.Save", "NocturneAnnex.Settings", "NocturneAnnex.Flow", "NocturneAnnex.Level", "NocturneAnnex.UI", "Unity.TextMeshPro", "UnityEngine.UI"],
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Controls", "NocturneAnnex.Player", "NocturneAnnex.Interaction", "NocturneAnnex.Inventory", "NocturneAnnex.Puzzle", "NocturneAnnex.Save", "NocturneAnnex.Settings", "NocturneAnnex.Flow", "NocturneAnnex.Level", "NocturneAnnex.Horror", "NocturneAnnex.UI", "Unity.TextMeshPro", "UnityEngine.UI"],
   "optionalUnityReferences": ["TestAssemblies"],
   "defineConstraints": ["UNITY_INCLUDE_TESTS"]
 }
