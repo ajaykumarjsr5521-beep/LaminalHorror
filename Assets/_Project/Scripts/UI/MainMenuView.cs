@@ -25,6 +25,14 @@ namespace NocturneAnnex.UI
 
         MainMenuModel _model;
         bool _wired;
+        string _extraWarning;
+
+        /// <summary>Additional warning shown with the save warning, e.g. an unreadable settings file.</summary>
+        public string ExtraWarning
+        {
+            get => _extraWarning;
+            set { _extraWarning = value; if (_model != null) Render(); }
+        }
 
         /// <summary>Quit is offered on Windows only; mobile platforms leave the app through the OS.</summary>
         static bool QuitAvailable =>
@@ -78,7 +86,10 @@ namespace NocturneAnnex.UI
         {
             ContinueButton.interactable = _model.ContinueAvailable;
             QuitButton.gameObject.SetActive(QuitAvailable);
-            SetMessage(WarningText, _model.Warning);
+            var warning = string.IsNullOrEmpty(_extraWarning) ? _model.Warning
+                : string.IsNullOrEmpty(_model.Warning) ? _extraWarning
+                : _model.Warning + "\n" + _extraWarning;
+            SetMessage(WarningText, warning);
             SetMessage(ErrorText, _model.Error);
         }
 
