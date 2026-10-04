@@ -88,3 +88,30 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 ## F-12 Release engineering — TODO (after G3)
 - **Scope:** signed AAB, versioning, Play listing assets, Data safety form, content rating, closed test track, Windows zip/installer. See doc 08.
 - **AC:** all doc-08 checklist items checked with evidence; AAB installs via Play internal testing on ≥2 devices; no crashes in 30-min soak.
+
+---
+
+# Process and cross-cutting items (X)
+Details and rationale in [13-engineering-process.md](13-engineering-process.md).
+
+## X-01 Engineering process baseline — IN_PROGRESS
+- **Scope:** README, CHANGELOG, `.editorconfig`, PR/issue templates, CODEOWNERS, ADRs 0001-0004, Definition of Ready/Done, testing policy, bug severity scale.
+- **AC:** files exist and are referenced from README; next feature PR uses the template.
+- **Open (owner):** enable branch protection and required PR on `main`. DONE when the first PR is reviewed under the new rules.
+
+## X-02 Continuous integration — BLOCKED (owner action)
+- **Scope:** run EditMode + PlayMode on every PR (`.github/workflows/tests.yml`, written, gated).
+- **Needs:** repo variable `UNITY_CI_ENABLED=true`; secrets `UNITY_LICENSE`, `UNITY_EMAIL`, `UNITY_PASSWORD`; confirm a GameCI image supports Unity 6000.6.4f1.
+- **AC:** a PR with a failing test shows a red check; a green run is linked in the PR.
+
+## X-03 Git LFS for binary assets — TODO (before first art/audio commit)
+- **Scope:** `.gitattributes` LFS rules for textures, models, audio, video; document install in README.
+- **Needs:** owner installs Git LFS and runs `git lfs install`; confirm the GitHub LFS quota is sufficient.
+- **AC:** a test binary commit appears as an LFS pointer; clone and checkout works on a clean machine.
+
+## X-04 Localisation-ready strings — TODO
+- **Scope:** string table with keys for all player-facing text; migrate existing strings (`Door.LockedMessage`, `Pickup` prompts and refusals, `Note`/`CodeLock` prompts, save error messages); English only at MVP.
+- **Design:** `Loc.Get(key)` over a ScriptableObject table; tests assert keys exist and no key is missing a value; code returns keys or looked-up text, never hardcoded literals in UI paths.
+- **AC:** no player-facing literal strings in gameplay code (grep-based EditMode test with allowlist); switching the table changes displayed text.
+- **Dependencies:** best done before F-07 UI, so new UI uses keys from the start.
+

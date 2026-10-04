@@ -1,5 +1,7 @@
 # 11 — Git Workflow
 
+> Superseded in part by [13-engineering-process.md](13-engineering-process.md): merges to `main` go through reviewed pull requests with passing tests. Local merges were used up to F-06 (no PR tooling or branch protection existed yet).
+
 - `main`: always in a reviewed, consistent state. No direct feature commits.
 - Branches: `feature/F-XX-short-name`, `docs/...`, `chore/...`, `fix/...`. One feature per branch.
 - Commits: small, imperative, Conventional-Commit style (`feat:`, `fix:`, `docs:`, `test:`, `chore:`). Spec/AC update goes in the first commit of the feature branch.
