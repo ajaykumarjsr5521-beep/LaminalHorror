@@ -10,3 +10,4 @@
 *.wav binary
 *.ogg binary
 *.fbx binary
+*.sh text eol=lf
