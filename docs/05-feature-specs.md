@@ -27,7 +27,7 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **AC:** same gameplay reachable on KB+M, gamepad, touch; touch controls sit inside safe area on notched devices; multi-touch (move + look + button) works simultaneously; no input stuck after app pause/resume; controls size adjustable 80–130%.
 - **Test:** EditMode (router mapping), manual on ≥2 phones (different aspect ratios), Windows.
 
-## F-03 Interaction system — IN_PROGRESS
+## F-03 Interaction system — IN_PROGRESS (code complete; 22 PlayMode tests pass. Not yet tested: input-scheme parity on devices, prompt placement in a real HUD canvas, inventory integration (F-04))
 - **Scope:** `IInteractable`, focus detection (`Interactor`), prompt view, `Door` (open/close/locked), `Pickup`, `Note`. **Excl.:** physics grab/throw, hold-to-interact (post-MVP).
 - **Deps:** F-01, F-02. Inventory (F-04) plugs in through `IKeyProvider` / `IItemReceiver`, so F-03 does not depend on it.
 - **Design:** `Interactor` raycasts from the camera (2.0 m). The first hit decides focus, so walls block interaction. A locked door asks the interactor's `IKeyProvider` for its key id. Doors show a generic "Locked" message with no spoilers. Pickups and notes raise C# events.
