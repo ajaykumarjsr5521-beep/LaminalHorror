@@ -1,0 +1,6 @@
+{
+  "name": "NocturneAnnex.Settings",
+  "rootNamespace": "NocturneAnnex.Settings",
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Controls"],
+  "autoReferenced": true
+}
