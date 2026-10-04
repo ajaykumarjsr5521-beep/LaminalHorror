@@ -1,0 +1,6 @@
+{
+  "name": "NocturneAnnex.Interaction",
+  "rootNamespace": "NocturneAnnex.Interaction",
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Controls", "Unity.TextMeshPro", "UnityEngine.UI"],
+  "autoReferenced": true
+}
