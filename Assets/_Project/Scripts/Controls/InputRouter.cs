@@ -36,6 +36,9 @@ namespace NocturneAnnex.Controls
             Current = s;
         }
 
+        /// <summary>Drops all held and pending input, e.g. when pausing so no key or touch stays "stuck".</summary>
+        public void ResetInput() => _aggregator.ResetAll();
+
         void OnApplicationPause(bool paused) { if (paused) _aggregator.ResetAll(); }
         void OnApplicationFocus(bool focus) { if (!focus) _aggregator.ResetAll(); }
 

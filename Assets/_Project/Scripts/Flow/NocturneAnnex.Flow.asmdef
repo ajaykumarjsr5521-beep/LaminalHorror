@@ -1,0 +1,6 @@
+{
+  "name": "NocturneAnnex.Flow",
+  "rootNamespace": "NocturneAnnex.Flow",
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Controls"],
+  "autoReferenced": true
+}
