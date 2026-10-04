@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Boot.unity
     guid: 6abab938cad80bd489cafee2cc1fc66b
+  - enabled: 1
+    path: Assets/_Project/Scenes/Greybox.unity
+    guid: 472d5edd53eac8c41bfafbb0606dce53
   m_configObjects: {}

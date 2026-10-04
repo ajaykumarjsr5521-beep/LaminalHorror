@@ -1,5 +1,5 @@
 {
   "name": "NocturneAnnex.Editor",
-  "references": ["NocturneAnnex.Core"],
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Controls", "NocturneAnnex.Player"],
   "includePlatforms": ["Editor"]
 }
