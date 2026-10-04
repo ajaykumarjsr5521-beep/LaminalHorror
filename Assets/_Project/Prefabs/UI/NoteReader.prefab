@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 2091787641750544217}
   - component: {fileID: 7625043285757616030}
   - component: {fileID: 4433732765284840843}
+  - component: {fileID: 7710873787525147727}
   - component: {fileID: 7072744133562122020}
   m_Layer: 0
   m_Name: Label
@@ -319,6 +320,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7710873787525147727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2380596946766268733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 506497b378e900b409104a8a77f1a886, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NocturneAnnex.UI::NocturneAnnex.UI.ScalableText
 --- !u!114 &7072744133562122020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,6 +356,7 @@ GameObject:
   - component: {fileID: 755819259613752057}
   - component: {fileID: 7494858894314618529}
   - component: {fileID: 1656959907621940869}
+  - component: {fileID: 9072144323727396209}
   - component: {fileID: 4368124247788730712}
   m_Layer: 0
   m_Name: Title
@@ -470,6 +484,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &9072144323727396209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4381130696013379506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 506497b378e900b409104a8a77f1a886, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NocturneAnnex.UI::NocturneAnnex.UI.ScalableText
 --- !u!114 &4368124247788730712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,6 +529,7 @@ GameObject:
   - component: {fileID: 4594294629329712454}
   - component: {fileID: 2543001018953776557}
   - component: {fileID: 2335824745610936820}
+  - component: {fileID: 4589980882109306556}
   - component: {fileID: 929736428502879551}
   m_Layer: 0
   m_Name: Body
@@ -630,6 +657,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4589980882109306556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5730931835351558609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 506497b378e900b409104a8a77f1a886, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NocturneAnnex.UI::NocturneAnnex.UI.ScalableText
 --- !u!114 &929736428502879551
 MonoBehaviour:
   m_ObjectHideFlags: 0
