@@ -71,6 +71,17 @@ namespace NocturneAnnex.Tests.EditMode
             }
         }
 
+        [Test]
+        public void CopyFrom_CopiesValuesInPlace()
+        {
+            var target = SettingsData.CreateDefault();
+            var source = new SettingsData { LookSensitivity = 2.5f, InvertY = true, QualityLevel = 2, StoryMode = true };
+            target.CopyFrom(source);
+            Assert.IsTrue(target.ValueEquals(source));
+            source.LookSensitivity = 1f;
+            Assert.AreEqual(2.5f, target.LookSensitivity);
+        }
+
         [TestCase(-5, 3, -1)]
         [TestCase(3, 3, -1)]
         [TestCase(2, 3, 2)]
