@@ -22,6 +22,35 @@ namespace NocturneAnnex.Core
             { "codelock.prompt.use", "Use keypad" },
             { "codelock.prompt.unlocked", "Unlocked" },
 
+            // Menus
+            { "menu.continue", "Continue" },
+            { "menu.new_game", "New Game" },
+            { "menu.settings", "Settings" },
+            { "menu.credits", "Credits" },
+            { "menu.quit", "Quit" },
+            { "menu.resume", "Resume" },
+            { "menu.restart", "Restart" },
+            { "menu.main_menu", "Main Menu" },
+            { "menu.back", "Back" },
+            { "menu.save", "Save" },
+            { "menu.reset_defaults", "Reset to defaults" },
+            { "confirm.new_game.title", "Start a new game?" },
+            { "confirm.new_game.body", "Your current save will be replaced." },
+            { "confirm.yes", "Yes, start over" },
+            { "confirm.no", "Cancel" },
+            { "menu.new_game_failed", "A new game could not be started: the old save could not be cleared." },
+
+            // Settings screen labels
+            { "settings.look_sensitivity", "Look sensitivity" },
+            { "settings.invert_y", "Invert vertical look" },
+            { "settings.master_volume", "Master volume" },
+            { "settings.music_volume", "Music volume" },
+            { "settings.sfx_volume", "Effects volume" },
+            { "settings.captions", "Captions" },
+            { "settings.touch_scale", "Touch control size" },
+            { "settings.story_mode", "Story mode (gentler pacing)" },
+            { "settings.quality", "Graphics quality" },
+
             // Settings (shown to the player)
             { "settings.corrupt", "Your settings file could not be read, so default settings are being used. The old file was kept." },
             { "settings.newer", "Your settings were saved by a newer version of the game, so default settings are being used." },

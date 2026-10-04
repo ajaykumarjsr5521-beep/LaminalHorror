@@ -1,0 +1,14 @@
+{
+  "name": "NocturneAnnex.UI",
+  "rootNamespace": "NocturneAnnex.UI",
+  "references": [
+    "NocturneAnnex.Core",
+    "NocturneAnnex.Controls",
+    "NocturneAnnex.Flow",
+    "NocturneAnnex.Save",
+    "NocturneAnnex.Settings",
+    "Unity.TextMeshPro",
+    "UnityEngine.UI"
+  ],
+  "autoReferenced": true
+}
