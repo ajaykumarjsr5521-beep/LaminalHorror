@@ -5,11 +5,12 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 ## Current status
 - Phase: **P1 Controller** (P0 setup done except the Android build check)
 - Engine: Unity 6000.6.4f1 (Windows + WebGL modules installed; **Android module missing**)
-- Active branch: `main` (X-04 merged); next: F-07 Menus, pause, settings
+- Active branch: `feature/F-07-menus-settings`
 
 ## Changelog
 | Date | Branch / merge | Change | Verified |
 |---|---|---|---|
+| 2026-10-04 | `chore/commit-practice` (merged) | One-commit-per-file rule, message format, commit-msg hook, commit template, PR/README/doc updates | Hook tested by hand (3 accept, 3 reject) |
 | 2026-10-04 | `feature/X-04-localisation` (merged) | `Loc` string table, default English, Door/Pickup/Note/CodeLock/Save messages migrated, guard tests, ADR 0005 | 83/83 EditMode, 47/47 PlayMode pass |
 | 2026-10-04 | `chore/engineering-process` (merged) | README, CHANGELOG, .editorconfig, PR/issue templates, CODEOWNERS, ADRs 0001-0004, gated CI workflow, doc 13 process + gap analysis, X-01..X-04 specs | Docs/config only; CI not yet run |
 | 2026-10-04 | `feature/F-06-save` (merged) | SaveData v1, SaveSerializer (Ok/Missing/Corrupt/UnsupportedVersion), SaveStore (atomic write, quarantine), SaveGame (checkpoint, inventory, puzzles); inventory restore drops unknown ids; CodeLock.PuzzleId | 64/64 EditMode, 47/47 PlayMode pass. No device test |
