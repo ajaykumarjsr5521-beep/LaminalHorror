@@ -29,7 +29,7 @@ namespace NocturneAnnex.Editor
 
         const float OpenAngle = 100f;
         const float WallH = 3f, WallT = 0.3f, DoorW = 1.5f, DoorH = 2.2f;
-        static Material _wall, _floor, _prop, _paper;
+        static Material _wall, _floor, _prop, _paper, _brass;
 
         [MenuItem("Build/Create Level B1 Scene")]
         public static void Create()
@@ -43,7 +43,7 @@ namespace NocturneAnnex.Editor
             var db = AssetDatabase.LoadAssetAtPath<ItemDatabase>(LevelItems.DatabasePath);
             MakeMaterials();
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
-            RenderSettings.ambientLight = new Color(0.06f, 0.06f, 0.08f);
+            RenderSettings.ambientLight = new Color(0.16f, 0.16f, 0.19f);
 
             var geo = new GameObject("Geometry").transform;
             BuildShell(geo);
@@ -173,7 +173,7 @@ namespace NocturneAnnex.Editor
             MakeNote(p, db, LevelItems.LedgerId, new Vector3(-8f, 0.94f, 22.6f));
             Calendar(p, "LedgerSpine", new Vector3(-8f, 1.5f, 23.84f), Quaternion.identity, "LEDGER SEALED", LevelItems.Days[1], Color.black);
             Box(p, "FarShelf", new Vector3(-17.4f, 0.6f, 18f), new Vector3(0.8f, 1.2f, 2.4f), _prop);
-            var stamp = Box(p, "BrassStamp", new Vector3(-17.3f, 1.3f, 18f), new Vector3(0.25f, 0.2f, 0.25f), _paper);
+            var stamp = Box(p, "BrassStamp", new Vector3(-17.3f, 1.3f, 18f), new Vector3(0.25f, 0.2f, 0.25f), _brass);
             var pickup = stamp.AddComponent<Pickup>();
             pickup.ItemId = LevelItems.StampId;
             pickup.DisplayName = LevelItems.Get(db, LevelItems.StampId).DisplayName;
@@ -181,6 +181,7 @@ namespace NocturneAnnex.Editor
             // Records Office: desk and the keypad
             Box(p, "Desk_Records", new Vector3(12f, 0.4f, 17f), new Vector3(2.4f, 0.8f, 1f), _prop);
             var pad = Box(p, "Keypad", new Vector3(12f, 1.3f, 23.8f), new Vector3(0.7f, 1f, 0.2f), _paper);
+            AddBoardText(pad.transform, "Keypad", "RECORDS OFFICE", "- - - -", Color.black, bigPercent: 130);
             finalLock = pad.AddComponent<CodeLock>();
             finalLock.Code = LevelItems.Code;
             finalLock.PuzzleId = "three_dates";
@@ -202,15 +203,22 @@ namespace NocturneAnnex.Editor
         {
             var board = Box(parent, name, pos, new Vector3(0.9f, 1.1f, 0.05f), _paper);
             board.transform.rotation = rot;
+            AddBoardText(board.transform, name, caption, day, dayColor);
+        }
+
+        /// <summary>World-space text on the -Z face of a board, sized so a two-digit number fits.</summary>
+        static void AddBoardText(Transform board, string name, string caption, string big, Color color, int bigPercent = 250)
+        {
             var textGo = new GameObject(name + "_Text", typeof(RectTransform));
-            textGo.transform.SetParent(board.transform, false);
-            textGo.transform.localPosition = new Vector3(0f, 0f, -0.6f);   // in front of the board face, local units of the board
-            textGo.transform.localScale = new Vector3(1f / 0.9f, 1f / 1.1f, 1f / 0.05f);   // cancel the board's non-uniform scale
+            textGo.transform.SetParent(board, false);
+            textGo.transform.localPosition = new Vector3(0f, 0f, -0.6f);   // in front of the board face, in the board's local units
+            var s = board.localScale;
+            textGo.transform.localScale = new Vector3(1f / s.x, 1f / s.y, 1f / s.z);   // cancel the board's non-uniform scale
             var tmp = textGo.AddComponent<TextMeshPro>();
             tmp.alignment = TextAlignmentOptions.Center;
-            tmp.color = dayColor;
+            tmp.color = color;
             tmp.fontSize = 2f;
-            tmp.text = $"<size=40%>{caption}</size>\n<size=250%><b>{day}</b></size>";
+            tmp.text = $"<size=40%>{caption}</size>\n<size={bigPercent}%><b>{big}</b></size>";
             ((RectTransform)textGo.transform).sizeDelta = new Vector2(0.85f, 1f);
         }
 
@@ -252,7 +260,7 @@ namespace NocturneAnnex.Editor
                 l.transform.SetParent(parent, false);
                 l.type = LightType.Point;
                 l.color = new Color(1f, 0.85f, 0.65f);
-                l.intensity = 2f;
+                l.intensity = 7f;
                 l.range = Mathf.Max(x1 - x0, z1 - z0) * 0.9f;
                 l.transform.position = new Vector3((x0 + x1) / 2f, 2.6f, (z0 + z1) / 2f);
             }
@@ -354,6 +362,7 @@ namespace NocturneAnnex.Editor
             _floor = Mat("Floor", new Color(0.18f, 0.17f, 0.16f));
             _prop = Mat("Prop", new Color(0.30f, 0.22f, 0.15f));
             _paper = Mat("Paper", new Color(0.85f, 0.82f, 0.7f));
+            _brass = Mat("Brass", new Color(0.72f, 0.55f, 0.2f));
         }
 
         static Material Mat(string name, Color color)
