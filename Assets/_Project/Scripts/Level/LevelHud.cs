@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using NocturneAnnex.Core;
 using NocturneAnnex.Flow;
+using NocturneAnnex.Inventory;
 using NocturneAnnex.UI;
 
 namespace NocturneAnnex.Level
@@ -19,6 +20,8 @@ namespace NocturneAnnex.Level
         public PauseController Pause;
         public PauseMenuView PauseMenu;
         public JournalView Journal;
+        public KeypadView Keypad;
+        public PlayerInventory Inventory;
         public Button JournalButton;
         public Button PauseButton;
         public GameObject EndCard;
@@ -32,6 +35,9 @@ namespace NocturneAnnex.Level
 
         void Start()
         {
+            // Runtime wiring: event subscriptions and models are not saved with the scene.
+            Journal.Bind(Inventory);
+            if (Level != null && Level.FinalLock != null) Keypad.Watch(Level.FinalLock);
             PauseMenu.Bind(Pause);
             PauseMenu.RestartRequested += RestartFromCheckpoint;
             PauseMenu.MainMenuRequested += GoToMenu;
