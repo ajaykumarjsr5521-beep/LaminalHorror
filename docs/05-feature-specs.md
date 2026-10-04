@@ -96,7 +96,8 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 
 ## X-01 Engineering process baseline — IN_PROGRESS
 - **Scope:** README, CHANGELOG, `.editorconfig`, PR/issue templates, CODEOWNERS, ADRs 0001-0004, Definition of Ready/Done, testing policy, bug severity scale.
-- **AC:** files exist and are referenced from README; next feature PR uses the template.
+- **Also covers:** per-file atomic commits, commit message format and the `commit-msg` hook (`.githooks/`, `.gitmessage`).
+- **AC:** files exist and are referenced from README; next feature PR uses the template; hook rejects a malformed subject (tested by hand); the history of the next feature shows one commit per file.
 - **Open (owner):** enable branch protection and required PR on `main`. DONE when the first PR is reviewed under the new rules.
 
 ## X-02 Continuous integration — BLOCKED (owner action)
