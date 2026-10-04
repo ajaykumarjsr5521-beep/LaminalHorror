@@ -22,6 +22,11 @@ namespace NocturneAnnex.Core
             { "codelock.prompt.use", "Use keypad" },
             { "codelock.prompt.unlocked", "Unlocked" },
 
+            // Settings (shown to the player)
+            { "settings.corrupt", "Your settings file could not be read, so default settings are being used. The old file was kept." },
+            { "settings.newer", "Your settings were saved by a newer version of the game, so default settings are being used." },
+            { "settings.write_failed", "Settings could not be saved: {0}" },
+
             // Save / load (shown to the player)
             { "save.missing", "No save found." },
             { "save.empty", "The save file is empty." },
