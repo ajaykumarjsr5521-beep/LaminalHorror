@@ -1,11 +1,12 @@
 using UnityEngine;
 using NocturneAnnex.Controls;
+using NocturneAnnex.Core;
 
 namespace NocturneAnnex.Settings
 {
     /// <summary>
-    /// Pushes settings into the live systems. Music and SFX volumes, captions and Story mode have no consumer yet
-    /// (audio F-10, captions F-08, tension director F-09); they are stored and read by those features later.
+    /// Pushes settings into the live systems. Music and SFX volumes and Story mode have no consumer yet
+    /// (audio F-10, tension director F-09); they are stored and read by those features later.
     /// </summary>
     public static class SettingsApplier
     {
@@ -20,6 +21,7 @@ namespace NocturneAnnex.Settings
             }
 
             ControlsLayout.Scale = settings.TouchControlsScale;
+            Accessibility.Set(settings.CaptionsEnabled, settings.TextSize, settings.ReduceFlicker, settings.ReduceMotion);
             AudioListener.volume = settings.MasterVolume;
 
             if (settings.QualityLevel >= 0)
