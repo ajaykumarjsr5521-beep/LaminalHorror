@@ -12,6 +12,7 @@ Verification status per change lives in [docs/12-progress-log.md](docs/12-progre
 - Inventory and journal logic with key consumption (F-04).
 - "Three Dates" code lock logic with no-lockout retries (F-05).
 - Versioned single-slot save with atomic writes and corrupt-file handling (F-06).
+- Commit-message hook and template; one-commit-per-file practice (X-01).
 - Localisation-ready strings: `Loc` table, all current player-facing text migrated, guard tests (X-04).
 - Engineering process docs, `.editorconfig`, README, ADRs, PR/issue templates (X-01).
 
