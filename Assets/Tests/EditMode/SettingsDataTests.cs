@@ -42,6 +42,35 @@ namespace NocturneAnnex.Tests.EditMode
             Assert.AreEqual(1f, s.MasterVolume);
         }
 
+        [Test]
+        public void Clone_IsIndependentCopy_WithEqualValues()
+        {
+            var a = new SettingsData { LookSensitivity = 2f, StoryMode = true };
+            var b = a.Clone();
+            Assert.IsTrue(a.ValueEquals(b));
+            b.LookSensitivity = 1.5f;
+            Assert.AreEqual(2f, a.LookSensitivity);
+            Assert.IsFalse(a.ValueEquals(b));
+        }
+
+        [Test]
+        public void ValueEquals_DetectsEachFieldAndHandlesNull()
+        {
+            var a = SettingsData.CreateDefault();
+            Assert.IsFalse(a.ValueEquals(null));
+            foreach (var change in new System.Action<SettingsData>[]
+            {
+                s => s.LookSensitivity = 2f, s => s.InvertY = true, s => s.MasterVolume = 0.1f,
+                s => s.MusicVolume = 0.1f, s => s.SfxVolume = 0.1f, s => s.CaptionsEnabled = false,
+                s => s.TouchControlsScale = 1.2f, s => s.StoryMode = true, s => s.QualityLevel = 1
+            })
+            {
+                var b = a.Clone();
+                change(b);
+                Assert.IsFalse(a.ValueEquals(b));
+            }
+        }
+
         [TestCase(-5, 3, -1)]
         [TestCase(3, 3, -1)]
         [TestCase(2, 3, 2)]
