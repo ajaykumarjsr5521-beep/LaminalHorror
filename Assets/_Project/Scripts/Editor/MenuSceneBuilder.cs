@@ -37,7 +37,8 @@ namespace NocturneAnnex.Editor
 
             var main = BuildMainPanel(safe.transform, out var menuView, out var confirm);
             var settingsPanel = BuildSettingsPanel(safe.transform, out var settingsView);
-            var credits = BuildCreditsPanel(safe.transform, out var creditsBack);
+            var credits = BuildCreditsPanel(safe.transform, out var creditsBack, out var creditsNotice);
+            var notice = BuildNoticePanel(safe.transform, out var noticeOk);
 
             bootstrap.MainMenu = menuView;
             bootstrap.Settings = settingsView;
@@ -45,6 +46,9 @@ namespace NocturneAnnex.Editor
             bootstrap.SettingsPanel = settingsPanel;
             bootstrap.CreditsPanel = credits;
             bootstrap.CreditsBackButton = creditsBack;
+            bootstrap.CreditsNoticeButton = creditsNotice;
+            bootstrap.NoticePanel = notice;
+            bootstrap.NoticeOkButton = noticeOk;
 
             EditorSceneManager.SaveScene(scene, ScenePath);
             var scenes = EditorBuildSettings.scenes.Where(s => s.path != ScenePath).ToList();
@@ -263,7 +267,7 @@ namespace NocturneAnnex.Editor
             return go.GetComponent<TMP_Dropdown>();
         }
 
-        static GameObject BuildCreditsPanel(Transform parent, out Button back)
+        static GameObject BuildCreditsPanel(Transform parent, out Button back, out Button notice)
         {
             var panel = UiKit.Child("CreditsPanel", parent);
             UiKit.Stretch(panel);
@@ -271,7 +275,20 @@ namespace NocturneAnnex.Editor
             UiKit.Label(panel.transform, "credits.title", 64, TextAlignmentOptions.Center, UiKit.Text, "Title");
             var body = UiKit.Label(panel.transform, "credits.body", 38, TextAlignmentOptions.Center, UiKit.TextDim, "Body");
             UiKit.Size(body.gameObject, 1200, -1);
+            notice = UiKit.MakeButton(panel.transform, "menu.content_notice", 520);
             back = UiKit.MakeButton(panel.transform, "menu.back", 520);
+            return panel;
+        }
+
+        static GameObject BuildNoticePanel(Transform parent, out Button ok)
+        {
+            var panel = UiKit.Child("NoticePanel", parent);
+            UiKit.Stretch(panel);
+            UiKit.Column(panel, 28f, TextAnchor.MiddleCenter, 24);
+            UiKit.Label(panel.transform, "notice.title", 64, TextAlignmentOptions.Center, UiKit.Text, "Title");
+            var body = UiKit.Label(panel.transform, "notice.body", 40, TextAlignmentOptions.Center, UiKit.Text, "Body");
+            UiKit.Size(body.gameObject, 1300, -1);
+            ok = UiKit.MakeButton(panel.transform, "notice.ok", 620);
             return panel;
         }
 
