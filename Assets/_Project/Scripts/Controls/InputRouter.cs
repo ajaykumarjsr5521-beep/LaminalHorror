@@ -33,6 +33,7 @@ namespace NocturneAnnex.Controls
             var s = _aggregator.Poll();
             s.Look *= LookSensitivity;
             if (InvertY) s.Look.y = -s.Look.y;
+            if (NocturneAnnex.Core.ModalGate.IsOpen) s = InputMath.BlockForModal(s);
             Current = s;
         }
 
