@@ -84,11 +84,8 @@ namespace NocturneAnnex.Save
         /// </summary>
         public bool StartNewGame()
         {
-            var status = Store.Load().Status;
             LastCheckpointId = "";
-            if (status == LoadStatus.Corrupt || status == LoadStatus.UnsupportedVersion)
-                return Store.Quarantine() != null;
-            return Store.Delete();
+            return Store.ClearForNewGame();
         }
     }
 }
