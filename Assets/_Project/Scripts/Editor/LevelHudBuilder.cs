@@ -66,11 +66,9 @@ namespace NocturneAnnex.Editor
             // screens from prefabs
             var captions = Instantiate(GameplayUiBuilder.CaptionsPath, safe.transform);
             var noteReader = Instantiate(GameplayUiBuilder.NoteReaderPath, safe.transform);
-            var journal = Instantiate(GameplayUiBuilder.JournalPath, safe.transform).GetComponent<JournalView>();
-            var keypad = Instantiate(GameplayUiBuilder.KeypadPath, safe.transform).GetComponent<KeypadView>();
-            journal.Bind(inventory);
-            keypad.Watch(finalLock);
-            hud.Journal = journal;
+            hud.Journal = Instantiate(GameplayUiBuilder.JournalPath, safe.transform).GetComponent<JournalView>();
+            hud.Keypad = Instantiate(GameplayUiBuilder.KeypadPath, safe.transform).GetComponent<KeypadView>();
+            hud.Inventory = inventory;   // LevelHud binds the journal and keypad at runtime
 
             // pause menu (the Settings button needs a settings screen here, which is not built yet: hidden, see F-13 open items)
             var pauseObj = new GameObject("PauseController");
