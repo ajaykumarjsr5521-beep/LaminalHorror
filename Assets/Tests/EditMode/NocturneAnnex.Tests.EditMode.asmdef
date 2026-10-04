@@ -1,6 +1,6 @@
 {
   "name": "NocturneAnnex.Tests.EditMode",
-  "references": ["NocturneAnnex.Core", "UnityEngine.TestRunner", "UnityEditor.TestRunner"],
+  "references": ["NocturneAnnex.Core"],
   "includePlatforms": ["Editor"],
   "optionalUnityReferences": ["TestAssemblies"],
   "defineConstraints": ["UNITY_INCLUDE_TESTS"]

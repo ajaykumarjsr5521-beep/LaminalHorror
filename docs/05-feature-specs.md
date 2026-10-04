@@ -6,7 +6,7 @@ All features currently **TODO**; F-00 is **BLOCKED** on Unity availability (D1).
 Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies · Technical design · Acceptance criteria (AC) · Test plan · Status · Notes.
 
 ---
-## F-00 Project setup & build pipeline — IN_PROGRESS (UNVERIFIED: scaffold written, not opened in Unity; needs D1)
+## F-00 Project setup & build pipeline — IN_PROGRESS (Unity 6000.6.4f1: compiles, 2/2 EditMode tests pass; Windows build and Android build still unverified. Android module not installed)
 - **Purpose:** Reproducible project and builds.
 - **Scope:** Unity project, URP assets (Mobile/PC), Input System, asmdefs, test assemblies, `.gitignore`, git init, editor build menu (Android APK/AAB, Windows). **Excl.:** signing keys, CI service.
 - **Deps:** Unity install + Android/Windows modules.
