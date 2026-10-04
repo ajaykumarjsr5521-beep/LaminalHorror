@@ -190,6 +190,9 @@ namespace NocturneAnnex.Editor
             view.TouchScale = SliderRow(content.transform, "settings.touch_scale");
             view.StoryMode = ToggleRow(content.transform, "settings.story_mode");
             view.Quality = DropdownRow(content.transform, "settings.quality");
+            view.TextSize = DropdownRow(content.transform, "settings.text_size");
+            view.ReduceFlicker = ToggleRow(content.transform, "settings.reduce_flicker");
+            view.ReduceMotion = ToggleRow(content.transform, "settings.reduce_motion");
             view.ErrorText = error;
 
             var footer = UiKit.Child("Footer", panel.transform);
