@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using NocturneAnnex.Core;
 using NocturneAnnex.Flow;
 using NocturneAnnex.Save;
 using NocturneAnnex.Settings;
@@ -66,6 +67,61 @@ namespace NocturneAnnex.Editor
             Debug.Log("Screenshots written to " + Path.GetFullPath(OutDir));
         }
 
+        [MenuItem("Build/Capture Gameplay UI Screenshots")]
+        public static void CaptureGameplayUi()
+        {
+            Directory.CreateDirectory(OutDir);
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            var cam = new GameObject("Main Camera").AddComponent<Camera>();
+            cam.clearFlags = CameraClearFlags.SolidColor;
+            cam.backgroundColor = UiKit.Bg;
+            var canvas = MenuSceneBuilder.CreateCanvasWithEventSystem();
+
+            var keypad = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(GameplayUiBuilder.KeypadPath), canvas.transform);
+            var kv = keypad.GetComponent<KeypadView>();
+            kv.Display.text = KeypadFormatter.Format("07", 4);
+            kv.Message.text = Loc.Get("keypad.incorrect");
+            kv.Message.gameObject.SetActive(true);
+            Render("keypad", canvas, cam);
+            UnityEngine.Object.DestroyImmediate(keypad);
+
+            var reader = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(GameplayUiBuilder.NoteReaderPath), canvas.transform);
+            var rv = reader.GetComponent<NoteReaderView>();
+            rv.Title.text = "Night Shift Memo";
+            rv.Body.text = "Filing runs on the dates, not the names. The first entry is the day the lights failed; the second, the day the ledger was sealed; the third is circled in red on the calendar by the loading dock. Do not trust the clock in the Records Office.";
+            rv.Panel.SetActive(true);
+            Render("note_reader", canvas, cam);
+            UnityEngine.Object.DestroyImmediate(reader);
+
+            var journal = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(GameplayUiBuilder.JournalPath), canvas.transform);
+            var jv = journal.GetComponent<JournalView>();
+            jv.Panel.SetActive(true);
+            jv.EntryTemplate.gameObject.SetActive(false);
+            foreach (var title in new[] { "Night Shift Memo", "Ledger Page 12", "Answering Machine Tape" })
+            {
+                var row = UnityEngine.Object.Instantiate(jv.EntryTemplate, jv.ListRoot);
+                row.gameObject.SetActive(true);
+                row.GetComponentInChildren<TMPro.TMP_Text>().text = title;
+            }
+            jv.ReaderTitle.text = "Ledger Page 12";
+            jv.ReaderBody.text = "Entry struck through twice. Someone has written the date again underneath, smaller, as if to hide it.";
+            jv.HintText.gameObject.SetActive(false);
+            jv.EmptyText.gameObject.SetActive(false);
+            Render("journal", canvas, cam);
+
+            // empty state
+            var toRemove = new System.Collections.Generic.List<GameObject>();   // collect first: destroying while iterating skips children
+            foreach (Transform child in jv.ListRoot)
+                if (child.gameObject != jv.EntryTemplate.gameObject) toRemove.Add(child.gameObject);
+            foreach (var go in toRemove) UnityEngine.Object.DestroyImmediate(go);
+            jv.ReaderTitle.text = string.Empty;
+            jv.ReaderBody.text = string.Empty;
+            jv.EmptyText.text = Loc.Get("journal.empty");
+            jv.EmptyText.gameObject.SetActive(true);
+            Render("journal_empty", canvas, cam);
+            Debug.Log("Gameplay UI screenshots written to " + Path.GetFullPath(OutDir));
+        }
+
         enum SaveKind { None, Valid, Corrupt }
 
         static string Setup(MenuBootstrap bootstrap, string dir, SaveKind save, bool badSettings = false)
@@ -88,7 +144,12 @@ namespace NocturneAnnex.Editor
             bootstrap.Initialize();
             bootstrap.MainPanel.SetActive(true);
             arrange(bootstrap);
+            Render(name, canvas, cam);
+        }
 
+        /// <summary>Renders the canvas to PNGs at every resolution. The canvas keeps its original settings afterwards.</summary>
+        static void Render(string name, Canvas canvas, Camera cam)
+        {
             var scaler = canvas.GetComponent<CanvasScaler>();
             var oldMode = scaler.uiScaleMode;
             var oldScale = scaler.scaleFactor;
