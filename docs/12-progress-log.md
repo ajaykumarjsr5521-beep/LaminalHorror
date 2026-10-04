@@ -5,23 +5,24 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 ## Current status
 - Phase: **P1 Controller** (P0 setup done except the Android build check)
 - Engine: Unity 6000.6.4f1 (Windows + WebGL modules installed; **Android module missing**)
-- Active branch: `main` (F-02 merged; next: F-01)
+- Active branch: `main` (F-01 merged; next: Android check, then P2)
 
 ## Changelog
 | Date | Branch / merge | Change | Verified |
 |---|---|---|---|
+| 2026-10-04 | `feature/F-01-controller` (merged) | PlayerMotor (walk 3 / sprint 5 / crouch 1.5 m/s, headroom check), PlayerLook (pitch clamp), StaminaModel, Greybox test scene (editor-generated), PlayMode test assembly | 18/18 EditMode, 8/8 PlayMode pass; Windows build OK. No device or profiler testing |
 | 2026-10-04 | `feature/F-02-input` (merged) | PlayerInputState, InputRouter, device (KB+M, gamepad) and touch sources, aggregator, VirtualStick, TouchLookArea, TouchButton, SafeAreaFitter, 80-130% scale clamp | Compiles; 13/13 EditMode tests pass. Not tested on hardware or touch |
 | 2026-10-04 | `feature/F-00-project-setup` (merged) | Unity scaffold, asmdefs, packages (Input System 1.20.0, URP 17.6.0), Boot scene, batchmode build script | Compiles; 2/2 EditMode tests; Windows x64 build OK. Android NOT verified |
 | 2026-10-03 | `docs/workflow-and-phases` (merged) | Git workflow, phase-to-branch map | n/a |
 | 2026-10-03 | initial commit | Discovery report + specs 00-10 | n/a |
 
 ## In progress
-- Nothing active. F-02 remaining: touch UI prefab + on-device ACs (needs Android module + a phone).
+- Nothing active. F-01 remaining: GC profiling, 30/60 fps clipping check, device feel test, footsteps (F-10).
 
 ## Upcoming (in order)
 1. (done) F-02 input code merged; device ACs pending
 2. Android module install: F-00 Android APK check, then F-00 DONE
-3. F-01 First-person controller (move, look, sprint, crouch)
+3. (done) F-01 controller code merged; device and profiler ACs pending
 4. Greybox level (6 spaces) for movement/pacing tests
 5. P2: F-03 Interaction, F-04 Inventory, F-05 Puzzle
 6. P3: F-06 Save, F-07 Menus, F-08 Accessibility

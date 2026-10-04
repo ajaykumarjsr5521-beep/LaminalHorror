@@ -1,0 +1,6 @@
+{
+  "name": "NocturneAnnex.Player",
+  "rootNamespace": "NocturneAnnex.Player",
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Controls"],
+  "autoReferenced": true
+}

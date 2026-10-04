@@ -14,7 +14,7 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **AC:** (1) Project opens with 0 console errors. (2) EditMode test run passes (sample test). (3) Empty scene builds Android APK and Windows exe. (4) Keystore config read from outside repo.
 - **Test:** run Unity batchmode build + tests; install APK on device/emulator.
 
-## F-01 First-person controller — TODO
+## F-01 First-person controller — IN_PROGRESS (motor, look, stamina, crouch headroom: 18 EditMode + 8 PlayMode tests pass. Not yet done: footsteps/head-bob (moved to F-10), GC-alloc profiling, 30/60 fps clipping comparison, on-device feel test)
 - **Purpose/Experience:** Responsive, comfortable movement; weight without sluggishness.
 - **Scope:** move, look, sprint (stamina), crouch (with headroom check), head-bob (optional/off-able), footstep events by surface. **Excl.:** jump, lean, climbing.
 - **Deps:** F-00, F-02 input.
