@@ -15,6 +15,7 @@ Feature/spec: F-__
 
 ## Definition of Done (docs/13-engineering-process.md)
 - [ ] Acceptance criteria tested; open ones listed below
+- [ ] Commits are atomic: one per file, Conventional Commit subject, body has why / what / verification
 - [ ] New logic has tests; regression test for bug fixes
 - [ ] Docs updated (doc 05 status, doc 12 progress log, CHANGELOG)
 - [ ] ADR added if a significant decision was made
