@@ -67,7 +67,7 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Overall AC:** time scale 0 and audio ducked in pause; resume restores state exactly; restart/menu loops 20 times without errors or leaks (memory delta under 5 MB); Android Back button handled; settings persist; every screen usable at 5-inch phone and 1080p PC; all text via `Loc`.
 - **Test:** EditMode (settings logic), PlayMode (pause, loop test), manual device checks.
 
-### F-07a Settings model and persistence
+### F-07a Settings model and persistence — DONE (EditMode 107/107, PlayMode 51/51; logic only, no device-dependent criteria. UI is F-07c)
 - **Scope:** `SettingsData` (versioned, defaults, clamping), `SettingsStore` (settings.json, atomic write, separate from the save file), `SettingsApplier` (pushes values into `InputRouter`, `ControlsLayout`, audio volume, quality level). **Excl.:** UI.
 - **Design:** values are clamped on load and set (sensitivity 0.2-3, volumes 0-1, touch scale 0.8-1.3, quality within available levels). A missing file gives defaults silently (first run). A corrupt or newer-version file gives defaults and an explicit warning result for the UI to show; the bad file is kept, as with saves. The atomic temp-file write is shared with `SaveStore` through one `AtomicFile` helper (no duplicated I/O code).
 - **AC:** round trip keeps all values; out-of-range values clamp; corrupt file returns defaults plus warning and the file stays on disk; failed write returns an error message; `SaveStore` tests still pass after the shared-helper refactor; applier changes `InputRouter.LookSensitivity`, `InvertY` and `ControlsLayout.Scale`.
