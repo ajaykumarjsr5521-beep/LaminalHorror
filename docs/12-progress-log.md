@@ -5,11 +5,12 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 ## Current status
 - Phase: **P1 Controller** (P0 setup done except the Android build check)
 - Engine: Unity 6000.6.4f1 (Windows + WebGL modules installed; **Android module missing**)
-- Active branch: `feature/F-07-menus-settings`
+- Active branch: `feature/F-13-level-b1`
 
 ## Changelog
 | Date | Branch / merge | Change | Verified |
 |---|---|---|---|
+| 2026-10-04 | `feature/F-13-level-b1` | F-13 greybox level "Night Shift: Floor B1": 5 areas, Three Dates puzzle, checkpoints, resume, HUD, end card; Boot and menu flow; URP assets assigned; generated items and scene; screenshot tool | EditMode 223/223, PlayMode 122/122, Windows x64 build OK. Not on a phone; no touch controls in the level yet; no Android build |
 | 2026-10-04 | `chore/commit-practice` (merged) | One-commit-per-file rule, message format, commit-msg hook, commit template, PR/README/doc updates | Hook tested by hand (3 accept, 3 reject) |
 | 2026-10-04 | `feature/X-04-localisation` (merged) | `Loc` string table, default English, Door/Pickup/Note/CodeLock/Save messages migrated, guard tests, ADR 0005 | 83/83 EditMode, 47/47 PlayMode pass |
 | 2026-10-04 | `chore/engineering-process` (merged) | README, CHANGELOG, .editorconfig, PR/issue templates, CODEOWNERS, ADRs 0001-0004, gated CI workflow, doc 13 process + gap analysis, X-01..X-04 specs | Docs/config only; CI not yet run |
@@ -24,6 +25,7 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 | 2026-10-03 | initial commit | Discovery report + specs 00-10 | n/a |
 
 ## In progress
+- F-13 greybox level playable on Windows-side checks (see doc 05 results). Next: merge after review; then touch controls on the level HUD (F-02 prefab), then F-09 tension director and F-10 art/audio.
 - F-07 split: F-07a settings DONE; F-07b pause logic done (Android Back device check open); F-07 done Windows-side. F-08 (captions, text size, contrast, reduce flicker/motion state and math, content notice) done and tested on Windows. Remaining: phone checks, placing HUD pieces in the real level. Next: P4 horror systems (F-09 tension director, F-10 lighting/audio), which must use the F-08 safeguards, or build the real level first (owner choice).
 
 ## In progress (older notes)
