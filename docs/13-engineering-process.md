@@ -35,7 +35,11 @@ A feature with logic done but device/UI criteria open stays **IN_PROGRESS** with
 ## 3. Branching, commits, review
 - `main` is protected: PR required, at least 1 approval, CI green, no force-push, linear or merge-commit history.
 - Branch names: `feature/F-XX-name`, `fix/short-name`, `docs/...`, `chore/...`.
-- Commits: Conventional Commits (`feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `perf`), one logical change each, body states test results. Spec/AC commit first on a feature branch.
+- Commits: Conventional Commits (`feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `perf`, `ci`, `build`). Spec/AC commit first on a feature branch.
+- **One commit per file (atomic commits).** Each changed file gets its own commit with its own descriptive message. A script file and its Unity `.meta` file count as one file, and a file may share a commit only with a tightly coupled counterpart that would not compile or pass without it (e.g. an interface change and its single implementer). Tests go in a separate commit from the code they cover, so the history shows test intent. No catch-all "update stuff" commits.
+- **Message format** (template in `.gitmessage`): subject `type(scope): imperative summary`, at most 72 characters; blank line; body explaining *why*, *what changed in this file*, and *verification* (real results or "not run: reason"); references to the F-/X- id or issue. Enforced by `.githooks/commit-msg`. Enable once per clone: `git config core.hooksPath .githooks` and `git config commit.template .gitmessage`.
+- **No change-log comments inside source files.** History lives in git; code comments explain *why* only. Per-file change history is read with `git log --follow <file>`.
+- Messages must be truthful: never claim tests passed that were not run.
 - PRs use `.github/PULL_REQUEST_TEMPLATE.md`. Authors do not approve their own PRs.
 - **Owner action required:** enable branch protection and "require pull request" on `main` in GitHub settings; until then the process is followed by convention only. Changes up to this point were merged locally with merge commits, without independent review.
 
