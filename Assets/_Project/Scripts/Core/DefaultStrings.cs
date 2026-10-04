@@ -45,6 +45,17 @@ namespace NocturneAnnex.Core
             { "credits.body", "Nocturne Annex (working title)\n\nFont: Liberation Sans, SIL Open Font License 1.1.\n\nMade with Unity." },
             { "settings.quality_auto", "Automatic" },
 
+            // Keypad, note reader, journal
+            { "menu.close", "Close" },
+            { "keypad.title", "Enter code" },
+            { "keypad.enter", "Enter" },
+            { "keypad.clear", "Clear" },
+            { "keypad.incorrect", "That doesn't seem right." },
+            { "keypad.solved", "Unlocked." },
+            { "journal.title", "Journal" },
+            { "journal.empty", "You haven't found any notes yet." },
+            { "journal.select_hint", "Select a note to read it." },
+
             // Settings screen labels
             { "settings.look_sensitivity", "Look sensitivity" },
             { "settings.invert_y", "Invert vertical look" },
