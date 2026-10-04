@@ -35,6 +35,7 @@ namespace NocturneAnnex.Editor
         public static void Create()
         {
             LevelItems.CreateAll();
+            LevelEvents.CreateAssets();
             // Prefab regeneration rewrites every file id, so only build them when missing.
             if (!File.Exists(GameplayUiBuilder.KeypadPath)) GameplayUiBuilder.CreateAll();
 
@@ -83,6 +84,7 @@ namespace NocturneAnnex.Editor
                 },
             };
 
+            LevelEvents.Build(level, save, player.GetComponentInChildren<Camera>());
             LevelHudBuilder.Build(interactor, inventory, finalLock, level);
 
             EditorSceneManager.SaveScene(scene, ScenePath);
