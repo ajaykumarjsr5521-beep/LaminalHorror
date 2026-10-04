@@ -43,7 +43,7 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Test:** EditMode unit tests (model, database), PlayMode (door+inventory integration).
 - **Sub-steps (one commit each):** 1 spec, 2 item definitions, 3 InventoryModel + tests, 4 PlayerInventory + tests, 5 key consumption in Door, 6 Note to journal, 7 docs.
 
-## F-05 Puzzle: "Three Dates" — IN_PROGRESS
+## F-05 Puzzle: "Three Dates" — IN_PROGRESS (logic complete: 43 EditMode + 39 PlayMode tests pass. Pending: keypad UI (F-07), notes/props content in level, persistence (F-06), 5-tester playtest)
 - **Scope (this feature):** `CodeLockModel` (digit entry, validation, no lockout), `CodeLock` interactable that unlocks a target `Door` and raises `Solved`, state snapshot/restore. **Excl.:** keypad UI (F-07), actual note/prop content and placement (level build), hint system, timers.
 - **Scope (level content, later):** 3 notes + 3 in-world date props give the digits of a 4-digit code that opens the Records Office exit. Clue redundancy: each note text also points to the location of its date prop.
 - **Deps:** F-03 (Door, Interactor), F-04 (notes in journal).
