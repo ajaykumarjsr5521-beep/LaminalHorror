@@ -73,7 +73,7 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **AC:** round trip keeps all values; out-of-range values clamp; corrupt file returns defaults plus warning and the file stays on disk; failed write returns an error message; `SaveStore` tests still pass after the shared-helper refactor; applier changes `InputRouter.LookSensitivity`, `InvertY` and `ControlsLayout.Scale`.
 - **Test:** EditMode (data, store), PlayMode (applier).
 
-### F-07b Pause controller
+### F-07b Pause controller — DONE for logic (PlayMode 62/62). Open: audio is paused, not ducked (decision: pause is simpler and silent menus suit horror; revisit with F-10); Android Back mapping needs a device check
 - **Scope:** `PauseController` (pause/resume, time scale, audio pause/duck, auto-pause on focus loss and app pause, Android Back key toggles pause). **Excl.:** UI view.
 - **AC:** pause sets `Time.timeScale` to 0 and restores the previous value on resume; double pause/resume are idempotent; focus loss pauses; resume after focus return does not auto-resume; restoring does not change input state beyond a reset.
 - **Test:** PlayMode.
