@@ -12,6 +12,9 @@ namespace NocturneAnnex.Interaction
     public interface IKeyProvider
     {
         bool HasKey(string keyId);
+
+        /// <summary>Removes a used key. Returns false if it was not held.</summary>
+        bool ConsumeKey(string keyId);
     }
 
     /// <summary>Implemented by the inventory (F-04) so pickups can be collected.</summary>

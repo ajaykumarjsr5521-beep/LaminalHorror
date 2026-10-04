@@ -36,6 +36,7 @@ namespace NocturneAnnex.Interaction
             {
                 bool hasKey = interactor != null && interactor.Keys != null && interactor.Keys.HasKey(RequiredKeyId);
                 if (!hasKey) { OnMessage.Invoke(LockedMessage); return; }
+                interactor.Keys.ConsumeKey(RequiredKeyId);
                 IsLocked = false;
             }
             IsOpen = !IsOpen;

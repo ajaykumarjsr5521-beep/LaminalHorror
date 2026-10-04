@@ -1,0 +1,6 @@
+{
+  "name": "NocturneAnnex.Inventory",
+  "rootNamespace": "NocturneAnnex.Inventory",
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Interaction"],
+  "autoReferenced": true
+}
