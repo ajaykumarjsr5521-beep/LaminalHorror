@@ -49,7 +49,7 @@ namespace NocturneAnnex.Core
             { "menu.close", "Close" },
             { "keypad.title", "Enter code" },
             { "keypad.enter", "Enter" },
-            { "keypad.clear", "Clear" },
+            { "keypad.clear", "Delete" },
             { "keypad.incorrect", "That doesn't seem right." },
             { "keypad.solved", "Unlocked." },
             { "journal.title", "Journal" },
