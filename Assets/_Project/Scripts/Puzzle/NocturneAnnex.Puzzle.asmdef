@@ -1,0 +1,6 @@
+{
+  "name": "NocturneAnnex.Puzzle",
+  "rootNamespace": "NocturneAnnex.Puzzle",
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Interaction"],
+  "autoReferenced": true
+}
