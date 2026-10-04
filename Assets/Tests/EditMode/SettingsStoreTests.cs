@@ -90,6 +90,16 @@ namespace NocturneAnnex.Tests.EditMode
         }
 
         [Test]
+        public void ContentNoticeFlag_RoundTrips_AndOlderFilesReadAsNotAccepted()
+        {
+            _store.Write(new SettingsData { ContentNoticeAccepted = true });
+            Assert.IsTrue(_store.Load().Data.ContentNoticeAccepted);
+
+            File.WriteAllText(_file, "{\"Version\":1}");
+            Assert.IsFalse(_store.Load().Data.ContentNoticeAccepted);
+        }
+
+        [Test]
         public void AccessibilityFields_RoundTrip()
         {
             _store.Write(new SettingsData { TextSize = 2, ReduceFlicker = true, ReduceMotion = true });
