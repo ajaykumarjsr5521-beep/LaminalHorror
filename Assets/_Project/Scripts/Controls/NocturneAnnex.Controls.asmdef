@@ -1,0 +1,6 @@
+{
+  "name": "NocturneAnnex.Controls",
+  "rootNamespace": "NocturneAnnex.Controls",
+  "references": ["NocturneAnnex.Core", "Unity.InputSystem", "UnityEngine.UI"],
+  "autoReferenced": true
+}

@@ -22,7 +22,7 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **AC:** walk 3.0 m/s, sprint 5.0 m/s, crouch 1.5 m/s (configurable); cannot stand under low ceiling; no clipping through walls at 30 fps and 60 fps in a test corridor; no per-frame GC allocs (Profiler); camera look has no drift when input is zero.
 - **Test:** PlayMode tests for speeds/crouch-ceiling; manual device feel test.
 
-## F-02 Input (Windows + mobile) — TODO
+## F-02 Input (Windows + mobile) — IN_PROGRESS (code + 11 EditMode tests pass; KB+M, gamepad, touch, safe-area and multi-touch ACs NOT yet tested on devices; touch UI prefab not built)
 - **Scope:** Input actions, `InputRouter`, mobile floating stick + look-drag + buttons, gamepad support (bonus), scalable/relocatable touch controls, safe-area handling. **Excl.:** full key rebinding UI (post-MVP).
 - **AC:** same gameplay reachable on KB+M, gamepad, touch; touch controls sit inside safe area on notched devices; multi-touch (move + look + button) works simultaneously; no input stuck after app pause/resume; controls size adjustable 80–130%.
 - **Test:** EditMode (router mapping), manual on ≥2 phones (different aspect ratios), Windows.
