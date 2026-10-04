@@ -40,6 +40,11 @@ namespace NocturneAnnex.Core
             { "confirm.no", "Cancel" },
             { "menu.new_game_failed", "A new game could not be started: the old save could not be cleared." },
 
+            { "menu.title", "Nocturne Annex" },
+            { "credits.title", "Credits" },
+            { "credits.body", "Nocturne Annex (working title)\n\nFont: Liberation Sans, SIL Open Font License 1.1.\n\nMade with Unity." },
+            { "settings.quality_auto", "Automatic" },
+
             // Settings screen labels
             { "settings.look_sensitivity", "Look sensitivity" },
             { "settings.invert_y", "Invert vertical look" },
