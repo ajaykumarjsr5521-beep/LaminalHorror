@@ -80,6 +80,11 @@ namespace NocturneAnnex.Editor
                     b => b.MainMenu.NewGameButton.onClick.Invoke());
                 Capture("settings", Setup(bootstrap, temp, save: SaveKind.None), bootstrap, canvas, cam, b => b.ShowSettings());
                 Capture("credits", Setup(bootstrap, temp, save: SaveKind.None), bootstrap, canvas, cam, b => b.ShowCredits());
+                Capture("notice", Setup(bootstrap, temp, save: SaveKind.None), bootstrap, canvas, cam, b =>
+                {
+                    b.MainPanel.SetActive(false);
+                    b.NoticePanel.SetActive(true);
+                });
                 Capture("pause", Setup(bootstrap, temp, save: SaveKind.None), bootstrap, canvas, cam, b =>
                 {
                     b.ShowMain();
