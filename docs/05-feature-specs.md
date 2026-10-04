@@ -27,6 +27,21 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **AC:** same gameplay reachable on KB+M, gamepad, touch; touch controls sit inside safe area on notched devices; multi-touch (move + look + button) works simultaneously; no input stuck after app pause/resume; controls size adjustable 80–130%.
 - **Test:** EditMode (router mapping), manual on ≥2 phones (different aspect ratios), Windows.
 
+### F-02b Touch controls on the level HUD — IN_PROGRESS (spec written, nothing built yet)
+- **Why:** F-13 left the level unplayable on a phone: the F-02 widgets exist but no HUD uses them.
+- **Scope:** a generated `TouchControls` group in the level HUD: floating move stick (left half), look drag area (right half), Interact, Sprint (held) and Crouch (held) buttons; shown only on touch devices; scaled by the Touch control size setting (80-130%); inside the safe area; behind the pause/journal buttons and all modal screens. **Excl.:** relocating or rebinding controls, gyro look, haptics.
+- **Deps:** F-02 widgets, F-07 settings (`ControlsLayout.Scale`), F-13 level HUD.
+- **Design:** `TouchControlsVisibility.ShouldShow(isMobile, hasTouchscreen)` is a plain rule that is unit-tested; `TouchControlsScaler` applies `ControlsLayout.Scale` to the button group; the builder sets the widgets' private fields through `SerializedObject` so no widget code changes.
+- **AC:**
+  1. Move, look and a button can be held at the same time with different pointer ids and all three register (PlayMode, simulated pointer events).
+  2. Interact button triggers the focused interactable; Sprint and Crouch are held while pressed and released on lift or disable.
+  3. Controls are hidden on Windows without a touchscreen and shown on mobile or when a touchscreen exists.
+  4. Changing the control size setting rescales the buttons within 80-130%.
+  5. Controls do not overlap the Pause and Journal buttons or the safe-area edge in screenshots at 2400x1080, 1920x1080 and 1280x720.
+  6. A modal screen (keypad, note, journal, pause) blocks touches to the controls underneath.
+- **Test:** EditMode (visibility rule), PlayMode on the real level scene, screenshots. Not testable here: real finger feel, accidental touches, thumb reach (needs a phone, D13).
+- **Sub-steps (one commit per file):** spec, `TouchControlsVisibility` + tests, `TouchControlsScaler`, builder, level builder wiring, scene, PlayMode tests, screenshots, docs.
+
 ## F-03 Interaction system — IN_PROGRESS (code complete; 22 PlayMode tests pass. Not yet tested: input-scheme parity on devices, prompt placement in a real HUD canvas, inventory integration (F-04))
 - **Scope:** `IInteractable`, focus detection (`Interactor`), prompt view, `Door` (open/close/locked), `Pickup`, `Note`. **Excl.:** physics grab/throw, hold-to-interact (post-MVP).
 - **Deps:** F-01, F-02. Inventory (F-04) plugs in through `IKeyProvider` / `IItemReceiver`, so F-03 does not depend on it.
