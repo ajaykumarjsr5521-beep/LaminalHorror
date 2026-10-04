@@ -66,6 +66,12 @@ namespace NocturneAnnex.Core
             { "settings.touch_scale", "Touch control size" },
             { "settings.story_mode", "Story mode (gentler pacing)" },
             { "settings.quality", "Graphics quality" },
+            { "settings.text_size", "Text size" },
+            { "settings.text_size.small", "Small" },
+            { "settings.text_size.medium", "Medium" },
+            { "settings.text_size.large", "Large" },
+            { "settings.reduce_flicker", "Reduce flicker and flashing" },
+            { "settings.reduce_motion", "Reduce camera motion" },
 
             // Settings (shown to the player)
             { "settings.corrupt", "Your settings file could not be read, so default settings are being used. The old file was kept." },
