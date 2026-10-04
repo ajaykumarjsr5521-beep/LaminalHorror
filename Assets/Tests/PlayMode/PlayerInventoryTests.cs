@@ -99,6 +99,26 @@ namespace NocturneAnnex.Tests.PlayMode
         }
 
         [Test]
+        public void ReadingNote_AddsItToJournal_AndRereadingStillOpens()
+        {
+            var ng = new GameObject("Note");
+            ng.transform.SetParent(_root.transform);
+            var note = ng.AddComponent<Note>();
+            note.ItemId = "memo_1";
+            int opened = 0;
+            void H(Note n) => opened++;
+            Note.Opened += H;
+            try
+            {
+                note.Interact(_interactor);
+                note.Interact(_interactor);   // second read: already held, must still open
+            }
+            finally { Note.Opened -= H; }
+            Assert.AreEqual(2, opened);
+            Assert.AreEqual(1, _inv.GetJournalNotes().Count);
+        }
+
+        [Test]
         public void Notes_RemainReadableAfterOtherItemsAreUsed()
         {
             _inv.TryAdd("brass_key");
