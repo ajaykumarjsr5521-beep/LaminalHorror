@@ -24,6 +24,9 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 | 2026-10-03 | initial commit | Discovery report + specs 00-10 | n/a |
 
 ## In progress
+- F-07 split: F-07a settings DONE; next F-07b pause controller, then F-07c screens and F-07d keypad/journal.
+
+## In progress (older notes)
 - Nothing active. F-06 remaining: level checkpoint triggers, menu wiring (F-07), Android force-stop test.
 
 ## Upcoming (in order)
