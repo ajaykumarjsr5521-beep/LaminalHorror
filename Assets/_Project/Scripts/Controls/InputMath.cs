@@ -23,6 +23,12 @@ namespace NocturneAnnex.Controls
             return Vector2.ClampMagnitude(offsetPixels / radiusPixels, 1f);
         }
 
+        /// <summary>
+        /// While a modal screen is open, gameplay input is dropped. Pause is kept so the player can always pause.
+        /// </summary>
+        public static PlayerInputState BlockForModal(PlayerInputState s) =>
+            new PlayerInputState { PausePressed = s.PausePressed };
+
         public static float ClampControlsScale(float scale) => Mathf.Clamp(scale, MinControlsScale, MaxControlsScale);
     }
 }
