@@ -20,6 +20,9 @@ namespace NocturneAnnex.UI
         public GameObject SettingsPanel;
         public GameObject CreditsPanel;
         public Button CreditsBackButton;
+        public GameObject NoticePanel;
+        public Button NoticeOkButton;
+        public Button CreditsNoticeButton;
 
         /// <summary>Overridable for tests and screenshot tools; default to files in persistentDataPath.</summary>
         public SaveStore SaveStore;
@@ -30,6 +33,8 @@ namespace NocturneAnnex.UI
         public event Action QuitRequested;
 
         SettingsData _settings;
+        string _settingsWarning;
+        bool _noticeIsFirstRun;
         bool _wired;
 
         void Start()
@@ -48,7 +53,8 @@ namespace NocturneAnnex.UI
 
             var model = new MainMenuModel(() => SaveStore.Load(), () => SaveStore.ClearForNewGame());
             MainMenu.Bind(model);
-            MainMenu.ExtraWarning = loaded.Warning;
+            _settingsWarning = loaded.Warning;
+            MainMenu.ExtraWarning = _settingsWarning;
 
             if (!_wired)
             {
@@ -59,13 +65,39 @@ namespace NocturneAnnex.UI
                 MainMenu.CreditsRequested += ShowCredits;
                 Settings.Closed += ShowMain;
                 CreditsBackButton.onClick.AddListener(ShowMain);
+                CreditsNoticeButton.onClick.AddListener(() => ShowNotice(firstRun: false));
+                NoticeOkButton.onClick.AddListener(OnNoticeAcknowledged);
                 _wired = true;
             }
-            ShowMain();
+
+            // The content notice comes before anything else until the player has seen it once.
+            if (!_settings.ContentNoticeAccepted) ShowNotice(firstRun: true);
+            else ShowMain();
         }
 
         public void ShowMain() => Show(MainPanel);
         public void ShowCredits() => Show(CreditsPanel);
+
+        void ShowNotice(bool firstRun)
+        {
+            _noticeIsFirstRun = firstRun;
+            Show(NoticePanel);
+        }
+
+        void OnNoticeAcknowledged()
+        {
+            if (!_noticeIsFirstRun)
+            {
+                ShowCredits();   // re-reading from the credits screen changes nothing
+                return;
+            }
+
+            _settings.ContentNoticeAccepted = true;
+            var result = SettingsStore.Write(_settings.Clone());
+            if (!result.Ok)
+                MainMenu.ExtraWarning = string.IsNullOrEmpty(_settingsWarning) ? result.Error : string.Join("\n", _settingsWarning, result.Error);
+            ShowMain();
+        }
 
         public void ShowSettings()
         {
@@ -86,6 +118,7 @@ namespace NocturneAnnex.UI
             MainPanel.SetActive(panel == MainPanel);
             SettingsPanel.SetActive(panel == SettingsPanel);
             CreditsPanel.SetActive(panel == CreditsPanel);
+            NoticePanel.SetActive(panel == NoticePanel);
         }
     }
 }
