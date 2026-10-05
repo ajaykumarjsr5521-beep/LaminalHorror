@@ -27,3 +27,6 @@
 - Do not commit Unity auto-edits (`InputManager.asset`, TMP font asset) unless asked.
 - Stop before merging to `main`; the owner reviews.
 - Keep `plan.md`, `docs/12-progress-log.md` and doc 05 status current at the end of each day.
+
+## Usage limit
+- The owner wants all work stopped when the weekly usage limit reaches 50%. Claude cannot read that meter. When the owner says it is reached, or a usage warning appears, stop at once: commit what is done, update `plan.md`, and make no further tool calls.
