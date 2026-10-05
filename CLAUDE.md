@@ -4,6 +4,12 @@
 1. Read `plan.md` first. Work only on its current day; do not re-read the specs or roadmap unless the plan points there.
 2. If the plan is stale or missing, rewrite it (max 30 lines) before coding, then continue.
 
+## Spec and plan before development (every feature)
+1. Write the spec in `docs/05-feature-specs.md` first: scope, exclusions, numbered acceptance criteria (AC), how each AC is tested, one-commit-per-file sub-steps. Commit it as the first commit of the branch.
+2. Write the feature's task checklist in `plan.md` (small steps, in order, with the test for each).
+3. Only then write code. If scope changes mid-way, update the spec and plan first.
+4. Mark the spec DONE only with real test results; otherwise IN_PROGRESS (UNVERIFIED).
+
 ## Save tokens
 - Search before reading: Grep/Glob, then Read with `offset`/`limit`. Never read a whole large file (scenes, .asset, logs).
 - Never print generated files or logs. Use `grep -c`, `tail -n 20` or `grep -E "error CS|Failed"`.
