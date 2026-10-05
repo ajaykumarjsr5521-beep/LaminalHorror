@@ -286,6 +286,75 @@ namespace NocturneAnnex.Tests.PlayMode
             Assert.AreEqual(0f, _runner.Director.Tension);
         }
 
+        [UnityTest]
+        public IEnumerator NewGame_ForgetsFiredOneShots_AndPutsPropsBack()
+        {
+            yield return null;
+            var prop = SpotFor("prop_shift_counter").Prop;
+            var start = prop.position;
+            _runner.Fire("prop_shift_counter");
+            yield return null;
+            Assert.AreNotEqual(start, prop.position);
+            _runner.Picker.TryPick(1f, 0f, out _);   // marks a one-shot as fired
+
+            _level.Begin(resume: false);
+            yield return null;
+            Assert.AreEqual(start.x, prop.position.x, 1e-4f);
+            Assert.AreEqual(start.y, prop.position.y, 1e-4f);
+            Assert.AreEqual(start.z, prop.position.z, 1e-4f);
+            CollectionAssert.IsEmpty(_runner.Picker.SnapshotFiredOnce(), "a new game starts with no fired one-shots");
+        }
+
+        [UnityTest]
+        public IEnumerator Continue_KeepsAFiredPropShift_AfterTheWorldReset()
+        {
+            yield return null;
+            var spot = SpotFor("prop_shift_counter");
+            var start = spot.Prop.position;
+            _runner.Fire("prop_shift_counter");
+            yield return null;
+            var shifted = spot.Prop.position;
+            for (int i = 0; i < 10 && _runner.Picker.TryPick(1f, i, out _); i++) { }   // mark every one-shot fired, as a save would hold
+            Assert.IsTrue(_level.SaveGame.Store.Write(_level.SaveGame.Capture("hall")).Ok);
+
+            _level.Begin(resume: true);
+            yield return null;
+            Assert.Greater((shifted - start).magnitude, 0.1f, "the event must have moved the prop");
+            Assert.AreEqual(0f, (spot.Prop.position - shifted).magnitude, 1e-4f, "the shifted prop must stay shifted for a one-shot that already fired");
+        }
+
+        [UnityTest]
+        public IEnumerator BusySpot_IsSkipped_AndItsOneShotIsNotConsumed()
+        {
+            yield return null;
+            var spot = SpotFor("door_slam_stacks");
+            _runner.Fire("door_slam_stacks");
+            yield return null;
+            Assert.IsTrue(spot.IsPlaying);
+            Assert.IsFalse(_runner.Fire("door_slam_stacks"), "a busy spot refuses a second play");
+            Assert.IsFalse(_runner.Picker.TryPick(1f, 0f, out var id, x => x != "prop_shift_counter" && x != "shadow_hall" && x != "misfile_alcove" && x != "door_slam_stacks") && id == "door_slam_stacks");
+            CollectionAssert.DoesNotContain(_runner.Picker.SnapshotFiredOnce(), "door_slam_stacks", "an event that could not play must not count as fired");
+        }
+
+        [UnityTest]
+        public IEnumerator DisablingASpotMidSlam_RestoresTheDoorSpeed_AndHidesTheFigure()
+        {
+            var door = Named<Door>("Door_HallToStacks");
+            float speed = door.AngularSpeed;
+            _runner.Fire("door_slam_stacks");
+            yield return null;
+            Assert.Greater(door.AngularSpeed, speed);
+            SpotFor("door_slam_stacks").gameObject.SetActive(false);
+            Assert.AreEqual(speed, door.AngularSpeed, 1e-4f);
+
+            var figureSpot = SpotFor("shadow_hall");
+            _runner.Fire("shadow_hall");
+            yield return null;
+            Assert.IsTrue(figureSpot.Figure.activeSelf);
+            figureSpot.gameObject.SetActive(false);
+            Assert.IsFalse(figureSpot.Figure.activeSelf);
+        }
+
         // ---------- bad data ----------
 
         [UnityTest]
