@@ -60,15 +60,16 @@ namespace NocturneAnnex.Level
             foreach (var c in Checkpoints) c.Reached += OnCheckpointReached;
             if (Exit != null) Exit.Entered += OnExitEntered;
 
+            bool restored = false;
             if (resume && SaveGame != null)
             {
                 var result = SaveGame.Continue();
-                if (result.Ok) Progress.Restore(SaveGame.LastCheckpointId);
+                if (result.Ok) { Progress.Restore(SaveGame.LastCheckpointId); restored = true; }
                 else Debug.LogWarning("LevelBootstrap: could not resume, starting from the entrance. " + result.Message);
             }
             ApplyGates();
             MovePlayerTo(Progress.CurrentId);
-            Horror?.ResetPacing();   // a fresh start or respawn never inherits old tension
+            Horror?.ResetRun(freshRun: !restored);   // a fresh start forgets fired events; every start resets scene props and tension
         }
 
         void ApplyGates()
