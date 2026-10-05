@@ -6,7 +6,7 @@ Schedule: docs/14-sprint-plan.md (Sprint 1, Day 1 = 2026-10-05). Branch: `featur
 - [x] Commit F-09b code (22 commits) and docs, push
 - [x] EditMode: 251/251 pass
 - [x] Horror PlayMode fixture alone: 16/16 pass (38 s)
-- [ ] Full PlayMode run (background, `Builds/full-playmode.out`). A previous full run froze after the horror fixture; if it freezes again, find which later fixture hangs: run fixtures one at a time with `FILTER`
+- [ ] Full PlayMode run FREEZES when the horror fixture is combined with the others (reproduced 3x, log stops after ~23 scene loads). Findings: each of the 18 fixtures passes alone (144 tests); all fixtures except Horror pass together (128/128, 44 s); Horror + InputRouterModal pass together (18/18). Next: bisect by adding fixtures to Horror in groups (suspect shared state left by Horror TearDown: singletons, Time.timeScale, Captions, ModalGate, LevelLaunch, Accessibility)
 - [ ] Fix failures in F-09b files only (one commit per file)
 - [ ] Check AC6 (spacing) and AC8 (overlay not in release builds) are covered by a test or a code check
 - [ ] Doc 05: F-09b result with real numbers; doc 12 row; CHANGELOG entry (one commit each), push
