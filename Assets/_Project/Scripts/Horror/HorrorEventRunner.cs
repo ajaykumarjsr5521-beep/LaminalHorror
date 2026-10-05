@@ -71,18 +71,33 @@ namespace NocturneAnnex.Horror
             Director.Tick(deltaSeconds, inUnsafeZone: !inSafeZone, blocked: blocked);
             if (!blocked) GameTime += deltaSeconds;
             if (blocked || !Director.CanFire) return;
-            if (!Picker.TryPick(Director.Tension, GameTime, out var id)) return;
+            if (!Picker.TryPick(Director.Tension, GameTime, out var id, IsSpotFree)) return;
             Director.TryTakeEvent();
             Fire(id);
         }
 
-        /// <summary>Plays an event now, bypassing pacing. For tests and the debug overlay.</summary>
-        public void Fire(string id)
+        bool IsSpotFree(string id) => _byId.TryGetValue(id, out var spot) && !spot.IsPlaying;
+
+        /// <summary>Plays an event now, bypassing pacing. For tests and the debug overlay. False if the id is unknown or its spot is busy.</summary>
+        public bool Fire(string id)
         {
-            if (!_byId.TryGetValue(id, out var spot)) { Debug.LogError($"HorrorEventRunner: unknown event id '{id}'.", this); return; }
+            if (!_byId.TryGetValue(id, out var spot)) { Debug.LogError($"HorrorEventRunner: unknown event id '{id}'.", this); return false; }
+            if (!spot.Play(_budget, Shake)) return false;
             LastEventId = id;
-            spot.Play(_budget, Shake);
             EventFired?.Invoke(id);
+            return true;
+        }
+
+        /// <summary>
+        /// Start of a level run. A fresh run forgets fired one-shots; either way the scene objects go back to their load state,
+        /// then the lasting results of one-shots that already fired (restored from a save) are re-applied.
+        /// </summary>
+        public void ResetRun(bool freshRun)
+        {
+            if (freshRun) Picker.ClearFiredOnce();
+            foreach (var spot in Spots) if (spot != null) spot.ResetWorld();
+            foreach (var id in Picker.SnapshotFiredOnce()) if (_byId.TryGetValue(id, out var s)) s.ApplyPersistent();
+            ResetPacing();
         }
 
         /// <summary>Fresh run or respawn: no leftover tension.</summary>
