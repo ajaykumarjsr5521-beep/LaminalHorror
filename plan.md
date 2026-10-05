@@ -8,8 +8,8 @@ Schedule: docs/14-sprint-plan.md (Sprint 1, Day 1 = 2026-10-05). Branch: `featur
 - [x] Horror PlayMode fixture alone: 16/16 pass (38 s)
 - [x] Full PlayMode freeze FIXED: Horror fixture left the Level_B1 scene alive under the next fixture (hang right after its last test, with InputRouterModal + Interactable/Interactor). TearDown now destroys the scene roots; SetUp resets timeScale/ModalGate; [Timeout(120000)] + real-time cap on game-time loops so a hang fails instead of freezing. Full PlayMode: 144/144 in 60 s.
 - [x] Fix failures in F-09b files only (done above)
-- [ ] Check AC6 (spacing) and AC8 (overlay not in release builds) are covered by a test or a code check
-- [ ] Doc 05: F-09b result with real numbers; doc 12 row; CHANGELOG entry (one commit each), push
+- [x] AC6 covered by OneHourOfUnsafePlay test; AC8 by `#if` code check
+- [x] Doc 05: F-09b result with real numbers; doc 12 row; CHANGELOG entry (one commit each), push
 - [ ] Stop before merge; owner reviews
 
 ## Open questions for the owner
