@@ -11,7 +11,7 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 ## Changelog
 | Date | Branch / merge | Change | Verified |
 |---|---|---|---|
-| 2026-10-06 | `feature/F-09b-horror-events` | Horror fixture TearDown destroys the level scene, SetUp resets timeScale/ModalGate, test timeouts; fixes full-suite PlayMode freeze | EditMode 251/251, PlayMode 144/144 (60 s). AC8 by code check only. Not merged |
+| 2026-10-06 | `feature/F-09b-horror-events` | Horror fixture TearDown destroys the level scene, SetUp resets timeScale/ModalGate, test timeouts; fixes full-suite PlayMode freeze | EditMode 253/253, PlayMode 148/148 (52 s). Also fixed 4 review findings (restart state, prop reset, mid-effect disable, busy spot). AC8 by code check only |
 | 2026-10-04 | `feature/F-09b-horror-events` (UNVERIFIED) | Six horror events wired into Level_B1: LightFlickerEffect, HorrorEventAsset, CameraShake, Door.Close, SafeZone, HorrorEventSpot, HorrorEventRunner, fired-event ids in save, debug overlay, builder wiring, six event assets, EditMode and PlayMode tests | Tests were not run at the time; see the 2026-10-06 row. Not merged |
 | 2026-10-04 | `feature/F-09a-tension-director` | New Horror assembly: `TensionDirector`, `TensionSettings`, `EventPicker` (pure logic) | EditMode 247/247. No events, triggers or scene wiring yet (F-09b) |
 | 2026-10-04 | `feature/F-02b-touch-hud` | Touch controls on the level HUD: move stick, look area, Use/Run/Crouch buttons, visibility rule, size scaler | EditMode 227/227, PlayMode 128/128 with simulated pointers; screenshots at 3 sizes. Not tested with real fingers |
