@@ -41,14 +41,15 @@ namespace NocturneAnnex.Horror
             }
         }
 
-        /// <summary>Picks an event and records it as fired at <paramref name="now"/>. Returns false when nothing is eligible.</summary>
-        public bool TryPick(float tension, float now, out string id)
+        /// <summary>Picks an event and records it as fired at <paramref name="now"/>. Returns false when nothing is eligible. <paramref name="isAvailable"/> lets the caller skip events that cannot play right now (so they are not marked fired).</summary>
+        public bool TryPick(float tension, float now, out string id, Func<string, bool> isAvailable = null)
         {
             id = null;
             float best = -1f;
             foreach (var c in _candidates)
             {
-                if (!IsEligible(c, tension, now) || c.MinTension <= best) continue;   // strict: ties keep the earlier entry
+                if (!IsEligible(c, tension, now) || c.MinTension <= best) continue;
+                if (isAvailable != null && !isAvailable(c.Id)) continue;   // strict: ties keep the earlier entry
                 best = c.MinTension;
                 id = c.Id;
             }
@@ -64,6 +65,16 @@ namespace NocturneAnnex.Horror
             if (c.Once && _firedOnce.Contains(c.Id)) return false;
             if (_lastFired.TryGetValue(c.Id, out var last) && now - last < c.CooldownSeconds) return false;
             return true;
+        }
+
+        /// <summary>Forgets cooldown timestamps, for when the game clock restarts (new run, respawn). Fired one-shots stay fired.</summary>
+        public void ClearCooldowns() => _lastFired.Clear();
+
+        /// <summary>Forgets which one-shots fired, for a brand new run.</summary>
+        public void ClearFiredOnce()
+        {
+            _firedOnce.Clear();
+            _lastFired.Clear();
         }
 
         /// <summary>Ids of one-shot events that already fired, for saving.</summary>

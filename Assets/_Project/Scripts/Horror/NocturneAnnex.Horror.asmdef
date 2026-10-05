@@ -1,6 +1,6 @@
 {
   "name": "NocturneAnnex.Horror",
   "rootNamespace": "NocturneAnnex.Horror",
-  "references": ["NocturneAnnex.Core"],
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Interaction", "NocturneAnnex.Player"],
   "autoReferenced": true
 }

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a8e3517598557146ba848cf00142b99, type: 3}
+  m_Name: Event_door_slam_stacks
+  m_EditorClassIdentifier: NocturneAnnex.Horror::NocturneAnnex.Horror.HorrorEventAsset
+  Id: door_slam_stacks
+  Kind: 1
+  Once: 1
+  CooldownSeconds: 0
+  MinTension: 0.7
+  CaptionKey: event.door_slam
+  DurationSeconds: 1
+  Strength: 0.8
+  FlickerHz: 6

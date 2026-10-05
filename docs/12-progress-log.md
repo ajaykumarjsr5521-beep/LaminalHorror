@@ -3,13 +3,16 @@
 Updated with every merge/milestone. Newest first. Verification claims cover only what was actually run.
 
 ## Current status
-- Phase: **P1 Controller** (P0 setup done except the Android build check)
+- Phase: **P4 Horror** (P0-P3 done Windows-side; Android build check still open)
 - Engine: Unity 6000.6.4f1 (Windows + WebGL modules installed; **Android module missing**)
-- Active branch: `feature/F-09a-tension-director`
+- Active branch: `feature/F-09b-horror-events`
+- Schedule: see [14-sprint-plan.md](14-sprint-plan.md) (Day 1 = 2026-10-05)
 
 ## Changelog
 | Date | Branch / merge | Change | Verified |
 |---|---|---|---|
+| 2026-10-06 | `feature/F-09b-horror-events` | Horror fixture TearDown destroys the level scene, SetUp resets timeScale/ModalGate, test timeouts; fixes full-suite PlayMode freeze | EditMode 253/253, PlayMode 148/148 (52 s). Also fixed 4 review findings (restart state, prop reset, mid-effect disable, busy spot). AC8 by code check only |
+| 2026-10-04 | `feature/F-09b-horror-events` (UNVERIFIED) | Six horror events wired into Level_B1: LightFlickerEffect, HorrorEventAsset, CameraShake, Door.Close, SafeZone, HorrorEventSpot, HorrorEventRunner, fired-event ids in save, debug overlay, builder wiring, six event assets, EditMode and PlayMode tests | Tests were not run at the time; see the 2026-10-06 row. Not merged |
 | 2026-10-04 | `feature/F-09a-tension-director` | New Horror assembly: `TensionDirector`, `TensionSettings`, `EventPicker` (pure logic) | EditMode 247/247. No events, triggers or scene wiring yet (F-09b) |
 | 2026-10-04 | `feature/F-02b-touch-hud` | Touch controls on the level HUD: move stick, look area, Use/Run/Crouch buttons, visibility rule, size scaler | EditMode 227/227, PlayMode 128/128 with simulated pointers; screenshots at 3 sizes. Not tested with real fingers |
 | 2026-10-04 | `feature/F-13-level-b1` | F-13 greybox level "Night Shift: Floor B1": 5 areas, Three Dates puzzle, checkpoints, resume, HUD, end card; Boot and menu flow; URP assets assigned; generated items and scene; screenshot tool | EditMode 223/223, PlayMode 122/122, Windows x64 build OK. Not on a phone; no touch controls in the level yet; no Android build |
@@ -27,6 +30,7 @@ Updated with every merge/milestone. Newest first. Verification claims cover only
 | 2026-10-03 | initial commit | Discovery report + specs 00-10 | n/a |
 
 ## In progress
+- F-09b: all code and tests written and committed on `feature/F-09b-horror-events`, but **no test run yet**. Next (Day 1, 2026-10-05): run EditMode + PlayMode, fix failures, then mark done in doc 05 and merge. Uncommitted and deliberately left alone: Unity auto-edits to `LiberationSans SDF.asset` and `InputManager.asset` (check whether the InputManager change is wanted).
 - F-13 greybox level playable on Windows-side checks (see doc 05 results). Touch controls now on the level HUD (F-02b). Next: an Android build and device check once Android Build Support is installed, then F-09 tension director and F-10 art/audio.
 - F-07 split: F-07a settings DONE; F-07b pause logic done (Android Back device check open); F-07 done Windows-side. F-08 (captions, text size, contrast, reduce flicker/motion state and math, content notice) done and tested on Windows. Remaining: phone checks, placing HUD pieces in the real level. Next: P4 horror systems (F-09 tension director, F-10 lighting/audio), which must use the F-08 safeguards, or build the real level first (owner choice).
 

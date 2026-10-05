@@ -1,6 +1,6 @@
 {
   "name": "NocturneAnnex.Save",
   "rootNamespace": "NocturneAnnex.Save",
-  "references": ["NocturneAnnex.Core", "NocturneAnnex.Interaction", "NocturneAnnex.Inventory", "NocturneAnnex.Puzzle"],
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Interaction", "NocturneAnnex.Inventory", "NocturneAnnex.Puzzle", "NocturneAnnex.Horror"],
   "autoReferenced": true
 }

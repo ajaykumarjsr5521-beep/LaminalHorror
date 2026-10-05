@@ -84,6 +84,28 @@ namespace NocturneAnnex.Tests.EditMode
         }
 
         [Test]
+        public void UnavailableEvents_AreSkipped_AndNotMarkedFired()
+        {
+            var p = new EventPicker(new[] { E("slam", once: true, min: 0.5f), E("flicker") });
+            Assert.IsTrue(p.TryPick(1f, 0f, out var id, x => x != "slam"));
+            Assert.AreEqual("flicker", id);
+            CollectionAssert.IsEmpty(p.SnapshotFiredOnce());
+            Assert.IsTrue(p.TryPick(1f, 1f, out id));
+            Assert.AreEqual("slam", id, "a skipped one-shot must still be available later");
+        }
+
+        [Test]
+        public void ClearFiredOnce_MakesOneShotsAvailableAgain()
+        {
+            var p = new EventPicker(new[] { E("slam", once: true) });
+            p.TryPick(1f, 0f, out _);
+            Assert.IsFalse(p.TryPick(1f, 100f, out _));
+            p.ClearFiredOnce();
+            Assert.IsTrue(p.TryPick(1f, 100f, out var id));
+            Assert.AreEqual("slam", id);
+        }
+
+        [Test]
         public void BadConfig_Throws()
         {
             Assert.Throws<ArgumentNullException>(() => new EventPicker(null));

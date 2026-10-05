@@ -202,6 +202,21 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Also added:** `EventPicker` can snapshot and restore which one-shot events already fired, for saving (hooked up in F-09b). `Reset()` clears tension and the gap for a respawn.
 - **Sub-steps (one commit per file):** spec, `TensionSettings` + `TensionDirector` + tests, `EventPicker` + tests, docs.
 
+### F-09b Horror events and scene wiring — DONE (2026-10-06: EditMode 253/253, PlayMode 148/148 in 52 s incl. 20 Horror tests on the real Level_B1; AC1 EditMode, AC2-5 and AC7 PlayMode, AC6 by the one-hour simulated-play test, AC8 by code check: overlay body is inside `#if UNITY_EDITOR || DEVELOPMENT_BUILD`. Not verified: pacing feel and audio, which need a person and F-10. A cross-fixture PlayMode hang was a test-teardown problem (scene left alive), fixed in the test file. Code review then found four bugs, all fixed with tests: new game kept fired one-shots, props and reveals not reset on restart, door speed/figure not restored when a spot is disabled mid-effect, a busy spot consumed a one-shot)
+- **Scope:** six event kinds wired into Level_B1 and driven by the F-09a director: light flicker, door slam, prop shift, audio cue (caption plus a clip if one is assigned), Misfile corridor reveal (a hidden corridor section appears), shadow figure (a dark figure shows briefly then vanishes). Data in `HorrorEventAsset` (ScriptableObject); scene targets in `HorrorEventSpot`; `HorrorEventRunner` ticks the director, picks and plays events; `SafeZone` volumes (break room, records office) count as safe; camera shake component scaled by `Accessibility.MotionScale`; fired one-shot ids saved in the save file (additive field, version stays 1); debug overlay in editor and development builds only. **Excl.:** real audio clips and final art (F-10), the Indexer (F-11), procedural events.
+- **Design:** `LightFlickerEffect` is plain C#: it uses `SafeFlicker` for the waveform and asks a `FlashBudget` before every lit-to-dim change, so even with Reduce Flicker off no more than 3 changes happen in any second; with it on the waveform is the slow shallow fade. The runner treats the game as blocked when `ModalGate` is open or time is frozen. Story mode is passed from settings by `LevelBootstrap`. A bad event asset (empty id, duplicate id) is reported and skipped, never silently half-working.
+- **AC:**
+  1. Flicker: never more than 3 lit-to-dim changes in any rolling second, at 60 fps over 10 s, with Reduce Flicker off and on; reduced mode at most 25 percent deep (EditMode simulation).
+  2. All six kinds are fired through the runner in PlayMode on the real level and their effect is observed (light intensity changes then restores, door closes, caption posted, prop moved, corridor enabled, figure appears then hides).
+  3. No event fires while a modal screen is open or the game is paused, however much tension has built up.
+  4. Camera shake amplitude is zero when Reduce camera motion is on.
+  5. A one-shot event that fired is not fired again after saving, leaving and Continuing.
+  6. Spacing: with the real level wired, simulated play never produces two events closer than the configured gap.
+  7. Event data can be changed by editing assets, not code; a duplicate id is reported.
+  8. The debug overlay is not compiled into release builds.
+- **Test:** EditMode (flicker effect), PlayMode on Level_B1 with the runner advanced by simulated time. Manual pacing playtest and how scary or fair it feels need a person and, for audio, F-10.
+- **Sub-steps (one commit per file):** spec, `LightFlickerEffect` + tests, `HorrorEventAsset`, camera shake, `Door.Close`, `SafeZone`, `HorrorEventSpot`, `HorrorEventRunner`, save field and SaveGame hook, debug overlay, builder wiring, scene, PlayMode tests, docs.
+
 ## F-10 Lighting, audio & level art pass — TODO
 - **Accessibility requirement (from F-08):** every gameplay-relevant sound has a caption key in `DefaultStrings` and posts it through `Captions.Post`; an EditMode test lists the cues and fails if one lacks a caption. Flicker uses `SafeFlicker`; camera motion uses `Accessibility.MotionScale`.
 - **Scope:** baked lighting, ≤2 realtime lights, ambience beds, footsteps, music drones, occlusion culling, LODs where needed, volume/post-FX (vignette/grain tuned for mobile).

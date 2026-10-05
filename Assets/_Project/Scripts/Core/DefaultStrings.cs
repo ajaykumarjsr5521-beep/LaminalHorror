@@ -73,6 +73,14 @@ namespace NocturneAnnex.Core
             { "level.end.title", "Floor B1 complete" },
             { "level.end.body", "You made it out. For now." },
 
+            // Horror event captions
+            { "event.light_buzz", "[lights buzzing]" },
+            { "event.door_slam", "[a door slams]" },
+            { "event.prop_shift", "[something shifts nearby]" },
+            { "event.whisper", "[faint whispering]" },
+            { "event.misfile", "[the air feels wrong]" },
+            { "event.figure", "[a shape in the dark]" },
+
             // Settings screen labels
             { "settings.look_sensitivity", "Look sensitivity" },
             { "settings.invert_y", "Invert vertical look" },

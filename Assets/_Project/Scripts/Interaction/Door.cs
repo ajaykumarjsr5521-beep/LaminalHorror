@@ -44,6 +44,9 @@ namespace NocturneAnnex.Interaction
         /// <summary>Unlocks without a key (e.g. a solved code lock). Does not open the door.</summary>
         public void Unlock() => IsLocked = false;
 
+        /// <summary>Closes the door without the player (scripted events). Does not change the lock.</summary>
+        public void Close() => IsOpen = false;
+
         void Update()
         {
             float target = IsOpen ? OpenAngle : 0f;
