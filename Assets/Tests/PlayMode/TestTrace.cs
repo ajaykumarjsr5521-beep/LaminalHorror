@@ -15,7 +15,9 @@ namespace NocturneAnnex.Tests.PlayMode
 
         public void AfterTest(ITest test) => Write("END   " + test.FullName);
 
-        static void Write(string line) =>
+        static void Write(string line) { UnityEngine.Debug.Log("TRACE " + line); WriteFile(line); }
+
+        static void WriteFile(string line) =>
             System.IO.File.AppendAllText("Builds/trace.txt", System.DateTime.Now.ToString("HH:mm:ss.fff") + " " + line + System.Environment.NewLine);
     }
 }
