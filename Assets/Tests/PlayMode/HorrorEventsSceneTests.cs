@@ -20,9 +20,11 @@ using NocturneAnnex.Save;
 namespace NocturneAnnex.Tests.PlayMode
 {
     /// <summary>Fires every horror event kind on the real Level_B1 scene and checks pacing, blocking, accessibility and saving.</summary>
+    [Timeout(120000)]   // ms per test: a hung run fails instead of freezing
     public class HorrorEventsSceneTests
     {
         const string ScenePath = "Assets/_Project/Scenes/Level_B1.unity";
+        const float RealTimeLimit = 20f;   // real seconds; a loop on game time must never outlive this
         static readonly string[] OneShots = { "prop_shift_counter", "door_slam_stacks", "shadow_hall", "misfile_alcove" };
 
         string _dir;
@@ -34,6 +36,8 @@ namespace NocturneAnnex.Tests.PlayMode
         [UnitySetUp]
         public IEnumerator LoadScene()
         {
+            Time.timeScale = 1f;   // another fixture may have left the game paused
+            ModalGate.Reset();
             LevelLaunch.RequestNewGame();
             _dir = Path.Combine(Path.GetTempPath(), "na_horror_" + Path.GetRandomFileName());
             Directory.CreateDirectory(_dir);
@@ -57,6 +61,8 @@ namespace NocturneAnnex.Tests.PlayMode
             LevelLaunch.RequestNewGame();
             // the level scene stays loaded after the test; its InputRouter singleton would make the next test's router destroy itself
             if (InputRouter.Instance != null) Object.DestroyImmediate(InputRouter.Instance.gameObject);
+            // and leave no level objects (player, runner, UI) alive under the next fixture
+            foreach (var root in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects()) Object.DestroyImmediate(root);
             if (Directory.Exists(_dir)) Directory.Delete(_dir, true);
         }
 
@@ -98,7 +104,13 @@ namespace NocturneAnnex.Tests.PlayMode
             yield return null;
             CollectionAssert.Contains(Captions.Service.Lines.ToList(), Loc.Get("event.light_buzz"));   // before it expires
             float end = Time.time + spot.Event.DurationSeconds + 0.5f;
-            while (Time.time < end) { min = Mathf.Min(min, light.intensity); yield return null; }
+            float guard = Time.realtimeSinceStartup + RealTimeLimit;
+            while (Time.time < end)
+            {
+                Assert.Less(Time.realtimeSinceStartup, guard, "game time stopped advancing (timeScale=" + Time.timeScale + ")");
+                min = Mathf.Min(min, light.intensity);
+                yield return null;
+            }
             Assert.Less(min, baseIntensity * 0.5f, "the light must visibly dip");
             Assert.AreEqual(baseIntensity, light.intensity, 0.0001f, "brightness must be restored");
         }
@@ -113,7 +125,13 @@ namespace NocturneAnnex.Tests.PlayMode
             float min = baseIntensity;
             _runner.Fire("flicker_hall");
             float end = Time.time + spot.Event.DurationSeconds + 0.3f;
-            while (Time.time < end) { min = Mathf.Min(min, light.intensity); yield return null; }
+            float guard = Time.realtimeSinceStartup + RealTimeLimit;
+            while (Time.time < end)
+            {
+                Assert.Less(Time.realtimeSinceStartup, guard, "game time stopped advancing (timeScale=" + Time.timeScale + ")");
+                min = Mathf.Min(min, light.intensity);
+                yield return null;
+            }
             Assert.GreaterOrEqual(min, baseIntensity * 0.75f - 0.001f, "at most 25 percent deep");
         }
 
