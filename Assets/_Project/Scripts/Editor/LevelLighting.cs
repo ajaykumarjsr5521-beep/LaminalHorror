@@ -28,14 +28,14 @@ namespace NocturneAnnex.Editor
         }
 
         /// <summary>Bakes the open scene with the CPU lightmapper (works without a GPU) and returns whether it finished.</summary>
-        public static bool Bake()
+        public static bool Bake(string settingsPath = SettingsPath, float resolution = 6f)
         {
-            var settings = AssetDatabase.LoadAssetAtPath<LightingSettings>(SettingsPath);
+            var settings = AssetDatabase.LoadAssetAtPath<LightingSettings>(settingsPath);
             if (settings == null)
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath));
+                Directory.CreateDirectory(Path.GetDirectoryName(settingsPath));
                 settings = new LightingSettings();
-                AssetDatabase.CreateAsset(settings, SettingsPath);
+                AssetDatabase.CreateAsset(settings, settingsPath);
             }
 #pragma warning disable CS0618   // ProgressiveCPU is deprecated but still maps to the CPU baker; the replacement name was not confirmed
             settings.lightmapper = LightingSettings.Lightmapper.ProgressiveCPU;
@@ -43,7 +43,7 @@ namespace NocturneAnnex.Editor
             settings.bakedGI = true;
             settings.realtimeGI = false;
             settings.autoGenerate = false;
-            settings.lightmapResolution = 6f;
+            settings.lightmapResolution = resolution;
             settings.lightmapMaxSize = 1024;
             settings.directSampleCount = 32;
             settings.indirectSampleCount = 64;
