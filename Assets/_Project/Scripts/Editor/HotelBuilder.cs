@@ -5,6 +5,7 @@ using UnityEngine;
 using NocturneAnnex.Audio;
 using NocturneAnnex.Controls;
 using NocturneAnnex.Level;
+using NocturneAnnex.Liminal;
 using NocturneAnnex.Save;
 
 namespace NocturneAnnex.Editor
@@ -49,6 +50,7 @@ namespace NocturneAnnex.Editor
             var player = LevelB1Builder.BuildPlayer(db, out var interactor, out var inventory);
             player.transform.position = new Vector3(0f, 0.1f, 3f);
             LevelAudio.Build(player);
+            BuildLiminal(player);
 
             var cps = new[] { LevelB1Builder.Checkpoint(new GameObject("Checkpoints").transform, "lobby", new Vector3(0f, 0f, 3f), new Vector3(6f, 2.5f, 3f)) };
             var save = new GameObject("SaveGame").AddComponent<SaveGame>();
@@ -166,6 +168,40 @@ namespace NocturneAnnex.Editor
             l.intensity = intensity;
             l.range = range;
             l.lightmapBakeType = realtime ? LightmapBakeType.Realtime : LightmapBakeType.Baked;
+        }
+
+        static void BuildLiminal(GameObject player)
+        {
+            var root = new GameObject("Liminal");
+            var director = root.AddComponent<LiminalDirector>();
+            // legend notes: the Guest's folklore, one by the reception, one in the wing, one on the mezzanine
+            Legend(root.transform, director, "guest_rule_room", "Front desk memo", "Do not check in to a room you did not book. The night manager says the key cards beep in the next corridor first.", new Vector3(5f, 1.3f, Depth - 6f), 2);
+            Legend(root.transform, director, "guest_mirror", "Housekeeping note", "Mirrors on the 4th floor. If the reflection moves before you do, stand still until it stops.", new Vector3(HalfW + 12f, 1.1f, WingZ0 + 0.6f), 2);
+            Legend(root.transform, director, "guest_register", "Register page", "Room 237: booked, paid, never occupied. The guest checks in every night anyway.", new Vector3(-HalfW + 2f, MezzY + 1.1f, 30f), 3);
+            // the silhouette in the glass behind the spawn point
+            var figure = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            figure.name = "GuestSilhouette";
+            figure.transform.SetParent(root.transform, false);
+            figure.transform.position = new Vector3(6f, 1f, 1.2f);
+            figure.transform.localScale = new Vector3(0.6f, 1f, 0.6f);
+            Object.DestroyImmediate(figure.GetComponent<Collider>());
+            figure.GetComponent<Renderer>().sharedMaterial = LevelB1Builder.Mat("Hotel_Silhouette", new Color(0.02f, 0.02f, 0.03f));
+            var guest = root.AddComponent<GuestManifestation>();
+            guest.Director = director;
+            guest.Figure = figure;
+            guest.ViewCamera = player.GetComponentInChildren<Camera>();
+        }
+
+        static void Legend(Transform parent, LiminalDirector director, string id, string title, string body, Vector3 pos, int points)
+        {
+            var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            go.name = "Legend_" + id;
+            go.transform.SetParent(parent, false);
+            go.transform.position = pos;
+            go.transform.localScale = new Vector3(0.3f, 0.02f, 0.22f);
+            go.GetComponent<Renderer>().sharedMaterial = _glow;
+            var pick = go.AddComponent<LegendPickup>();
+            pick.EntryId = id; pick.Title = title; pick.Body = body; pick.EvidencePoints = points; pick.Director = director;
         }
 
         static GameObject B(Transform p, string name, Vector3 c, Vector3 s, Material m) => LevelB1Builder.Box(p, name, c, s, m);
