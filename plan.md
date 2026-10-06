@@ -21,5 +21,8 @@ Schedule: docs/14-sprint-plan.md (Sprint 1 ends Oct 11; Sprint 2 = F-10, Oct 12-
 - [x] Step 10: AssetRegister parser, audio-file coverage test, release gate before AAB builds (AC8). No audio files exist yet, so the register has no audio rows. EditMode 276/276, PlayMode 167/167
 - [ ] Doc 05 status, doc 12 row, CHANGELOG at the end of each day; stop before merge
 
+- [x] CC0 audio sourced: 31 files, licence files read, registered (AU-01..AU-31). Stand-ins: whisper, light buzz. EditMode 279/279, PlayMode 167/167
+
 ## Open questions for the owner
+- Listen to the game and say which sounds feel wrong (whisper and light buzz are stand-ins); confirm the CLEARED rows in doc 09.
 - No Android device yet: AC9 (device profiler) stays UNVERIFIED until one exists (Day 4: Android Build Support).
