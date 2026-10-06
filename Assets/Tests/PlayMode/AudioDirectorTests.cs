@@ -53,9 +53,9 @@ namespace NocturneAnnex.Tests.PlayMode
         public IEnumerator MissingClip_StillPostsTheCaption_AndLogsOnce()
         {
             _cat.Find("event.figure").Clips = new AudioClip[0];
-            LogAssert.Expect(LogType.Error, new Regex("no clip assigned"));
+            LogAssert.Expect(LogType.Warning, new Regex("no clip assigned"));
             Assert.IsFalse(_dir.Play("event.figure"));
-            Assert.IsFalse(_dir.Play("event.figure"));   // a second error would fail the test
+            Assert.IsFalse(_dir.Play("event.figure"));   // a second warning would fail the test
             yield return null;
             CollectionAssert.Contains(Captions.Service.Lines.ToList(), Loc.Get("event.figure"));
         }
@@ -72,8 +72,9 @@ namespace NocturneAnnex.Tests.PlayMode
         public IEnumerator GameplayCue_DucksMusic_ThenItRecovers()
         {
             _dir.Play("event.whisper", Vector3.zero);
-            for (int i = 0; i < 20; i++) yield return null;
-            Assert.Less(_dir.Bus.Gain(CueCatalog.Music), 0.9f, "music must duck while a gameplay cue plays");
+            float until = Time.realtimeSinceStartup + 5f;   // frames are fast in batch mode, so wait for the duck instead of counting frames
+            while (_dir.Bus.Gain(CueCatalog.Music) > 0.55f && Time.realtimeSinceStartup < until) yield return null;
+            Assert.AreEqual(0.5f, _dir.Bus.Gain(CueCatalog.Music), 0.06f, "music must duck while a gameplay cue plays");
             Assert.AreEqual(1f, _dir.Bus.Gain(CueCatalog.Sfx), 1e-4f);
             _dir.Stop("event.whisper");
             float end = Time.realtimeSinceStartup + 10f;
