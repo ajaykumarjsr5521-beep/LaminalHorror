@@ -1,0 +1,6 @@
+{
+  "name": "NocturneAnnex.Audio",
+  "rootNamespace": "NocturneAnnex.Audio",
+  "references": ["NocturneAnnex.Core"],
+  "autoReferenced": true
+}
