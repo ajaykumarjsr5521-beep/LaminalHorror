@@ -4,6 +4,7 @@ using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using NocturneAnnex.Audio;
 using NocturneAnnex.Controls;
 using NocturneAnnex.Interaction;
 using NocturneAnnex.Inventory;
@@ -36,6 +37,7 @@ namespace NocturneAnnex.Editor
         {
             LevelItems.CreateAll();
             LevelEvents.CreateAssets();
+            LevelAudio.CreateAssets();
             // Prefab regeneration rewrites every file id, so only build them when missing.
             if (!File.Exists(GameplayUiBuilder.KeypadPath)) GameplayUiBuilder.CreateAll();
 
@@ -54,6 +56,7 @@ namespace NocturneAnnex.Editor
 
             new GameObject("InputRouter").AddComponent<InputRouter>();
             var player = BuildPlayer(db, out var interactor, out var inventory);
+            LevelAudio.Build(player);
 
             var cps = BuildCheckpoints();
             var exit = new GameObject("Exit", typeof(BoxCollider));
@@ -101,7 +104,8 @@ namespace NocturneAnnex.Editor
             // floors and ceilings, one slab per area
             foreach (var (name, x0, x1, z0, z1) in Areas)
             {
-                Box(parent, "Floor_" + name, new Vector3((x0 + x1) / 2f, -0.25f, (z0 + z1) / 2f), new Vector3(x1 - x0, 0.5f, z1 - z0), _floor);
+                var floor = Box(parent, "Floor_" + name, new Vector3((x0 + x1) / 2f, -0.25f, (z0 + z1) / 2f), new Vector3(x1 - x0, 0.5f, z1 - z0), _floor);
+                floor.AddComponent<FloorSurface>().Surface = LevelAudio.SurfaceFor(name);
                 Box(parent, "Ceiling_" + name, new Vector3((x0 + x1) / 2f, WallH + 0.15f, (z0 + z1) / 2f), new Vector3(x1 - x0, 0.3f, z1 - z0), _wall);
             }
 
