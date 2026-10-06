@@ -91,14 +91,14 @@ namespace NocturneAnnex.Tests.PlayMode
             yield return Teleport(new Vector3(-12f, 0.1f, 18f));
             string heard = null;
             _steps.StepTaken += c => heard = c;
-            _steps.Advance(FootstepPlayer.WalkStride, grounded: true, crouched: false, sprinting: false);
+            _steps.Advance(_steps.WalkStride, grounded: true, crouched: false, sprinting: false);
             Assert.AreEqual("footstep.carpet", heard);
             Assert.AreEqual("footstep.carpet", _steps.LastCueId);
 
             heard = null;
-            _steps.Advance(1f, true, crouched: true, sprinting: false);   // crouch stride is 1.2
+            _steps.Advance(_steps.CrouchStride * 0.6f, true, crouched: true, sprinting: false);
             Assert.IsNull(heard, "a short move is not yet a step");
-            _steps.Advance(0.5f, true, crouched: true, sprinting: false);
+            _steps.Advance(_steps.CrouchStride * 0.6f, true, crouched: true, sprinting: false);
             Assert.AreEqual("footstep.carpet", heard);
         }
 
