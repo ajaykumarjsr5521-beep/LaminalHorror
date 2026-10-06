@@ -6,7 +6,13 @@ Schedule: docs/14-sprint-plan.md (Sprint 1 ends Oct 11; Sprint 2 = F-10, Oct 12-
 - F-09b merged to `main` 2026-10-06. EditMode 253/253, PlayMode 148/148 on `main` (re-run after merge).
 - PlayMode hang fixed (Horror fixture left Level_B1 alive); run PlayMode under `timeout 540` and kill Unity.exe if it expires.
 
-## Now: F-10 spec and checklist (spec committed as first commit of the branch)
+## Next: liminal redesign (docs/15-liminal-redesign.md, branch docs/liminal-redesign)
+- [x] Audit and redesign written (DRAFT). Owner reviews it.
+- [ ] Owner decisions: slice-first (Hotel Meridian + The Guest) vs more; art source for the architecture kit; keep Floor B1 as prologue/hub
+- [ ] Then: write F-13 spec in doc 05, task checklist here, and only then code
+
+## F-10 (kept below until merged)
+## Done in F-10: spec and checklist (spec committed as first commit of the branch)
 - [x] F-10 spec in doc 05 (scope, AC1-AC9, tests, sub-steps)
 - [x] Owner decided: free CC0 audio now (may ship in closed test), commissioned later
 - [x] Step 1: cue list fixed in the spec
