@@ -5,8 +5,8 @@ using NocturneAnnex.Core;
 namespace NocturneAnnex.Settings
 {
     /// <summary>
-    /// Pushes settings into the live systems. Music and SFX volumes and Story mode have no consumer yet
-    /// (audio F-10, tension director F-09); they are stored and read by those features later.
+    /// Pushes settings into the live systems. Music and SFX volumes go to AudioLevels, which the audio
+    /// director follows (ambience uses the SFX level).
     /// </summary>
     public static class SettingsApplier
     {
@@ -23,6 +23,7 @@ namespace NocturneAnnex.Settings
             ControlsLayout.Scale = settings.TouchControlsScale;
             Accessibility.Set(settings.CaptionsEnabled, settings.TextSize, settings.ReduceFlicker, settings.ReduceMotion);
             AudioListener.volume = settings.MasterVolume;
+            AudioLevels.Set(settings.MusicVolume, settings.SfxVolume);
 
             if (settings.QualityLevel >= 0)
                 QualitySettings.SetQualityLevel(settings.QualityLevel, true);
