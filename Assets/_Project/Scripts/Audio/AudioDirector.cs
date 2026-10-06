@@ -21,6 +21,7 @@ namespace NocturneAnnex.Audio
             public AudioSource Source;
             public CueDefinition Cue;
             public float Volume;
+            public float Scale = 1f;
             public float StartedAt;
         }
 
@@ -60,6 +61,7 @@ namespace NocturneAnnex.Audio
 
             voice.Cue = cue;
             voice.Volume = Random.Range(cue.MinVolume, cue.MaxVolume) * Mathf.Clamp01(volumeScale);
+            voice.Scale = 1f;
             voice.StartedAt = Time.unscaledTime;
             var src = voice.Source;
             src.Stop();
@@ -71,6 +73,19 @@ namespace NocturneAnnex.Audio
             src.Play();
             if (cue.GameplayRelevant) Bus.Duck(AudioBus.DefaultDuckAmount, Mathf.Max(DuckSeconds, clip.length));
             return true;
+        }
+
+        /// <summary>Scales a playing cue's volume on top of its bus gain, e.g. the music drone following tension. 0 to 1.</summary>
+        public void SetVolumeScale(string cueId, float scale)
+        {
+            foreach (var v in _voices) if (v.Cue != null && v.Cue.Id == cueId) v.Scale = Mathf.Clamp01(scale);
+        }
+
+        /// <summary>Current volume of a playing cue, or -1 when it is not playing.</summary>
+        public float GetVolume(string cueId)
+        {
+            foreach (var v in _voices) if (v.Cue != null && v.Cue.Id == cueId && v.Source.isPlaying) return v.Source.volume;
+            return -1f;
         }
 
         public void Stop(string cueId)
@@ -108,7 +123,7 @@ namespace NocturneAnnex.Audio
         {
             Bus.Tick(Time.unscaledDeltaTime);   // unscaled so ducking still resolves while paused
             foreach (var v in _voices)
-                if (v.Cue != null && v.Source.isPlaying) v.Source.volume = v.Volume * Bus.Gain(v.Cue.Group);
+                if (v.Cue != null && v.Source.isPlaying) v.Source.volume = v.Volume * v.Scale * Bus.Gain(v.Cue.Group);
         }
     }
 }
