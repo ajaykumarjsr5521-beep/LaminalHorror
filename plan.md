@@ -10,7 +10,7 @@ Schedule: docs/14-sprint-plan.md (Sprint 1 ends Oct 11; Sprint 2 = F-10, Oct 12-
 - [x] F-10 spec in doc 05 (scope, AC1-AC9, tests, sub-steps)
 - [x] Owner decided: free CC0 audio now (may ship in closed test), commissioned later
 - [x] Step 1: cue list fixed in the spec
-- [ ] Step 2: budgets in spec (voices, audio MB, AAB share)
+- [x] Step 2: budgets in spec (16 voices, 60 MB on disk, 80 MB RAM)
 - [ ] Step 3: `CueCatalog` + EditMode caption-rule test (AC1)
 - [ ] Step 4: `AudioDirector` + mixer asset + ducking. Test: PlayMode AC5
 - [ ] Step 5: footstep surfaces. Test: PlayMode AC3
