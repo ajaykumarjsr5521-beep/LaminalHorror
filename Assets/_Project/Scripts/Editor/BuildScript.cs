@@ -19,7 +19,11 @@ namespace NocturneAnnex.Editor
         public static void BuildAndroidApk() => Build(BuildTarget.Android, $"{OutDir}/Android/NocturneAnnex.apk", BuildOptions.Development, aab: false);
 
         [MenuItem("Build/Android AAB (release)")]
-        public static void BuildAndroidAab() => Build(BuildTarget.Android, $"{OutDir}/Android/NocturneAnnex.aab", BuildOptions.None, aab: true);
+        public static void BuildAndroidAab()
+        {
+            AssetRegister.CheckForRelease();   // doc 09: nothing REQUIRES_REVIEW ships
+            Build(BuildTarget.Android, $"{OutDir}/Android/NocturneAnnex.aab", BuildOptions.None, aab: true);
+        }
 
         [MenuItem("Build/Windows x64")]
         public static void BuildWindows() => Build(BuildTarget.StandaloneWindows64, $"{OutDir}/Windows/NocturneAnnex.exe", BuildOptions.None, aab: false);
