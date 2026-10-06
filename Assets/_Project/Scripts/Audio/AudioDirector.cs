@@ -8,9 +8,17 @@ namespace NocturneAnnex.Audio
     /// Plays cues by id from a fixed pool of voices, applies bus gain to every playing voice, posts a cue's caption
     /// and ducks Music and Ambience while a gameplay-relevant cue plays. A missing clip logs one warning (clips arrive later than code) and the caption still posts.
     /// </summary>
-    public class AudioDirector : MonoBehaviour
+    public class AudioDirector : MonoBehaviour, ICuePlayer
     {
         public const int MaxVoices = 16;
+
+        void OnEnable() => Cues.Player = this;
+
+        void OnDisable()
+        {
+            if (ReferenceEquals(Cues.Player, this)) Cues.Player = null;
+        }
+
         const float DuckSeconds = 1.5f;
 
         public CueCatalog Catalog;
@@ -44,6 +52,8 @@ namespace NocturneAnnex.Audio
         /// Plays a cue. A position makes it 3D, otherwise 2D. Returns false for an unknown id, a missing clip or no free voice. <paramref name="volumeScale"/> quietens a play, e.g. crouched steps
         /// (a gameplay-relevant cue steals the oldest voice instead). The caption posts whenever the cue is known.
         /// </summary>
+        public bool Play(string cueId, Vector3? position) => Play(cueId, position, false, 1f);
+
         public bool Play(string cueId, Vector3? position = null, bool loop = false, float volumeScale = 1f)
         {
             var cue = Catalog != null ? Catalog.Find(cueId) : null;
