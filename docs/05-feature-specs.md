@@ -220,7 +220,17 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 ## F-10 Lighting, audio & level art pass — IN_PROGRESS (UNVERIFIED: spec only, 2026-10-06)
 - **Scope:** (a) audio: ambience beds per zone, footsteps by surface, music drone that follows tension, event stingers hooked into the six F-09b events, an `AudioMixer` with ducking; (b) lighting: baked lighting for Level_B1, at most 2 realtime lights, post-FX (vignette/grain) tuned for mobile; (c) performance: occlusion culling and LODs only where the profile shows a need. **Excl.:** Indexer sounds (F-11), voice, localised audio, new levels, real-device measurement until a device exists (sprint plan, Day 4).
 - **Accessibility (from F-08):** every gameplay-relevant sound has a caption key in `DefaultStrings` and posts it through `Captions.Post`; flicker uses `SafeFlicker`; camera motion uses `Accessibility.MotionScale`. Ambience beds, the music drone and the player's own footsteps are not gameplay-relevant and need no caption. Volume sliders (Music, SFX) exist in settings and drive the mixer.
-- **Cue list (to be fixed in step 1):** the six existing event cues (caption keys `event.light_buzz`, `event.door_slam`, `event.prop_shift`, `event.whisper`, `event.misfile`, `event.figure` already exist) get a clip each; door open/close and locked-door cues; pickup and note cues; checkpoint chime. A new gameplay-relevant cue added later without a caption key must fail the cue test.
+- **Cue list (fixed 2026-10-06):** a cue is gameplay-relevant when it tells the player something they did not cause. Those need a caption key.
+  | Cue id | When | Gameplay-relevant | Caption key |
+  |---|---|---|---|
+  | `event.light_buzz`, `event.door_slam`, `event.prop_shift`, `event.whisper`, `event.misfile`, `event.figure` | the six F-09b events | yes | same as the id (all exist) |
+  | `checkpoint.chime` | checkpoint saved | yes | `level.checkpoint_saved` (exists) |
+  | `door.open`, `door.close`, `door.locked` | player uses a door | no (player-caused; locked already shows `door.message.locked`) | none |
+  | `pickup.take`, `note.open` | player action | no | none |
+  | `footstep.<surface>` | player walks (surfaces: tile, carpet, concrete, to be confirmed against Level_B1) | no | none |
+  | `amb.<zone>` | zones: hall, stacks, records, break_room, dock | no | none |
+  | `music.drone` | follows tension | no | none |
+  The `door_slam` clip is the same as `door.close` played louder, not a separate asset. Ambience and music are looped beds.
 - **Design:** a `CueCatalog` ScriptableObject maps a cue id to clips, mixer group, caption key (empty only for non-gameplay cues) and volume range. `AudioDirector` plays cues by id, 3D or 2D. A footstep component reads the surface under the player (physic material or tag) and picks a clip set. The music drone volume follows `TensionDirector.Tension`. Ducking lowers music and ambience while a stinger or caption-worthy cue plays. A missing clip logs an error once and the cue still posts its caption (same rule as F-09b's audio cue).
 - **Budgets:** at most 2 realtime lights, rest baked; at most 16 simultaneous voices; audio memory counts against peak RAM in doc 06 (Low <= 1.2 GB); audio share of the AAB target stays in a budget recorded in step 2.
 - **AC:**
@@ -234,7 +244,7 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
   8. Asset register (doc 09): every audio file and every third-party asset used has a row with status CLEARED or ORIGINAL; a build check fails on any REQUIRES_REVIEW row used in a shipped scene.
   9. Performance (doc 06 targets): profiler capture on the reference devices. **Not verifiable until a device exists;** until then only an Editor capture is recorded and marked as such.
 - **Test:** EditMode (caption rule, tension mapping, register audit), PlayMode on Level_B1 (events, footsteps, ducking, sliders), manual screenshot review, device profiler capture later. How scary it sounds needs a person.
-- **Open decisions for the owner:** audio sources (CC0 libraries vs. generated placeholders vs. commissioned); whether placeholders may ship in the closed test.
+- **Decisions (owner, 2026-10-06):** audio comes from free CC0 sources now (each file gets a CLEARED register row with source URL); commissioned audio replaces it in a later scope. Free CC0 audio may ship in the closed test.
 - **Sub-steps (one commit per file):** spec (this commit), cue list and budgets in the spec, `CueCatalog`, `AudioDirector`, mixer asset, footstep surfaces, music drone mapping, event clip hookup in `HorrorEventSpot`, settings sliders, lighting bake and light-count check, asset register rows, tests, docs.
 
 ## F-11 The Indexer (conditional on D4) — TODO
