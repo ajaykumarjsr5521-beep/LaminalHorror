@@ -8,8 +8,8 @@ Schedule: docs/14-sprint-plan.md (Sprint 1 ends Oct 11; Sprint 2 = F-10, Oct 12-
 
 ## Now: F-10 spec and checklist (spec committed as first commit of the branch)
 - [x] F-10 spec in doc 05 (scope, AC1-AC9, tests, sub-steps)
-- [ ] Owner: decide audio sources (CC0 / generated placeholders / commissioned) and whether placeholders may ship in the closed test
-- [ ] Step 1: fix the cue list (ids, caption keys, gameplay-relevant flag) in the spec. Test: none (doc)
+- [x] Owner decided: free CC0 audio now (may ship in closed test), commissioned later
+- [x] Step 1: cue list fixed in the spec
 - [ ] Step 2: budgets in spec (voices, audio MB, AAB share)
 - [ ] Step 3: `CueCatalog` + EditMode caption-rule test (AC1)
 - [ ] Step 4: `AudioDirector` + mixer asset + ducking. Test: PlayMode AC5
@@ -22,5 +22,4 @@ Schedule: docs/14-sprint-plan.md (Sprint 1 ends Oct 11; Sprint 2 = F-10, Oct 12-
 - [ ] Doc 05 status, doc 12 row, CHANGELOG at the end of each day; stop before merge
 
 ## Open questions for the owner
-- Audio sources and placeholder policy (above).
 - No Android device yet: AC9 (device profiler) stays UNVERIFIED until one exists (Day 4: Android Build Support).
