@@ -12,10 +12,24 @@ namespace NocturneAnnex.Audio
     {
         public const int MaxVoices = 16;
 
-        void OnEnable() => Cues.Player = this;
+        void OnEnable()
+        {
+            Cues.Player = this;
+            AudioLevels.Changed += ApplyLevels;
+            ApplyLevels();
+        }
+
+        /// <summary>Follows the player's volume settings: Music to the Music bus, SFX to the Sfx and Ambience buses.</summary>
+        void ApplyLevels()
+        {
+            Bus.SetSlider(CueCatalog.Music, AudioLevels.Music);
+            Bus.SetSlider(CueCatalog.Sfx, AudioLevels.Sfx);
+            Bus.SetSlider(CueCatalog.Ambience, AudioLevels.Sfx);
+        }
 
         void OnDisable()
         {
+            AudioLevels.Changed -= ApplyLevels;
             if (ReferenceEquals(Cues.Player, this)) Cues.Player = null;
         }
 
