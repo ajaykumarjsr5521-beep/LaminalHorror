@@ -217,11 +217,25 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Test:** EditMode (flicker effect), PlayMode on Level_B1 with the runner advanced by simulated time. Manual pacing playtest and how scary or fair it feels need a person and, for audio, F-10.
 - **Sub-steps (one commit per file):** spec, `LightFlickerEffect` + tests, `HorrorEventAsset`, camera shake, `Door.Close`, `SafeZone`, `HorrorEventSpot`, `HorrorEventRunner`, save field and SaveGame hook, debug overlay, builder wiring, scene, PlayMode tests, docs.
 
-## F-10 Lighting, audio & level art pass — TODO
-- **Accessibility requirement (from F-08):** every gameplay-relevant sound has a caption key in `DefaultStrings` and posts it through `Captions.Post`; an EditMode test lists the cues and fails if one lacks a caption. Flicker uses `SafeFlicker`; camera motion uses `Accessibility.MotionScale`.
-- **Scope:** baked lighting, ≤2 realtime lights, ambience beds, footsteps, music drones, occlusion culling, LODs where needed, volume/post-FX (vignette/grain tuned for mobile).
-- **AC:** meets perf budgets (doc 06) on reference devices; no light-leak seams in lightmaps on review; audio mix ducking works; all assets in register (doc 09) with status CLEARED.
-- **Test:** profiler capture on devices; asset register audit.
+## F-10 Lighting, audio & level art pass — IN_PROGRESS (UNVERIFIED: spec only, 2026-10-06)
+- **Scope:** (a) audio: ambience beds per zone, footsteps by surface, music drone that follows tension, event stingers hooked into the six F-09b events, an `AudioMixer` with ducking; (b) lighting: baked lighting for Level_B1, at most 2 realtime lights, post-FX (vignette/grain) tuned for mobile; (c) performance: occlusion culling and LODs only where the profile shows a need. **Excl.:** Indexer sounds (F-11), voice, localised audio, new levels, real-device measurement until a device exists (sprint plan, Day 4).
+- **Accessibility (from F-08):** every gameplay-relevant sound has a caption key in `DefaultStrings` and posts it through `Captions.Post`; flicker uses `SafeFlicker`; camera motion uses `Accessibility.MotionScale`. Ambience beds, the music drone and the player's own footsteps are not gameplay-relevant and need no caption. Volume sliders (Music, SFX) exist in settings and drive the mixer.
+- **Cue list (to be fixed in step 1):** the six existing event cues (caption keys `event.light_buzz`, `event.door_slam`, `event.prop_shift`, `event.whisper`, `event.misfile`, `event.figure` already exist) get a clip each; door open/close and locked-door cues; pickup and note cues; checkpoint chime. A new gameplay-relevant cue added later without a caption key must fail the cue test.
+- **Design:** a `CueCatalog` ScriptableObject maps a cue id to clips, mixer group, caption key (empty only for non-gameplay cues) and volume range. `AudioDirector` plays cues by id, 3D or 2D. A footstep component reads the surface under the player (physic material or tag) and picks a clip set. The music drone volume follows `TensionDirector.Tension`. Ducking lowers music and ambience while a stinger or caption-worthy cue plays. A missing clip logs an error once and the cue still posts its caption (same rule as F-09b's audio cue).
+- **Budgets:** at most 2 realtime lights, rest baked; at most 16 simultaneous voices; audio memory counts against peak RAM in doc 06 (Low <= 1.2 GB); audio share of the AAB target stays in a budget recorded in step 2.
+- **AC:**
+  1. Every cue in the catalog with a gameplay-relevant flag has a non-empty caption key that exists in `DefaultStrings` (EditMode; the test fails if one lacks it).
+  2. Each of the six F-09b events plays its clip through the mixer when fired in PlayMode (clip played, correct mixer group) and still posts its caption with the clip missing.
+  3. Footsteps: stepping on each authored surface selects that surface's clip set; an unknown surface falls back to default (PlayMode).
+  4. Music drone volume rises with tension and falls with it, within the configured range; silent when blocked or paused (EditMode on the mapping, PlayMode for pause).
+  5. Ducking: while a stinger plays, the music group level is lowered by the configured amount and restored after (PlayMode, reading the mixer parameter).
+  6. Music and SFX sliders change the mixer groups and persist with settings (PlayMode).
+  7. Level_B1 has at most 2 realtime lights and baked lightmaps (editor check test), and no light-leak seams on a screenshot review at 5 listed viewpoints.
+  8. Asset register (doc 09): every audio file and every third-party asset used has a row with status CLEARED or ORIGINAL; a build check fails on any REQUIRES_REVIEW row used in a shipped scene.
+  9. Performance (doc 06 targets): profiler capture on the reference devices. **Not verifiable until a device exists;** until then only an Editor capture is recorded and marked as such.
+- **Test:** EditMode (caption rule, tension mapping, register audit), PlayMode on Level_B1 (events, footsteps, ducking, sliders), manual screenshot review, device profiler capture later. How scary it sounds needs a person.
+- **Open decisions for the owner:** audio sources (CC0 libraries vs. generated placeholders vs. commissioned); whether placeholders may ship in the closed test.
+- **Sub-steps (one commit per file):** spec (this commit), cue list and budgets in the spec, `CueCatalog`, `AudioDirector`, mixer asset, footstep surfaces, music drone mapping, event clip hookup in `HorrorEventSpot`, settings sliders, lighting bake and light-count check, asset register rows, tests, docs.
 
 ## F-11 The Indexer (conditional on D4) — TODO
 - **Scope:** NavMesh patrol, hearing/vision, chase ≤12 s, hide spots, checkpoint-respawn. **Excl.:** multiple enemy types.
