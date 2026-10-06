@@ -247,6 +247,10 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Decisions (owner, 2026-10-06):** audio comes from free CC0 sources now (each file gets a CLEARED register row with source URL); commissioned audio replaces it in a later scope. Free CC0 audio may ship in the closed test.
 - **Sub-steps (one commit per file):** spec (this commit), cue list and budgets in the spec, `CueCatalog`, `AudioBus`, `AudioDirector`, footstep surfaces, music drone mapping, event clip hookup in `HorrorEventSpot`, settings sliders, lighting bake and light-count check, asset register rows, tests, docs.
 
+## F-13 Liminal vertical slice (Hotel Meridian) — TODO (spec to be written after the owner reviews docs/15-liminal-redesign.md)
+- **Scope (proposed):** the framework in doc 15 section 16 (entity phases, legends, rules, anomalies, music and ambience states, level definition) plus one large level, Hotel Meridian, with the entity The Guest. **Excl.:** levels 2-10, the Indexer as a standalone feature, device profiling.
+- **Why a slice:** doc 15 section 2: ten levels is an order of magnitude beyond the current plan; prove the framework on one level first.
+
 ## F-11 The Indexer (conditional on D4) — TODO
 - **Scope:** NavMesh patrol, hearing/vision, chase ≤12 s, hide spots, checkpoint-respawn. **Excl.:** multiple enemy types.
 - **AC:** never unavoidable (a valid escape exists for every encounter, verified on authored route); detection respects crouch/noise; Story mode halves detection; CPU ≤1 ms/frame on ref device; no softlocks on respawn.
