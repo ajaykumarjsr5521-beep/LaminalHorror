@@ -10,6 +10,7 @@
     "NocturneAnnex.Puzzle",
     "NocturneAnnex.Level",
     "NocturneAnnex.Horror",
+    "NocturneAnnex.Audio",
     "NocturneAnnex.Save",
     "NocturneAnnex.Settings",
     "NocturneAnnex.UI",
