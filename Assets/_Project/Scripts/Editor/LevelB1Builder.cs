@@ -50,6 +50,7 @@ namespace NocturneAnnex.Editor
 
             var geo = new GameObject("Geometry").transform;
             BuildShell(geo);
+            LevelLighting.MarkShellStatic(geo);   // only the shell exists under Geometry so far; doors and props are added after
             var doors = BuildDoors(geo);
             var props = BuildProps(geo, db, doors.codeDoor, out var finalLock);
             BuildLights();
@@ -90,6 +91,8 @@ namespace NocturneAnnex.Editor
             LevelEvents.Build(level, save, player.GetComponentInChildren<Camera>());
             LevelHudBuilder.Build(interactor, inventory, finalLock, level);
 
+            EditorSceneManager.SaveScene(scene, ScenePath);
+            if (!LevelLighting.Bake()) Debug.LogError("Level_B1 lightmap bake did not finish; the baked lights will not light the level.");
             EditorSceneManager.SaveScene(scene, ScenePath);
             var scenes = EditorBuildSettings.scenes.Where(s => s.path != ScenePath).ToList();
             scenes.Add(new EditorBuildSettingsScene(ScenePath, true));
@@ -269,6 +272,7 @@ namespace NocturneAnnex.Editor
                 l.intensity = 7f;
                 l.range = Mathf.Max(x1 - x0, z1 - z0) * 0.9f;
                 l.transform.position = new Vector3((x0 + x1) / 2f, 2.6f, (z0 + z1) / 2f);
+                LevelLighting.ConfigureLight(l, name);
             }
         }
 
