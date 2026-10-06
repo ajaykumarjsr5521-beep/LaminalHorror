@@ -247,9 +247,21 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Decisions (owner, 2026-10-06):** audio comes from free CC0 sources now (each file gets a CLEARED register row with source URL); commissioned audio replaces it in a later scope. Free CC0 audio may ship in the closed test.
 - **Sub-steps (one commit per file):** spec (this commit), cue list and budgets in the spec, `CueCatalog`, `AudioBus`, `AudioDirector`, footstep surfaces, music drone mapping, event clip hookup in `HorrorEventSpot`, settings sliders, lighting bake and light-count check, asset register rows, tests, docs.
 
-## F-13 Liminal vertical slice (Hotel Meridian) — TODO (spec to be written after the owner reviews docs/15-liminal-redesign.md)
-- **Scope (proposed):** the framework in doc 15 section 16 (entity phases, legends, rules, anomalies, music and ambience states, level definition) plus one large level, Hotel Meridian, with the entity The Guest. **Excl.:** levels 2-10, the Indexer as a standalone feature, device profiling.
-- **Why a slice:** doc 15 section 2: ten levels is an order of magnitude beyond the current plan; prove the framework on one level first.
+## F-13 Liminal framework and vertical slice — IN_PROGRESS (UNVERIFIED: spec only, 2026-10-06)
+- **Decisions taken (2026-10-06, autonomous, owner to review):** slice-first (one level, Hotel Meridian with The Guest); Floor B1 stays as prologue and hub; the Indexer becomes entity 10 of this framework (F-11 is folded in); art kit sourced from CC0 libraries, each file registered in doc 09. Design reference: docs/15-liminal-redesign.md.
+- **Scope F-13a (framework, plain C#, EditMode-tested, no scene):** new assembly `NocturneAnnex.Liminal` with `EntityPhaseMachine` (phases Legend to Aftermath, evidence-gated, no skipping, no Hunt before enough legend entries), `LegendProgress`, `RuleSystem` (edge-triggered violations, announced mutation only), `QuietTimePolicy` (minimum gaps per phase), `AttentionTracker` (watched and unwatched time), `MusicStateSelector` (experience state to music state), `AnomalyDirector` and `RoomSnapshot` (authored anomalies, memory comparison), `LevelDefinitionValidator` (liminality checklist as data). **Scope F-13b (later specs):** greybox of Hotel Meridian at real scale, music and ambience directors playing real stems, The Guest content, art pass. **Excl.:** levels 2-10, device profiling.
+- **AC (F-13a):**
+  1. Phases advance one step at a time as evidence thresholds are met; never skip; never enter Hunt before the configured number of legend entries; Survival and Aftermath only via explicit calls.
+  2. Phase and evidence snapshot and restore exactly; unknown values are rejected or clamped.
+  3. Legend entries are counted once each; snapshot and restore keep them.
+  4. A rule violation fires once when its flag turns true, not every frame, and again only after the flag turned false; a mutation without an announcement throws.
+  5. Quiet-time policy: at least 90 s between manifestations up to Presence, 45 s in Hunt, at least 180 s after Aftermath; blocked or just-aftermath time never allows one.
+  6. Attention tracker reports watched and unwatched seconds correctly and resets on a change.
+  7. Music state: Hunt gives Hunting; Aftermath gives Silence for its window; Presence and EntityNear rules by distance; vista gives Wonder only before Presence; otherwise Exploration (deterministic, EditMode).
+  8. Anomalies fire only for their trigger, never twice, never without an evidence link; a room snapshot detects exactly the changed tracked objects.
+  9. Level validator reports: no hero vista, a room-door-room chain longer than 2, ceiling below its minimum, more than 2 realtime lights, an entity cue without a caption, a missing legend entry, each as its own message.
+- **Test:** EditMode for every AC (all logic is plain C#); PlayMode only from F-13b.
+- **Sub-steps (one commit per file):** spec, assembly, one source file and one test file per system, plan.
 
 ## F-11 The Indexer (conditional on D4) — TODO
 - **Scope:** NavMesh patrol, hearing/vision, chase ≤12 s, hide spots, checkpoint-respawn. **Excl.:** multiple enemy types.
