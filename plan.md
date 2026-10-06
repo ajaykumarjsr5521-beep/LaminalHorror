@@ -16,7 +16,7 @@ Schedule: docs/14-sprint-plan.md (Sprint 1 ends Oct 11; Sprint 2 = F-10, Oct 12-
 - [x] Step 5: footsteps by surface (FloorSurface, FootstepTimer, FootstepPlayer, catalog asset, Level_B1 regenerated). EditMode 267/267, PlayMode 158/158
 - [x] Step 6: music drone follows tension, silent when blocked (MusicDroneModel, MusicDrone). EditMode 271/271, PlayMode 160/160
 - [x] Step 7: events play their cue via Cues.Play (AC2). EditMode 271/271, PlayMode 162/162
-- [ ] Step 8: Music/SFX sliders in settings. Test: AC6
+- [x] Step 8: Music/SFX sliders drive the buses via AudioLevels (AC6; persistence was already tested in SettingsStoreTests). EditMode 271/271, PlayMode 164/164
 - [ ] Step 9: lighting bake, 2-realtime-light check, screenshots. Test: AC7
 - [ ] Step 10: asset register rows + build check. Test: AC8
 - [ ] Doc 05 status, doc 12 row, CHANGELOG at the end of each day; stop before merge
