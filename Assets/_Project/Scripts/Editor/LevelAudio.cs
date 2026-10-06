@@ -40,6 +40,7 @@ namespace NocturneAnnex.Editor
             var steps = player.AddComponent<FootstepPlayer>();
             steps.Director = director;
             steps.Motor = player.GetComponent<PlayerMotor>();
+            root.AddComponent<MusicDrone>().Director = director;
         }
 
         /// <summary>Footstep surface for a level area: carpet in the stacks and records, concrete on the dock, tile elsewhere.</summary>
