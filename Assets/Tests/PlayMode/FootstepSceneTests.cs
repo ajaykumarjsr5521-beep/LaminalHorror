@@ -66,6 +66,9 @@ namespace NocturneAnnex.Tests.PlayMode
             Assert.IsNotNull(_steps);
             Assert.IsNotNull(_steps.Director);
             Assert.IsNotNull(_steps.Director.Catalog);
+            var drone = Object.FindFirstObjectByType<MusicDrone>();
+            Assert.IsNotNull(drone, "the level needs a music drone");
+            Assert.IsNotNull(drone.TensionSource, "the drone must bind to the horror runner's tension");
             CollectionAssert.IsEmpty(_steps.Director.Catalog.Validate(Loc.Has));
         }
 
