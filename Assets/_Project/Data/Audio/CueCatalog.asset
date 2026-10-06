@@ -1,0 +1,162 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d2c2d3d73dfdb4cb298faa5111c2f5, type: 3}
+  m_Name: CueCatalog
+  m_EditorClassIdentifier: NocturneAnnex.Audio::NocturneAnnex.Audio.CueCatalog
+  Cues:
+  - Id: event.light_buzz
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: event.light_buzz
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: event.door_slam
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: event.door_slam
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: event.prop_shift
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: event.prop_shift
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: event.whisper
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: event.whisper
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: event.misfile
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: event.misfile
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: event.figure
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: event.figure
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: checkpoint.chime
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: level.checkpoint_saved
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: door.open
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: door.close
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: door.locked
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: pickup.take
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: note.open
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: footstep.tile
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: footstep.carpet
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: footstep.concrete
+    Clips: []
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: amb.hall
+    Clips: []
+    Group: Ambience
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: amb.stacks
+    Clips: []
+    Group: Ambience
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: amb.records
+    Clips: []
+    Group: Ambience
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: amb.break_room
+    Clips: []
+    Group: Ambience
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: amb.dock
+    Clips: []
+    Group: Ambience
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: music.drone
+    Clips: []
+    Group: Music
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
