@@ -263,6 +263,20 @@ Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies
 - **Test:** EditMode for every AC (all logic is plain C#); PlayMode only from F-13b.
 - **Sub-steps (one commit per file):** spec, assembly, one source file and one test file per system, plan.
 
+### F-13b Hotel Meridian greybox and liminal runtime — IN_PROGRESS (UNVERIFIED: spec only, 2026-10-06)
+- **Scope:** (1) `HotelBuilder` editor tool builds a real-scale greybox scene `Hotel_Meridian`: a lobby atrium at least 30 m wide, 46 m deep and 12 m high with a mezzanine ring and two stairs, reception desk, lit sign and elevator bank as landmarks, a glass front wall with a glowing night view, and an east wing corridor at least 50 m long with doors along both sides. Bright, fogged, baked light, at most 2 realtime lights. (2) `LiminalDirector` runtime: owns `LegendProgress`, `EntityPhaseMachine`, `RuleSystem`, `AttentionTracker`; `LegendPickup` interactable notes add evidence; the music state from `MusicStateSelector` is published. (3) One manifestation of The Guest: a silhouette in the glass wall that appears only from phase Sighting, only while the player is not looking, never inside the quiet window. **Excl.:** real art, entity hunt, other levels, hotel music stems (placeholder CC0 audio only).
+- **Design:** the builder reuses the Floor B1 builder helpers (made internal). Scale is measured by a `LevelSpec` filled from the loaded scene by raycasts, then run through `LevelSpecValidator` (hero vista, ceiling, realtime lights, door chains).
+- **AC:**
+  1. From the spawn point a forward raycast travels at least 40 m, the atrium ceiling is at least 12 m above the floor, and a mezzanine collider exists about 5 m up (PlayMode).
+  2. The east corridor is at least 50 m long, with at least 8 door frames (PlayMode).
+  3. The scene has at most 2 realtime lights, at least 6 baked lights, fog on, and baked lightmaps (PlayMode).
+  4. The `LevelSpecValidator` passes for the measured scene (PlayMode).
+  5. Reading a legend note raises evidence once; phases advance as in F-13a; reading the same note twice gives nothing (PlayMode).
+  6. The Guest silhouette stays hidden before Sighting and while watched, and respects the 90 s quiet window (PlayMode with simulated time).
+  7. The player can walk from the spawn to the end of the wing and back without getting stuck (PlayMode, scripted movement).
+- **Test:** PlayMode on the built scene; screenshots at the hero vista and in the corridor for review (a person judges whether it looks right).
+- **Sub-steps (one commit per file):** spec, make builder helpers internal, `LevelLighting` bake parameters, `HotelBuilder`, scene, `LiminalDirector`, `LegendPickup`, `GuestManifestation`, tests, docs.
+
 ## F-11 The Indexer (conditional on D4) — TODO
 - **Scope:** NavMesh patrol, hearing/vision, chase ≤12 s, hide spots, checkpoint-respawn. **Excl.:** multiple enemy types.
 - **AC:** never unavoidable (a valid escape exists for every encounter, verified on authored route); detection respects crouch/noise; Story mode halves detection; CPU ≤1 ms/frame on ref device; no softlocks on respawn.
