@@ -22,6 +22,7 @@ namespace NocturneAnnex.Tests.PlayMode
         public void SetUp()
         {
             Accessibility.Reset();
+            AudioLevels.Reset();
             Captions.Service.Clear();
             _clip = AudioClip.Create("test", 44100 * 3, 1, 44100, false);   // 3 s of silence
             _cat = CueCatalog.CreateDefault();
@@ -37,6 +38,7 @@ namespace NocturneAnnex.Tests.PlayMode
             Object.DestroyImmediate(_go);
             Object.DestroyImmediate(_cat);
             Object.DestroyImmediate(_clip);
+            AudioLevels.Reset();
             Captions.Service.Clear();
         }
 
@@ -71,6 +73,7 @@ namespace NocturneAnnex.Tests.PlayMode
         [UnityTest]
         public IEnumerator GameplayCue_DucksMusic_ThenItRecovers()
         {
+            AudioLevels.Set(1f, 1f);   // full sliders, so the duck factor is read directly
             _dir.Play("event.whisper", Vector3.zero);
             float until = Time.realtimeSinceStartup + 5f;   // frames are fast in batch mode, so wait for the duck instead of counting frames
             while (_dir.Bus.Gain(CueCatalog.Music) > 0.55f && Time.realtimeSinceStartup < until) yield return null;
@@ -92,6 +95,35 @@ namespace NocturneAnnex.Tests.PlayMode
             _dir.Bus.SetSlider(CueCatalog.Sfx, 0.25f);
             yield return null;
             Assert.AreEqual(full * 0.25f, src.volume, 1e-4f);
+        }
+
+        [UnityTest]
+        public IEnumerator SettingsSliders_DriveTheBuses_AndPlayingVoices()
+        {
+            _dir.Play("door.open", Vector3.zero);
+            yield return null;
+            var src = _go.GetComponentsInChildren<AudioSource>().First(s => s.isPlaying);
+            float full = src.volume;
+
+            var settings = new NocturneAnnex.Settings.SettingsData { MusicVolume = 0.3f, SfxVolume = 0.5f };
+            NocturneAnnex.Settings.SettingsApplier.Apply(settings, null);
+            yield return null;
+            Assert.AreEqual(0.3f, _dir.Bus.Slider(CueCatalog.Music), 1e-4f);
+            Assert.AreEqual(0.5f, _dir.Bus.Slider(CueCatalog.Sfx), 1e-4f);
+            Assert.AreEqual(0.5f, _dir.Bus.Slider(CueCatalog.Ambience), 1e-4f);
+            Assert.AreEqual(full * 0.5f, src.volume, 1e-4f);
+        }
+
+        [UnityTest]
+        public IEnumerator ANewDirector_StartsFromTheCurrentSettings()
+        {
+            AudioLevels.Set(0.2f, 0.4f);
+            var go = new GameObject("Second");
+            var d = go.AddComponent<AudioDirector>();
+            yield return null;
+            Assert.AreEqual(0.2f, d.Bus.Slider(CueCatalog.Music), 1e-4f);
+            Assert.AreEqual(0.4f, d.Bus.Slider(CueCatalog.Sfx), 1e-4f);
+            Object.DestroyImmediate(go);
         }
 
         [UnityTest]
