@@ -1,21 +1,26 @@
 # plan.md — current work (update at the end of each day)
 
-Schedule: docs/14-sprint-plan.md (Sprint 1, Day 1 = 2026-10-05). Branch: `feature/F-09b-horror-events`.
+Schedule: docs/14-sprint-plan.md (Sprint 1 ends Oct 11; Sprint 2 = F-10, Oct 12-18). Branch: `feature/F-10-lighting-audio` (cut from `main`).
 
-## Today: Day 1 — verify F-09b
-- [x] Commit F-09b code (22 commits) and docs, push
-- [x] EditMode: 251/251 pass
-- [x] Horror PlayMode fixture alone: 16/16 pass (38 s)
-- [x] Full PlayMode freeze FIXED: Horror fixture left the Level_B1 scene alive under the next fixture (hang right after its last test, with InputRouterModal + Interactable/Interactor). TearDown now destroys the scene roots; SetUp resets timeScale/ModalGate; [Timeout(120000)] + real-time cap on game-time loops so a hang fails instead of freezing. Full PlayMode: 144/144 in 60 s.
-- [x] Code review found 4 bugs (restart kept fired one-shots; props not reset; disable mid-effect; busy spot ate a one-shot): all fixed with tests. EditMode 253/253, PlayMode 148/148.
-- [x] Fix failures in F-09b files only (done above)
-- [x] AC6 covered by OneHourOfUnsafePlay test; AC8 by `#if` code check
-- [x] Doc 05: F-09b result with real numbers; doc 12 row; CHANGELOG entry (one commit each), push
-- [ ] Stop before merge; owner reviews
+## Done
+- F-09b merged to `main` 2026-10-06. EditMode 253/253, PlayMode 148/148 on `main` (re-run after merge).
+- PlayMode hang fixed (Horror fixture left Level_B1 alive); run PlayMode under `timeout 540` and kill Unity.exe if it expires.
+
+## Now: F-10 spec and checklist (spec committed as first commit of the branch)
+- [x] F-10 spec in doc 05 (scope, AC1-AC9, tests, sub-steps)
+- [ ] Owner: decide audio sources (CC0 / generated placeholders / commissioned) and whether placeholders may ship in the closed test
+- [ ] Step 1: fix the cue list (ids, caption keys, gameplay-relevant flag) in the spec. Test: none (doc)
+- [ ] Step 2: budgets in spec (voices, audio MB, AAB share)
+- [ ] Step 3: `CueCatalog` + EditMode caption-rule test (AC1)
+- [ ] Step 4: `AudioDirector` + mixer asset + ducking. Test: PlayMode AC5
+- [ ] Step 5: footstep surfaces. Test: PlayMode AC3
+- [ ] Step 6: music drone follows tension. Test: AC4
+- [ ] Step 7: hook clips into the six events in `HorrorEventSpot`. Test: AC2
+- [ ] Step 8: Music/SFX sliders in settings. Test: AC6
+- [ ] Step 9: lighting bake, 2-realtime-light check, screenshots. Test: AC7
+- [ ] Step 10: asset register rows + build check. Test: AC8
+- [ ] Doc 05 status, doc 12 row, CHANGELOG at the end of each day; stop before merge
 
 ## Open questions for the owner
-- Revert Unity auto-edits (`InputManager.asset`, TMP font)? Currently left uncommitted.
-
-## Next (Day 2-3)
-- Day 2: fix anything left; AC6/AC8 checks. Day 3: mark F-09b done, merge after review.
-- Day 4: owner actions (branch protection, LFS, CI secrets), Android Build Support.
+- Audio sources and placeholder policy (above).
+- No Android device yet: AC9 (device profiler) stays UNVERIFIED until one exists (Day 4: Android Build Support).
