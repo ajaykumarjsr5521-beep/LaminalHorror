@@ -15,7 +15,7 @@ Schedule: docs/14-sprint-plan.md (Sprint 1 ends Oct 11; Sprint 2 = F-10, Oct 12-
 - [x] Step 4: `AudioBus` (EditMode 4/4) and `AudioDirector` (PlayMode 6/6): pool of 16, caption, ducking, sliders. Full suites: EditMode 261/261, PlayMode 154/154. No mixer asset (see spec)
 - [x] Step 5: footsteps by surface (FloorSurface, FootstepTimer, FootstepPlayer, catalog asset, Level_B1 regenerated). EditMode 267/267, PlayMode 158/158
 - [x] Step 6: music drone follows tension, silent when blocked (MusicDroneModel, MusicDrone). EditMode 271/271, PlayMode 160/160
-- [ ] Step 7: hook clips into the six events in `HorrorEventSpot`. Test: AC2
+- [x] Step 7: events play their cue via Cues.Play (AC2). EditMode 271/271, PlayMode 162/162
 - [ ] Step 8: Music/SFX sliders in settings. Test: AC6
 - [ ] Step 9: lighting bake, 2-realtime-light check, screenshots. Test: AC7
 - [ ] Step 10: asset register rows + build check. Test: AC8
