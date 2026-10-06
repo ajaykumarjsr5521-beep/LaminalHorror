@@ -6,15 +6,19 @@ Branch: `feature/F-13-liminal-framework` (cut from `docs/liminal-redesign`, whic
 - Slice-first: one level (Hotel Meridian, The Guest). Floor B1 = prologue/hub. Indexer = entity 10 (F-11 folded in). Art kit from CC0 libraries, registered in doc 09.
 
 ## F-13a checklist (plain C#, EditMode tests; one commit per file)
-- [ ] Assembly NocturneAnnex.Liminal + test asmdef reference
-- [ ] EntityPhaseMachine + LegendProgress (AC1-3)
-- [ ] RuleSystem (AC4)
-- [ ] QuietTimePolicy (AC5)
-- [ ] AttentionTracker (AC6)
-- [ ] MusicStateSelector (AC7)
-- [ ] AnomalyDirector + RoomSnapshot (AC8)
-- [ ] LevelDefinitionValidator (AC9)
-- [ ] Doc 05 status, doc 12 row, CHANGELOG; stop before merge
+- [x] Assembly NocturneAnnex.Liminal + test asmdef reference
+- [x] EntityPhaseMachine + LegendProgress (AC1-3)
+- [x] RuleSystem (AC4)
+- [x] QuietTimePolicy (AC5)
+- [x] AttentionTracker (AC6)
+- [x] MusicStateSelector (AC7)
+- [x] AnomalyDirector + RoomSnapshot (AC8)
+- [x] LevelDefinitionValidator (AC9)
+- [x] Doc 05 status, doc 12 row, CHANGELOG (EditMode 305/305). Stop before merge
+
+## F-13b next (greybox Hotel Meridian at real scale; spec first)
+- [ ] Spec F-13b in doc 05, then checklist here
+- [ ] Runtime glue: EntityDirector MonoBehaviour, ManifestationSpot, LegendEntry assets, save fields
 
 ## Waiting on the owner
 - Merge order: F-10, then docs/liminal-redesign, then F-13. Listen to F-10 audio; confirm CLEARED register rows.
