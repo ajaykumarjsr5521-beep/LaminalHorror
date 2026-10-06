@@ -14,147 +14,179 @@ MonoBehaviour:
   m_EditorClassIdentifier: NocturneAnnex.Audio::NocturneAnnex.Audio.CueCatalog
   Cues:
   - Id: event.light_buzz
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 53fcabeebad03894ba865b84f20a1aee, type: 3}
     Group: Sfx
     GameplayRelevant: 1
     CaptionKey: event.light_buzz
     MinVolume: 0.8
     MaxVolume: 1
   - Id: event.door_slam
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 85b33c09ca6a77641a7d7143bad19a9e, type: 3}
+    - {fileID: 8300000, guid: 70ae35e629e687e4a86abe66fb160ee1, type: 3}
     Group: Sfx
     GameplayRelevant: 1
     CaptionKey: event.door_slam
     MinVolume: 0.8
     MaxVolume: 1
   - Id: event.prop_shift
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 4b52999fbe0daf64e875a8a553684a9e, type: 3}
+    - {fileID: 8300000, guid: ac8383e05d1e7d44395aae7d1b8e613d, type: 3}
     Group: Sfx
     GameplayRelevant: 1
     CaptionKey: event.prop_shift
     MinVolume: 0.8
     MaxVolume: 1
   - Id: event.whisper
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 98598cc4eed997c42ae75d1ac5aefe07, type: 3}
     Group: Sfx
     GameplayRelevant: 1
     CaptionKey: event.whisper
     MinVolume: 0.8
     MaxVolume: 1
   - Id: event.misfile
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: e97fe9c276735a64d8a0c2ae814dc37f, type: 3}
     Group: Sfx
     GameplayRelevant: 1
     CaptionKey: event.misfile
     MinVolume: 0.8
     MaxVolume: 1
   - Id: event.figure
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 685c811aadc889744b8df8fb703c4424, type: 3}
     Group: Sfx
     GameplayRelevant: 1
     CaptionKey: event.figure
     MinVolume: 0.8
     MaxVolume: 1
   - Id: checkpoint.chime
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 4decc965b333b6a49aeb9ff03ad5ba79, type: 3}
     Group: Sfx
     GameplayRelevant: 1
     CaptionKey: level.checkpoint_saved
     MinVolume: 0.8
     MaxVolume: 1
   - Id: door.open
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 7fb1b8f74b3ea4c4888d2ed7396f41c2, type: 3}
+    - {fileID: 8300000, guid: 79984e5ee80c52847bbca7f79399fb4d, type: 3}
     Group: Sfx
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: door.close
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 08575fcab9c032048a1d6e2a52ab3ba7, type: 3}
+    - {fileID: 8300000, guid: b1afcbe0e9f0f224eb0a04a66219855d, type: 3}
     Group: Sfx
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: door.locked
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 41f3672d7d074bb40bb54deb49b407f9, type: 3}
     Group: Sfx
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: pickup.take
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: fce27f0bfc54b154291b4b0d8ad980ec, type: 3}
     Group: Sfx
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: note.open
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: e20048267a0c6674da3a7bb8451da3f1, type: 3}
     Group: Sfx
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: footstep.tile
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 7732ae11d463357448bd040afcbc49e8, type: 3}
+    - {fileID: 8300000, guid: 4ee5c4f606a31d4479f15da5fc7d3ca0, type: 3}
+    - {fileID: 8300000, guid: 908436a06c0ed6f40a130726ecd6e568, type: 3}
+    - {fileID: 8300000, guid: 939cb4ce143ba3841924cc96af4b1a66, type: 3}
     Group: Sfx
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: footstep.carpet
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 04b91ed412c75a542a9de2469c53546a, type: 3}
+    - {fileID: 8300000, guid: c91f7b46f6d2f8644bc8b30a23bb723f, type: 3}
+    - {fileID: 8300000, guid: 681adc57f77446247af394182d2f4ec3, type: 3}
     Group: Sfx
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: footstep.concrete
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: f8e3ced3732396f49aa0c882834c12ad, type: 3}
+    - {fileID: 8300000, guid: 1e0241ca291f76548b68dcd00b0db64d, type: 3}
+    - {fileID: 8300000, guid: c67bb868cdd56204f9fedcc844441081, type: 3}
     Group: Sfx
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: amb.hall
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: b8c71c21dabb12541b6d3bc5b545d283, type: 3}
     Group: Ambience
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: amb.stacks
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 2af3b7c844275f340963d97d48d95f04, type: 3}
     Group: Ambience
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: amb.records
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: a1c353da23fbc1b48bd609a38daff019, type: 3}
     Group: Ambience
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: amb.break_room
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 244bd76821545a641832afc557a29a42, type: 3}
     Group: Ambience
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: amb.dock
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 977bd96bba2ca654c9ec768fd2a5894c, type: 3}
     Group: Ambience
     GameplayRelevant: 0
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
   - Id: music.drone
-    Clips: []
+    Clips:
+    - {fileID: 8300000, guid: 977bd96bba2ca654c9ec768fd2a5894c, type: 3}
     Group: Music
     GameplayRelevant: 0
     CaptionKey: 
