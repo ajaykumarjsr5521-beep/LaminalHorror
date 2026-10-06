@@ -93,7 +93,11 @@ namespace NocturneAnnex.Horror
         IEnumerator Run(FlashBudget budget, CameraShake shake)
         {
             IsPlaying = true;
-            if (!string.IsNullOrEmpty(Event.CaptionKey)) Captions.Post(Event.CaptionKey);
+            if (!string.IsNullOrEmpty(Event.CaptionKey))
+            {
+                Captions.Post(Event.CaptionKey);
+                Cues.Play(Event.CaptionKey, SoundPosition());   // by convention an event's caption key is also its cue id
+            }
             switch (Event.Kind)
             {
                 case HorrorEventKind.LightFlicker: yield return Flicker(budget); break;
@@ -104,6 +108,20 @@ namespace NocturneAnnex.Horror
                 case HorrorEventKind.ShadowFigure: yield return ShowFigure(shake); break;
             }
             IsPlaying = false;
+        }
+
+        /// <summary>Where the event's sound comes from: the thing it acts on, else the spot itself.</summary>
+        Vector3 SoundPosition()
+        {
+            switch (Event.Kind)
+            {
+                case HorrorEventKind.LightFlicker: if (Lights.Length > 0 && Lights[0] != null) return Lights[0].transform.position; break;
+                case HorrorEventKind.DoorSlam: if (Door != null) return Door.transform.position; break;
+                case HorrorEventKind.PropShift: if (Prop != null) return Prop.position; break;
+                case HorrorEventKind.MisfileReveal: if (Reveal != null) return Reveal.transform.position; break;
+                case HorrorEventKind.ShadowFigure: if (Figure != null) return Figure.transform.position; break;
+            }
+            return transform.position;
         }
 
         IEnumerator Flicker(FlashBudget budget)
