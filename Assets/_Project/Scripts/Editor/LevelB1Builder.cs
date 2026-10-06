@@ -233,7 +233,7 @@ namespace NocturneAnnex.Editor
 
         // ---------- player, lights, checkpoints ----------
 
-        static GameObject BuildPlayer(ItemDatabase db, out Interactor interactor, out PlayerInventory inventory)
+        internal static GameObject BuildPlayer(ItemDatabase db, out Interactor interactor, out PlayerInventory inventory)
         {
             var player = new GameObject("Player");
             player.transform.position = new Vector3(0f, 0.1f, 2f);
@@ -288,7 +288,7 @@ namespace NocturneAnnex.Editor
             };
         }
 
-        static CheckpointTrigger Checkpoint(Transform parent, string id, Vector3 floorPos, Vector3 size)
+        internal static CheckpointTrigger Checkpoint(Transform parent, string id, Vector3 floorPos, Vector3 size)
         {
             var go = new GameObject("Checkpoint_" + id, typeof(BoxCollider));
             go.transform.SetParent(parent, false);
@@ -354,7 +354,7 @@ namespace NocturneAnnex.Editor
             return door;
         }
 
-        static GameObject Box(Transform parent, string name, Vector3 centre, Vector3 size, Material mat)
+        internal static GameObject Box(Transform parent, string name, Vector3 centre, Vector3 size, Material mat)
         {
             var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.name = name;
@@ -375,7 +375,7 @@ namespace NocturneAnnex.Editor
             _brass = Mat("Brass", new Color(0.72f, 0.55f, 0.2f));
         }
 
-        static Material Mat(string name, Color color)
+        internal static Material Mat(string name, Color color)
         {
             string path = $"{MatDir}/{name}.mat";
             var m = AssetDatabase.LoadAssetAtPath<Material>(path);
