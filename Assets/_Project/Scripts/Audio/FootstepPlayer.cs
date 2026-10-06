@@ -7,7 +7,10 @@ namespace NocturneAnnex.Audio
     /// <summary>Plays a footstep cue for the floor surface under the player, one per stride walked. Crouched steps are quieter.</summary>
     public class FootstepPlayer : MonoBehaviour
     {
-        public const float WalkStride = 1.7f, SprintStride = 2.3f, CrouchStride = 1.2f, CrouchVolume = 0.5f;
+        public const float CrouchVolume = 0.5f;
+
+        [Tooltip("Metres walked per footstep. Walk 3 m/s, sprint 5, crouch 1.5: about 0.4, 0.33 and 0.5 s between steps.")]
+        public float WalkStride = 1.2f, SprintStride = 1.65f, CrouchStride = 0.75f;
 
         public PlayerMotor Motor;
         public AudioDirector Director;
