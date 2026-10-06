@@ -17,8 +17,9 @@ Branch: `feature/F-13-liminal-framework` (cut from `docs/liminal-redesign`, whic
 - [x] Doc 05 status, doc 12 row, CHANGELOG (EditMode 305/305). Stop before merge
 
 ## F-13b next (greybox Hotel Meridian at real scale; spec first)
-- [ ] Spec F-13b in doc 05, then checklist here
-- [ ] Runtime glue: EntityDirector MonoBehaviour, ManifestationSpot, LegendEntry assets, save fields
+- [x] F-13b done as specified: Hotel_Meridian scene (Build > Create Hotel Meridian Scene), LiminalDirector, LegendPickup, GuestManifestation; EditMode 305/305, PlayMode 175/175
+- [ ] Owner: play Hotel_Meridian in Unity (open Assets/_Project/Scenes/Hotel_Meridian), judge scale and light, then decide art kit and next steps
+- [ ] Next (needs owner feedback): save fields for phase and legend, music director with stems, Guest hunt, art pass
 
 ## Waiting on the owner
 - Merge order: F-10, then docs/liminal-redesign, then F-13. Listen to F-10 audio; confirm CLEARED register rows.
