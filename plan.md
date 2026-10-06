@@ -12,7 +12,7 @@ Schedule: docs/14-sprint-plan.md (Sprint 1 ends Oct 11; Sprint 2 = F-10, Oct 12-
 - [x] Step 1: cue list fixed in the spec
 - [x] Step 2: budgets in spec (16 voices, 60 MB on disk, 80 MB RAM)
 - [x] Step 3: `CueCatalog` + EditMode caption-rule test (AC1): 4/4 pass
-- [ ] Step 4: `AudioDirector` + mixer asset + ducking. Test: PlayMode AC5
+- [ ] Step 4: `AudioBus` (sliders + ducking, EditMode) then `AudioDirector` (pool, caption, duck; PlayMode). No mixer asset (see spec)
 - [ ] Step 5: footstep surfaces. Test: PlayMode AC3
 - [ ] Step 6: music drone follows tension. Test: AC4
 - [ ] Step 7: hook clips into the six events in `HorrorEventSpot`. Test: AC2
