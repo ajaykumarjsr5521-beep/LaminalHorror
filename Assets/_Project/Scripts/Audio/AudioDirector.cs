@@ -6,7 +6,7 @@ namespace NocturneAnnex.Audio
 {
     /// <summary>
     /// Plays cues by id from a fixed pool of voices, applies bus gain to every playing voice, posts a cue's caption
-    /// and ducks Music and Ambience while a gameplay-relevant cue plays. A missing clip logs one error and the caption still posts.
+    /// and ducks Music and Ambience while a gameplay-relevant cue plays. A missing clip logs one warning (clips arrive later than code) and the caption still posts.
     /// </summary>
     public class AudioDirector : MonoBehaviour
     {
@@ -40,10 +40,10 @@ namespace NocturneAnnex.Audio
         }
 
         /// <summary>
-        /// Plays a cue. A position makes it 3D, otherwise 2D. Returns false for an unknown id, a missing clip or no free voice
+        /// Plays a cue. A position makes it 3D, otherwise 2D. Returns false for an unknown id, a missing clip or no free voice. <paramref name="volumeScale"/> quietens a play, e.g. crouched steps
         /// (a gameplay-relevant cue steals the oldest voice instead). The caption posts whenever the cue is known.
         /// </summary>
-        public bool Play(string cueId, Vector3? position = null, bool loop = false)
+        public bool Play(string cueId, Vector3? position = null, bool loop = false, float volumeScale = 1f)
         {
             var cue = Catalog != null ? Catalog.Find(cueId) : null;
             if (cue == null) { Debug.LogError($"AudioDirector: unknown cue '{cueId}'.", this); return false; }
@@ -52,14 +52,14 @@ namespace NocturneAnnex.Audio
             var clip = PickClip(cue);
             if (clip == null)
             {
-                if (_reportedMissing.Add(cueId)) Debug.LogError($"AudioDirector: cue '{cueId}' has no clip assigned.", this);
+                if (_reportedMissing.Add(cueId)) Debug.LogWarning($"AudioDirector: cue '{cueId}' has no clip assigned.", this);
                 return false;
             }
             var voice = FreeVoice() ?? (cue.GameplayRelevant ? OldestVoice() : null);
             if (voice == null) return false;
 
             voice.Cue = cue;
-            voice.Volume = Random.Range(cue.MinVolume, cue.MaxVolume);
+            voice.Volume = Random.Range(cue.MinVolume, cue.MaxVolume) * Mathf.Clamp01(volumeScale);
             voice.StartedAt = Time.unscaledTime;
             var src = voice.Source;
             src.Stop();
