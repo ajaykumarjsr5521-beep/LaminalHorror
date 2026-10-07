@@ -1,6 +1,0 @@
-{
-  "name": "NocturneAnnex.Liminal",
-  "rootNamespace": "NocturneAnnex.Liminal",
-  "references": ["NocturneAnnex.Core", "NocturneAnnex.Interaction"],
-  "autoReferenced": true
-}
