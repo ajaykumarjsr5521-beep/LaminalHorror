@@ -16,7 +16,7 @@ namespace NocturneAnnex.Interaction
 
         public string Prompt => Loc.Get("note.prompt");
 
-        public virtual void Interact(Interactor interactor)
+        public void Interact(Interactor interactor)
         {
             // A full or duplicate journal entry must never block reading the note.
             if (!string.IsNullOrEmpty(ItemId) && interactor != null && interactor.Items != null)
