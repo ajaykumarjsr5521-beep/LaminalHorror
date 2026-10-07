@@ -18,7 +18,7 @@ Branch: `feature/F-13-liminal-framework` (cut from `docs/liminal-redesign`, whic
 
 ## F-13b next (greybox Hotel Meridian at real scale; spec first)
 - [x] F-13b done as specified: Hotel_Meridian scene (Build > Create Hotel Meridian Scene), LiminalDirector, LegendPickup, GuestManifestation; EditMode 305/305, PlayMode 175/175
-- [ ] Owner: play Hotel_Meridian in Unity (open Assets/_Project/Scenes/Hotel_Meridian), judge scale and light, then decide art kit and next steps
+- [x] 2026-10-07 owner decision: Hotel Meridian scene, builder, screenshots, tests, materials and lighting removed (UNVERIFIED: tests not re-run). Only Level_B1 remains; LiminalDirector, LegendPickup, GuestManifestation stay as framework code
 - [ ] Next (needs owner feedback): save fields for phase and legend, music director with stems, Guest hunt, art pass
 
 ## Waiting on the owner
