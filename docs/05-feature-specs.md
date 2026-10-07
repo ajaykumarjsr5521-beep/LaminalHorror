@@ -1,7 +1,7 @@
 # 05 — Feature Specifications
 
 Status legend: TODO · IN_PROGRESS · BLOCKED · DONE (DONE only after acceptance criteria are tested).
-All features currently **TODO**; F-00 is **BLOCKED** on Unity availability (D1).
+**Summary 2026-10-08:** Windows-side work is done and tested for F-00 to F-10, F-13 (Level_B1) and X-04 (last run EditMode 279, PlayMode 167, not re-run after the liminal redesign was removed). Nothing is checked on a phone. Open: Android module and device checks, F-10 listening/visual review, F-13 touch HUD and level Settings button, F-08 flash-rate check, F-11 (owner decision D4), F-12 after G3, X-01..X-03 owner actions. The F-13 liminal framework spec was removed with the redesign (2026-10-07). Checklist: plan.md.
 
 Each feature: Purpose · Player experience · Scope / Exclusions · Dependencies · Technical design · Acceptance criteria (AC) · Test plan · Status · Notes.
 
