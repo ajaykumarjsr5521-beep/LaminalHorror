@@ -1,11 +1,27 @@
 # plan.md — current work (update at the end of each day)
 
-Branch: `feature/F-13-liminal-framework`. 2026-10-07 owner decision: the liminal redesign (doc 15, `NocturneAnnex.Liminal` framework, Hotel Meridian) is removed; the project sticks to the previous design (Level_B1, F-10 state). Code now equals `feature/F-10-lighting-audio` except this plan. UNVERIFIED: tests not re-run after the revert.
+Branch `feature/F-13-liminal-framework` (redesign removed 2026-10-07; code = F-10 state). Status as of 2026-10-08, from docs 03/05/12. Last full test run on record: EditMode 279/279, PlayMode 167/167 (F-10). Not re-run after the revert (UNVERIFIED).
 
-## Next
-- [ ] Run EditMode and PlayMode to confirm the revert is clean.
-- [ ] Decide the branch: the original F-13 Level B1 work lives on `feature/F-13-level-b1`; this branch can be dropped.
+## DONE (Windows-side, tested)
+- [x] P0 F-00 setup (Windows build OK) · P1 F-01 controller, F-02 input code
+- [x] P2 F-03 interaction, F-04 inventory, F-05 puzzle (logic)
+- [x] P3 F-06 save, F-07a-d menus/pause/settings/keypad/journal, F-08 captions + accessibility, X-04 localisation
+- [x] F-13 Level_B1 greybox playable end to end (EditMode 223, PlayMode 122)
+- [x] F-09a/b tension director + horror events
+- [x] F-10 lighting + audio code, 31 CC0 clips in doc 09 (AC1-8)
+- [x] Liminal redesign removed (owner decision 2026-10-07)
 
-## Waiting on the owner
-- Merge order: F-10, then F-13-level-b1. Listen to F-10 audio; confirm CLEARED register rows.
-- Device profiling needs an Android device.
+## DOING
+- [ ] Verify the revert: run EditMode + PlayMode (expect 279 / 167)
+- [ ] Branch cleanup: drop this branch; F-13 Level B1 lives on `feature/F-13-level-b1`; merge order F-10 then F-13
+
+## TO DO
+- [ ] Owner listening/visual check of F-10 audio + lighting; confirm CLEARED rows in doc 09
+- [ ] Android Build Support install, APK check (closes F-00), phone checks for F-01/02/06/07/08/13 (touch feel, Android Back, perf, F-10 AC9)
+- [ ] F-13 open items: touch controls on level HUD, Settings button in level pause menu
+- [ ] F-08 open: flash-rate frame check, caption coverage of real audio
+- [ ] F-05: 5-tester playtest
+- [ ] F-11 Indexer (conditional on D4, owner decision)
+- [ ] P5 polish/perf (art pass, bake, LOD, memory, a11y on devices)
+- [ ] P6 / F-12 release engineering after G3 (monetization decision)
+- [ ] Owner actions: branch protection (X-01), CI secrets (X-02), Git LFS (X-03)
