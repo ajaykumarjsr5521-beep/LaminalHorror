@@ -10,8 +10,6 @@ Verification status per change lives in [docs/12-progress-log.md](docs/12-progre
 - First-person controller: walk, sprint with stamina, crouch with headroom check, look (F-01).
 - Interaction: interactor with wall occlusion, doors, pickups, notes, prompt view (F-03).
 - Inventory and journal logic with key consumption (F-04).
-- Hotel Meridian greybox level (real scale, baked light), legend notes and the Guest's first manifestation (F-13b, greybox).
-- Liminal framework (logic only): entity phases, legend progress, rules, quiet-time policy, attention, music state selection, anomalies, room memory, level checklist (F-13a).
 - Audio system: cue catalog with caption rule, buses with ducking, footsteps by surface, tension-driven music drone, event sounds, Music/SFX settings applied, baked lighting with at most 2 realtime lights, asset register release gate, 31 CC0 sound files from Kenney and OpenGameArt (F-10, in progress).
 - Horror events on Level_B1: light flicker, door slam, prop shift, audio cue, Misfile corridor reveal, shadow figure, paced by the tension director; debug overlay in development builds only (F-09b).
 - "Three Dates" code lock logic with no-lockout retries (F-05).
