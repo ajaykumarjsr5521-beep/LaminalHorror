@@ -8,18 +8,16 @@ from fastapi import FastAPI, Request
 
 from api.entity import build_router
 from memory.store import Store
-from models.commands import NO_STRATEGY, StrategyCommand
+from agents.strategic_graph import StrategicPlanner
+from models.commands import StrategyCommand
 from models.events import StrategyRequest
 
 log = logging.getLogger("strategy")
 Planner = Callable[[StrategyRequest], StrategyCommand]
 
 
-def default_planner(_: StrategyRequest) -> StrategyCommand:
-    return NO_STRATEGY  # replaced by the LangGraph planner in F-15e
-
-
-def create_app(store: Store | None = None, planner: Planner = default_planner) -> FastAPI:
+def create_app(store: Store | None = None, planner: Planner | None = None) -> FastAPI:
+    planner = planner or StrategicPlanner()
     app = FastAPI(title="Strategic AI", version="0.1")
     store = store or Store(os.environ.get("STRATEGY_DB", ":memory:"))
     app.state.store = store
