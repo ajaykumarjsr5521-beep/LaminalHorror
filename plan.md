@@ -32,6 +32,14 @@ Branch `feature/F-15-strategic-ai` (from F-13 branch, owner request 2026-10-08; 
 - [ ] i Entity memory · j Scares · k Haptics · l Final escape
 - Owner to confirm: Indexer replaced by this entity (D4 yes); Level_B1 = room 1; start with a-e on B1
 
+## NEXT, in priority order (spec: doc 05 "F-14 priority and sequencing"; game works offline, F-15 only suggests)
+1. [ ] F-14g lives/checkpoints/death: split wip from `feature/F-14g-lives` per file, test (unblocks F-15 death events)
+2. [ ] F-14d scene emitters: footsteps, doors, drops, throws (test: PlayerNoiseTests + PlayMode noise)
+3. [ ] F-15 integration: StrategyRunner in B1, publish GameEvents, StalkerAgent reads HideBonus/InvestigationMultiplier, HorrorSuggestionGate, live uvicorn + HTTP, real LLM key
+4. [ ] F-14h heartbeat/DangerLevel · 5. [ ] F-14i EntityMemory (local wins over RAG)
+6. [ ] F-14f room template + validator; M1 rooms 2-5 (room 5 key opens room 7); M2 rooms 6-10
+7. [ ] F-14j scares · F-14k haptics · F-14l final escape · F-14c rig/clips/captions alongside
+
 Tests 2026-10-08: EditMode 312/312, PlayMode 184/184.
 
 ## F-15 Strategic AI (current work; spec first commit, then in order)
