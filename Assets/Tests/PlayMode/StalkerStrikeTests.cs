@@ -54,20 +54,21 @@ namespace NocturneAnnex.Tests.PlayMode
             _player.position = new Vector3(4f, 0, 0);
             yield return null;
             var stalker = Spawn(Vector3.zero, out var arms);
-            bool caught = false; float windupAt = -1f, caughtAt = -1f, maxRaise = 0f;
+            bool caught = false; float windupAt = -1f, caughtAt = -1f, maxRaise = 0f, maxAngle = 0f;
             stalker.CaughtPlayer += () => { caught = true; caughtAt = Time.time; };
             float start = Time.time;
             while (Time.time - start < 10f && !caught)
             {
                 if (windupAt < 0f && stalker.Strike.Phase != StrikePhase.Idle) windupAt = Time.time;
                 maxRaise = Mathf.Max(maxRaise, arms.Raise);
+                maxAngle = Mathf.Max(maxAngle, Quaternion.Angle(Quaternion.identity, arms.ShoulderR.localRotation));
                 yield return null;
             }
             Assert.IsTrue(caught, "a standing player is still caught");
             Assert.GreaterOrEqual(windupAt, 0f, "the swing started");
             Assert.GreaterOrEqual(caughtAt - windupAt, StrikeModel.WindupSeconds + StrikeModel.StrikeSeconds - 0.1f, "no instant death");
             Assert.Greater(maxRaise, 0.8f, "the arm visibly raised");
-            Assert.Greater(Quaternion.Angle(Quaternion.identity, arms.ShoulderR.localRotation) + maxRaise, 1f);
+            Assert.Greater(maxAngle, 90f, "the shoulder pivot really rotated");
         }
 
         [UnityTest]
