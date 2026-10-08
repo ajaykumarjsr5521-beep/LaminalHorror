@@ -22,6 +22,7 @@ namespace NocturneAnnex.Controls
                 merged.Sprint |= one.Sprint;
                 merged.Crouch |= one.Crouch;
                 merged.InteractPressed |= one.InteractPressed;
+                merged.ThrowPressed |= one.ThrowPressed;
                 merged.PausePressed |= one.PausePressed;
             }
             merged.Move = Vector2.ClampMagnitude(merged.Move, 1f);
