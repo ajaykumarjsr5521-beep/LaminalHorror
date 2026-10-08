@@ -18,6 +18,8 @@ namespace NocturneAnnex.Core
             { "hide.prompt.exit", "Leave" },
             { "hide.message.seen", "It is watching. There is no time." },
 
+            { "bottle.prompt", "Take bottle" },
+
             // Lives
             { "run.lives_left_1", "One life remains." },
             { "run.over", "The building keeps you. It begins again." },
