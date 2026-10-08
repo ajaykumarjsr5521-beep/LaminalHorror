@@ -289,6 +289,23 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 - **Exclusions:** iOS, multiplayer, real microphone input, procedural level generation, device profiling (needs an Android device).
 - **Fairness rules (all sub-features):** the entity never knows the player position without a sound event, never teleports, never ignores walls, never knows which hide spot is used; memory only changes probabilities (patrol, investigation, search, suspicion), never speed beyond the per-room table. Every death is explainable from a logged `DeathCause`.
 
+### F-14 priority and sequencing (revised 2026-10-08, owner request: F-15 RAG/LangChain/LangGraph runs in parallel)
+- **Status today (verified by search, not by a new test run):** one room only (Level_B1). a done; b, c, d, e partly done; f-l not built. F-14g exists as one UNVERIFIED wip commit on `feature/F-14g-lives`.
+- **Rule 1, offline first:** the game must be fully playable without the F-15 server. F-14 owns the deterministic truth (`EntityMemory`, `DangerLevel`, room and door state). F-15 only suggests: it may bias probabilities through `StrategyExecutor`, never replaces F-14 logic, and a missing server changes nothing.
+- **Rule 2, boundary for memory:** F-14i `EntityMemory` is local and saved with the game. F-15g RAG stores richer summaries on the server and may add a rare caption line. If they disagree, F-14i wins.
+- **Rule 3, shared hooks first:** F-15 integration is blocked by F-14g (death events, `StalkerAgent` edits) and F-14d emitters (noise events). Build those before more rooms.
+- **Build order (each step: EditMode, then PlayMode, one file per commit):**
+  1. **F-14g** lives, checkpoints, death: split the wip commit per file, test (unblocks F-15 `GameEvent` death/hide emitters).
+  2. **F-14d** finish scene emitters (footsteps, doors, drops, throws): unblocks hearing and F-15 behaviour tracking.
+  3. **F-15 integration**: place `StrategyRunner`, publish events, `StalkerAgent` reads `HideBonus` and `InvestigationMultiplier`, `HorrorEventRunner` uses `HorrorSuggestionGate`, live uvicorn + HTTP run, real LLM key test.
+  4. **F-14h** heartbeat and `DangerLevel` (also feeds F-15 director context).
+  5. **F-14i** `EntityMemory` (needs deaths from step 1; sets the F-15 boundary above).
+  6. **F-14f** room template and `RoomDefinition` validator (exactly one progression door, no softlock), then rooms in two milestones: **M1 rooms 2-5** (includes the room 5 key for room 7), **M2 rooms 6-10**. One room per step; backtracking changes (moved chair, dead light, new sound) are part of room 5 onward.
+  7. **F-14j** scares, **F-14k** haptics, **F-14l** final escape (`CONGRATULATIONS! You made it out.` plus stats).
+  8. **F-14c** open art items (rig, clips, captions) run alongside as audio and art become available.
+- **Gaps from the owner prompt now explicit in the spec:** per-room escalation (rooms 1-10 table lives in F-14f), several doors per room with a varying correct door, noisy floors, throwing as a distraction (F-14d), entity sighting then vanishing (F-14j), 2 lives per run (F-14g), completion stats (F-14l).
+- **Not claimed:** none of this is verified by a person playing. Rooms beyond B1, lives, heartbeat, memory, scares, haptics and ending remain TODO.
+
 ### F-14a Noise model and hearing (plain C#, EditMode) — DONE (2026-10-08: HearingModelTests 7/7, AC1-6 pass; SoundMemory folded into HearingModel as MarkHandled)
 - **Scope:** `NoiseEvent {position, loudness, time, kind}`, `NoiseTable` (crouch 2 m, walk 6, run 14, door slam 20, dropped object 12, thrown object impact 16, machinery/alarm 30; Story x0.5), `HearingModel` (score = loudness / distance, decays with age, reduced by walls), `SoundMemory` (best candidate location).
 - **AC:** 1. Run is heard farther than walk; crouch is quietest. 2. A sound outside its radius is never heard. 3. Each wall between halves the effective radius. 4. Older events decay and expire. 5. The strongest recent event wins. 6. Story mode halves radii.
