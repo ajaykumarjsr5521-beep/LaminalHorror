@@ -29,6 +29,7 @@ namespace NocturneAnnex.Entity
         {
             transform.position = from;
             SetHeld(false);
+            Arm();
             WasThrown = true;
             var rb = GetComponent<Rigidbody>();
             rb.linearVelocity = velocity;
