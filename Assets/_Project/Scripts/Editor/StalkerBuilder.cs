@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using NocturneAnnex.Entity;
 using NocturneAnnex.Interaction;
+using NocturneAnnex.Player;
+using NocturneAnnex.Strategy;
 
 namespace NocturneAnnex.Editor
 {
@@ -81,6 +83,10 @@ namespace NocturneAnnex.Editor
             HideSpotAt(geometry, "Cupboard_Stacks", new Vector3(-16.5f, 0f, 12.7f), new Vector3(1.4f, 2.2f, 0.9f), new Vector3(0f, 0f, 1.3f), 0.8f, hub, stalker);
             HideSpotAt(geometry, "Cupboard_Hall", new Vector3(5.4f, 0f, 11.5f), new Vector3(0.9f, 2.2f, 1.4f), new Vector3(-1.3f, 0f, 0f), 0.3f, hub, stalker);
             HideSpotAt(geometry, "Cupboard_Records", new Vector3(17.2f, 0f, 22.5f), new Vector3(0.9f, 2.2f, 1.4f), new Vector3(-1.3f, 0f, 0f), 0.55f, hub, stalker);
+            var strategy = new GameObject("Strategy");
+            var runner = strategy.AddComponent<StrategyRunner>();   // Online stays false: the level plays with no server
+            var bridge = strategy.AddComponent<StrategyBridge>();
+            bridge.Runner = runner; bridge.Hub = hub; bridge.Stalker = stalker; bridge.Motor = player.GetComponent<PlayerMotor>();
             return stalker;
         }
 
