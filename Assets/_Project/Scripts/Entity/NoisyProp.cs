@@ -10,10 +10,14 @@ namespace NocturneAnnex.Entity
         public bool WasThrown { get; protected set; }
 
         float _lastImpact = -999f;
+        float _quietUntil;
+
+        /// <summary>Props placed in the air settle at level start; that is not the player's doing, so it stays silent.</summary>
+        void Start() => _quietUntil = Time.time + 1.5f;
 
         void OnCollisionEnter(Collision c)
         {
-            if (Hub == null) return;
+            if (Hub == null || Time.time < _quietUntil) return;
             float speed = c.relativeVelocity.magnitude;
             if (!ImpactNoiseRule.TryGetKind(speed, WasThrown, Time.time - _lastImpact, out var kind)) return;
             _lastImpact = Time.time;
