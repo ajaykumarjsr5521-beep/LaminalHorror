@@ -282,3 +282,61 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 - **Design:** keys are `area.name` (e.g. `door.prompt.open`). A missing key returns `[key]` and logs an error once per key, never an empty string. `Format` uses `string.Format` with the table text. Tests that assert English text use `Loc.Get`, not literals, except where the wording is the thing under test.
 - **AC:** every key used in code exists in the default table (EditMode test); missing key reported explicitly; `SetTable` changes displayed text (EditMode test); a guard test fails if migrated areas reintroduce literal player-facing strings; all existing tests still pass.
 - **Sub-steps (one commit each):** 1 spec, 2 Loc + tests, 3 migrate Interaction/Puzzle, 4 migrate Save, 5 guard test + ADR + docs.
+
+## F-14 The Stilt-Walker: hearing entity, memory and 10-room expansion — TODO (spec written 2026-10-08, no code; same game, extends F-09, F-10, F-11, F-13)
+- **Source:** owner prompt 2026-10-08 (hearing-based hunter with a wooden leg, 5-10 rooms, 2 lives, entity memory, dynamic heartbeat/audio, haptics, final escape). Not a separate game: it builds on Level_B1, `Horror`, `Audio`, `Save`, `Settings`, `Player`.
+- **Decisions taken (2026-10-08, owner to review):** (1) The Indexer of F-11 is replaced by this entity; D4 becomes "yes". (2) Level_B1 stays as Room 1 and the tutorial; rooms 2-10 are added as scenes or zones by editor builders, greybox first. (3) "2 lives" counts per run; death restores the last checkpoint and keeps puzzle progress; the entity memory persists in the save. (4) No gore; Story mode halves detection ranges (existing rule). (5) Audio stays CC0 from doc 09; each new clip gets a register row. (6) Rooms ship one per sub-feature step, in order.
+- **Exclusions:** iOS, multiplayer, real microphone input, procedural level generation, device profiling (needs an Android device).
+- **Fairness rules (all sub-features):** the entity never knows the player position without a sound event, never teleports, never ignores walls, never knows which hide spot is used; memory only changes probabilities (patrol, investigation, search, suspicion), never speed beyond the per-room table. Every death is explainable from a logged `DeathCause`.
+
+### F-14a Noise model and hearing (plain C#, EditMode) — TODO
+- **Scope:** `NoiseEvent {position, loudness, time, kind}`, `NoiseTable` (crouch 2 m, walk 6, run 14, door slam 20, dropped object 12, thrown object impact 16, machinery/alarm 30; Story x0.5), `HearingModel` (score = loudness / distance, decays with age, reduced by walls), `SoundMemory` (best candidate location).
+- **AC:** 1. Run is heard farther than walk; crouch is quietest. 2. A sound outside its radius is never heard. 3. Each wall between halves the effective radius. 4. Older events decay and expire. 5. The strongest recent event wins. 6. Story mode halves radii.
+- **Test:** EditMode, deterministic.
+
+### F-14b Entity AI states (plain C# machine + NavMesh agent) — TODO
+- **Scope:** states Patrol, Listen, Investigate, Chase, Search, Cooldown, plus Watch (stand and look without attacking). Transitions only through `HearingModel`, or line of sight under 6 m in light. Chase speed 1.15x player walk, 0.9x player run; chase ends after 20 s without sound or sight.
+- **AC:** 1. Hears a sound, stops, turns, walks to it, searches 15 s, returns to patrol. 2. Cannot see through walls or closed doors. 3. Search inspects nearby hide spots with a probability per spot. 4. Watch and ignore outcomes occur and never lead to a kill without a new trigger. 5. No state skips Listen. 6. A valid escape route exists per room (script).
+- **Test:** EditMode machine tests; PlayMode on the real level with a scripted noisy and a scripted quiet player.
+
+### F-14c Wooden-leg body, animation and footsteps — TODO
+- **Scope:** 2.3-2.7 m greybox rig (placeholder parts until art), limp cycle, alternating `normal` and `wood` footsteps with 4 variants each, distance mixing (far: quiet and filtered; near: loud with low-frequency), AI-driven silence, breathing layer under 5 m.
+- **AC:** 1. Rhythm alternates two different clips. 2. Volume and filter change across 3 distance bands. 3. No variant repeats twice in a row. 4. Silence happens only in Listen or Watch. 5. Every cue has a caption.
+
+### F-14d Player noise generation — TODO
+- **Scope:** player emits `NoiseEvent`s from walk, run, crouch, doors, drops, interactions, noisy floors and thrown objects.
+- **AC:** 1. Each action emits the right kind and loudness. 2. A thrown bottle makes an impact noise at the landing point. 3. A slammed door is louder than a gently closed one.
+
+### F-14e Hiding system — TODO
+- **Scope:** `HideSpot` (cupboard, under bed or table, curtain, closet; safety 0-1; noise on enter and exit). Entering during Chase only out of the entity's line of sight. Entity inspection chance from safety, entry noise and memory.
+- **AC:** 1. Spots differ in safety. 2. A noisy entry raises inspection chance. 3. Inspected and found means death; inspected and not found means it leaves. 4. The player can always exit.
+
+### F-14f Rooms, doors, keys and puzzles (rooms 2-10) — TODO
+- **Scope:** per-room `RoomDefinition` data: 4-6 doors (one progression door; others locked, fake, blocked, key), clues, hide spots, noise props, difficulty table. Rooms: 1 intro (B1), 2 first threat, 3 psychological, 4 multi-key, 5 backtracking, 6 combination and switch puzzles, 7 major threat (all doors locked until the key from room 5), 8 interconnected, 9 final trials, 10 final escape. Carry-over items, fuse/power, combination lock, hidden switch; room changes on return (moved chair, dead light, new sound).
+- **AC:** 1. Each room validates: exactly one progression door, no softlock (script). 2. The room 5 key opens room 7. 3. Difficulty values rise monotonically. 4. Return changes happen once and are saved.
+- **Note:** one commit series and one PlayMode run per room; art stays greybox.
+
+### F-14g Lives, checkpoints and death sequence — TODO
+- **Scope:** 2 lives per run; checkpoints after rooms 1, 3, 5, 7; death sequence (about 4 s); `DeathMemory` saved; lives shown without a HUD bar (pause screen tally).
+- **AC:** 1. Death in room 6 restarts at the last checkpoint with solved puzzles kept. 2. A second death ends the run. 3. The sequence lasts at most 5 s. 4. Save and load keep lives and memory.
+
+### F-14h Dynamic heartbeat, breathing and mixing — TODO
+- **Scope:** `DangerLevel` 0-4 from entity distance and state; gains per level in a data table; hide-mode mix; screen pulse, vignette and shake limited by the existing reduce-motion and flicker settings.
+- **AC:** 1. Gains follow the table at each level. 2. Reduce motion removes shake and pulse. 3. Hide mode lowers ambience to the table value. 4. Transitions smooth within 1 s.
+
+### F-14i Entity memory and adaptive AI — TODO
+- **Scope:** `EntityMemory` (death rooms and spots, preferred hide spots, routes, run and throw habits), levels 0-5 from recorded events, effects limited to probabilities, rare captioned lines ("Again?", "I remember.", "You again."; at most one per 10 minutes, optional in settings).
+- **AC:** 1. Snapshot and restore are exact. 2. Levels rise only through recorded events. 3. A hide spot used at a past death is inspected more often but not always. 4. Memory never changes speed or reveals the player position. 5. Lines respect the rate limit.
+
+### F-14j Scares and false presence — TODO
+- **Scope:** extends `HorrorEventSpot`: toy box set (8 boxes, 1 key, 1 spring toy, 1 footstep beat), mannequin, light off, self-opening door, whisper behind, fake wooden knocks, one-second corridor sighting. Rate limited by the tension director; about 40% harmless, 20% entity-linked.
+- **AC:** 1. Scare gap stays at 45 s or more (existing test). 2. False footsteps never match the real rhythm. 3. The box set always leaves a reachable key.
+
+### F-14k Haptics — TODO
+- **Scope:** gamepad rumble and mobile vibration on footsteps, heartbeat, hit and scares; settings toggle and strength.
+- **AC:** 1. A pulse follows the footstep event. 2. The disabled setting sends nothing. Feel is UNTESTABLE here (needs hardware).
+
+### F-14l Final escape and ending — TODO
+- **Scope:** silence beat, chase to exit, door slam, "YOU ESCAPED" screen with time, deaths, lives, rooms and secrets; closing shot of two eyes in an upper window.
+- **AC:** 1. Winnable by a valid scripted route. 2. Stats match the run. 3. No input stays blocked after the end.
+- **Order:** a, b, c, d, e, f (room by room), g, h, i, j, k, l. Each: EditMode first, PlayMode second, one file per commit.
