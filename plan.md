@@ -35,7 +35,7 @@ Branch `feature/F-15-strategic-ai` (from F-13 branch, owner request 2026-10-08; 
 Tests 2026-10-08: EditMode 312/312, PlayMode 184/184.
 
 ## F-15 Strategic AI (current work; spec first commit, then in order)
-- [x] a StrategyCommand/Validator/Executor (EditMode 14/14) · [ ] b PlayerBehaviorTracker + GameEventBus (EditMode)
+- [x] a StrategyCommand/Validator/Executor (EditMode 14/14) · [x] b PlayerBehaviorTracker + GameEventBus (EditMode 7/7; emitters not wired yet)
 - [ ] c StrategyClient with fake transport (EditMode) · [ ] d Server skeleton FastAPI+SQLite (pytest; check Python 3.11+)
 - [ ] e LangGraph graph, rule planner (pytest) · [ ] f LangChain tools + structured LLM output (pytest, fake model)
 - [ ] g RAG/Chroma memory (pytest) · [ ] h Director link + rare lines · [ ] i Debug panel, fairness, perf, server-killed run
