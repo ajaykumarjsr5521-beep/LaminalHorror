@@ -11,7 +11,7 @@ namespace NocturneAnnex.Controls
         const float StickLookDegPerSec = 140f;
         const float StickDeadzone = 0.2f;
 
-        readonly InputAction _move, _look, _stickLook, _sprint, _crouch, _interact, _pause;
+        readonly InputAction _move, _look, _stickLook, _sprint, _crouch, _interact, _throw, _pause;
 
         public DeviceInputSource()
         {
@@ -37,6 +37,10 @@ namespace NocturneAnnex.Controls
             _interact.AddBinding("<Keyboard>/e");
             _interact.AddBinding("<Gamepad>/buttonSouth");
 
+            _throw = new InputAction("Throw", InputActionType.Button);
+            _throw.AddBinding("<Keyboard>/g");
+            _throw.AddBinding("<Gamepad>/buttonWest");
+
             _pause = new InputAction("Pause", InputActionType.Button);
             _pause.AddBinding("<Keyboard>/escape");
             _pause.AddBinding("<Gamepad>/start");
@@ -44,7 +48,7 @@ namespace NocturneAnnex.Controls
             foreach (var a in All()) a.Enable();
         }
 
-        InputAction[] All() => new[] { _move, _look, _stickLook, _sprint, _crouch, _interact, _pause };
+        InputAction[] All() => new[] { _move, _look, _stickLook, _sprint, _crouch, _interact, _throw, _pause };
 
         public void Poll(ref PlayerInputState s)
         {
@@ -54,6 +58,7 @@ namespace NocturneAnnex.Controls
             s.Sprint = _sprint.IsPressed();
             s.Crouch = _crouch.IsPressed();
             s.InteractPressed = _interact.WasPressedThisFrame();
+            s.ThrowPressed = _throw.WasPressedThisFrame();
             s.PausePressed = _pause.WasPressedThisFrame();
         }
 
