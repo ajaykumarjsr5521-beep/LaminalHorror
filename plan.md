@@ -25,3 +25,9 @@ Branch `feature/F-13-liminal-framework` (redesign removed 2026-10-07; code = F-1
 - [ ] P5 polish/perf (art pass, bake, LOD, memory, a11y on devices)
 - [ ] P6 / F-12 release engineering after G3 (monetization decision)
 - [ ] Owner actions: branch protection (X-01), CI secrets (X-02), Git LFS (X-03)
+
+## NEW 2026-10-08: F-14 Stilt-Walker (spec in doc 05, no code yet)
+- [ ] a Noise + HearingModel (EditMode) · b Entity AI states · c Wooden-leg body + footsteps · d Player noise
+- [ ] e Hiding · f Rooms 2-10 (one room per series) · g Lives/checkpoints/death · h Heartbeat + mixing
+- [ ] i Entity memory · j Scares · k Haptics · l Final escape
+- Owner to confirm: Indexer replaced by this entity (D4 yes); Level_B1 = room 1; start with a-e on B1
