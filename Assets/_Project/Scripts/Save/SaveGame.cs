@@ -26,6 +26,9 @@ namespace NocturneAnnex.Save
 
         public string LastCheckpointId { get; private set; } = "";
 
+        /// <summary>The run's lives and death log; saved and restored with each checkpoint.</summary>
+        public RunLives Lives { get; } = new RunLives();
+
         SaveStore _store;
         public SaveStore Store => _store ??= new SaveStore(
             string.IsNullOrEmpty(FilePathOverride) ? Path.Combine(Application.persistentDataPath, "save.json") : FilePathOverride);
@@ -53,7 +56,10 @@ namespace NocturneAnnex.Save
                 CheckpointId = checkpointId ?? "",
                 InventoryIds = Inventory != null ? Inventory.Snapshot() : new string[0],
                 SolvedPuzzleIds = solved.ToArray(),
-                FiredEventIds = Horror != null && Horror.Picker != null ? Horror.Picker.SnapshotFiredOnce() : new string[0]
+                FiredEventIds = Horror != null && Horror.Picker != null ? Horror.Picker.SnapshotFiredOnce() : new string[0],
+                LivesLeft = Lives.Left,
+                DeathCount = Lives.Deaths,
+                DeathLog = System.Linq.Enumerable.ToArray(Lives.Log)
             };
         }
 
@@ -80,6 +86,7 @@ namespace NocturneAnnex.Save
             foreach (var l in Locks)
                 if (l != null && !string.IsNullOrEmpty(l.PuzzleId)) l.RestoreSolved(solved.Contains(l.PuzzleId));
             Horror?.Picker?.RestoreFiredOnce(data.FiredEventIds);
+            Lives.Restore(data.LivesLeft, data.DeathCount, data.DeathLog);
             LastCheckpointId = data.CheckpointId;
         }
 
@@ -90,6 +97,8 @@ namespace NocturneAnnex.Save
         public bool StartNewGame()
         {
             LastCheckpointId = "";
+            Lives.NewRun();
+            Lives.ClearLog();
             return Store.ClearForNewGame();
         }
     }
