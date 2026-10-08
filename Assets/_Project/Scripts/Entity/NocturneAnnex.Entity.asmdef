@@ -1,6 +1,6 @@
 {
   "name": "NocturneAnnex.Entity",
   "rootNamespace": "NocturneAnnex.Entity",
-  "references": ["NocturneAnnex.Core"],
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Player", "NocturneAnnex.Audio", "NocturneAnnex.Interaction"],
   "autoReferenced": true
 }
