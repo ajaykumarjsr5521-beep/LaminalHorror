@@ -9,6 +9,9 @@ namespace NocturneAnnex.Entity
         public NoiseHub Hub;
         public bool WasThrown { get; protected set; }
 
+        /// <summary>Ends the start-of-level quiet period, e.g. when the player picks the prop up and throws it.</summary>
+        protected void Arm() => _quietUntil = 0f;
+
         float _lastImpact = -999f;
         float _quietUntil;
 
