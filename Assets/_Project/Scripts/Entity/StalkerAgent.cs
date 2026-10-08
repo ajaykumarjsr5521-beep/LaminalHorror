@@ -27,6 +27,12 @@ namespace NocturneAnnex.Entity
         public HearingModel Hearing { get; } = new HearingModel();
         public WoodenLegRhythm Rhythm { get; } = new WoodenLegRhythm();
         public event Action CaughtPlayer;
+        public event Action<HideSpot> FoundHidingPlayer;
+
+        /// <summary>True while the entity can see the player this frame (range, light, no wall, not hidden).</summary>
+        public bool SeesPlayerNow { get; private set; }
+        public int InspectedCount { get; private set; }
+        public float InspectIntervalSeconds = 3f, InspectRepeatSeconds = 20f, InspectRange = 9f;
 
         NavMeshAgent _agent;
         AudioSource _audio;
@@ -37,6 +43,10 @@ namespace NocturneAnnex.Entity
         float _travelled;
         Vector3 _lastPos;
         bool _caught;
+        HideSpot[] _spots = new HideSpot[0];
+        readonly System.Collections.Generic.Dictionary<HideSpot, float> _inspectedAt = new System.Collections.Generic.Dictionary<HideSpot, float>();
+        HideSpot _inspecting;
+        float _nextInspect;
 
         void Awake()
         {
@@ -48,6 +58,10 @@ namespace NocturneAnnex.Entity
             _lowPass = gameObject.AddComponent<AudioLowPassFilter>();
             _lastPos = transform.position;
         }
+
+        void Start() => _spots = FindObjectsByType<HideSpot>(FindObjectsSortMode.None);
+
+        bool PlayerHidden { get { foreach (var s in _spots) if (s.Occupied) return true; return false; } }
 
         void OnEnable() { if (Hub != null) Hub.Bus.Emitted += Hearing.Report; }
         void OnDisable() { if (Hub != null) Hub.Bus.Emitted -= Hearing.Report; }
@@ -66,12 +80,13 @@ namespace NocturneAnnex.Entity
                 input.Heard = true; input.NoisePos = noise.Position; input.NoiseScore = score;
                 Hearing.MarkHandled(noise.Time);
             }
-            if (Player != null)
+            SeesPlayerNow = false;
+            if (Player != null && !PlayerHidden)
             {
                 var head = Player.position + Vector3.up * 1.4f;
                 bool blocked = Physics.Linecast(eye, head, out var hit, ~0, QueryTriggerInteraction.Ignore)
                                && !hit.transform.IsChildOf(Player) && hit.transform != Player;
-                if (SightModel.CanSee(eye, head, PlayerLit, blocked)) { input.Sees = true; input.SeenPos = Player.position; }
+                if (SightModel.CanSee(eye, head, PlayerLit, blocked)) { input.Sees = true; SeesPlayerNow = true; input.SeenPos = Player.position; }
             }
 
             var before = Brain.State;
@@ -117,10 +132,43 @@ namespace NocturneAnnex.Entity
                     break;
                 case EntityState.Search:
                     if (before != EntityState.Search) _agent.ResetPath();
+                    if (TryInspect(before)) break;
                     if (!_agent.hasPath || Arrived()) _agent.SetDestination(RandomNear(Brain.Target, 5f));
                     break;
             }
             if (!_agent.isStopped && _agent.velocity.sqrMagnitude > 0.01f) FaceDirection(_agent.velocity, dt);
+        }
+
+        /// <summary>While searching, now and then walk to a nearby hiding spot and open it. Returns true while busy with one.</summary>
+        bool TryInspect(EntityState before)
+        {
+            if (_inspecting != null)
+            {
+                _agent.SetDestination(_inspecting.InspectPoint);
+                var flat = _inspecting.InspectPoint - transform.position; flat.y = 0f;
+                if (flat.magnitude > 1.3f) return true;
+                var spot = _inspecting; _inspecting = null;
+                _inspectedAt[spot] = Time.time;
+                InspectedCount++;
+                if (spot.Inspect((float)_rng.NextDouble()) == InspectOutcome.FoundPlayer && !_caught)
+                {
+                    _caught = true; _agent.isStopped = true;
+                    FoundHidingPlayer?.Invoke(spot);
+                    CaughtPlayer?.Invoke();
+                }
+                return true;
+            }
+            if (Time.time < _nextInspect) return false;
+            _nextInspect = Time.time + InspectIntervalSeconds;
+            HideSpot best = null; float bestD = InspectRange;
+            foreach (var s in _spots)
+            {
+                if (_inspectedAt.TryGetValue(s, out var t) && Time.time - t < InspectRepeatSeconds) continue;
+                float d = Vector3.Distance(transform.position, s.transform.position);
+                if (d < bestD) { best = s; bestD = d; }
+            }
+            _inspecting = best;
+            return best != null;
         }
 
         Vector3 RandomNear(Vector3 centre, float radius)
