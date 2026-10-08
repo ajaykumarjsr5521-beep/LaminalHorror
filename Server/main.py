@@ -1,6 +1,7 @@
 """FastAPI entry point. Run: uvicorn main:app --port 8765"""
 import logging
 import os
+import sys
 import uuid
 from collections.abc import Callable
 
@@ -39,4 +40,16 @@ def create_app(store: Store | None = None, planner: Planner | None = None) -> Fa
     return app
 
 
+def _load_env_file() -> None:
+    """Reads Server/.env (git-ignored) for STRATEGY_LLM and the provider key. Skipped under pytest so tests never reach a real LLM."""
+    if "pytest" in sys.modules:
+        return
+    try:
+        from dotenv import load_dotenv
+        load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
+    except ImportError:
+        log.warning("python-dotenv not installed; Server/.env is ignored")
+
+
+_load_env_file()
 app = create_app()
