@@ -13,6 +13,11 @@ namespace NocturneAnnex.Core
             { "door.prompt.locked", "Locked" },
             { "door.message.locked", "It's locked." },
 
+            // Hiding
+            { "hide.prompt.enter", "Hide" },
+            { "hide.prompt.exit", "Leave" },
+            { "hide.message.seen", "It is watching. There is no time." },
+
             // Pickups and notes
             { "pickup.prompt", "Take {0}" },
             { "pickup.refused", "You can't carry any more." },
