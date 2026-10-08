@@ -1,6 +1,6 @@
 # plan.md — current work (update at the end of each day)
 
-Branch `feature/F-13-liminal-framework` (redesign removed 2026-10-07; code = F-10 state). Status as of 2026-10-08, from docs 03/05/12. Last full test run on record: EditMode 279/279, PlayMode 167/167 (F-10). Not re-run after the revert (UNVERIFIED).
+Branch `feature/F-15-strategic-ai` (from F-13 branch, owner request 2026-10-08; spec F-15 in doc 05, steps a-i). Previous: `feature/F-13-liminal-framework` (redesign removed 2026-10-07; code = F-10 state). Status as of 2026-10-08, from docs 03/05/12. Last full test run on record: EditMode 279/279, PlayMode 167/167 (F-10). Not re-run after the revert (UNVERIFIED).
 
 ## DONE (Windows-side, tested)
 - [x] P0 F-00 setup (Windows build OK) · P1 F-01 controller, F-02 input code
@@ -33,3 +33,9 @@ Branch `feature/F-13-liminal-framework` (redesign removed 2026-10-07; code = F-1
 - Owner to confirm: Indexer replaced by this entity (D4 yes); Level_B1 = room 1; start with a-e on B1
 
 Tests 2026-10-08: EditMode 312/312, PlayMode 184/184.
+
+## F-15 Strategic AI (current work; spec first commit, then in order)
+- [ ] a StrategyCommand/Validator/Executor (EditMode) · [ ] b PlayerBehaviorTracker + GameEventBus (EditMode)
+- [ ] c StrategyClient with fake transport (EditMode) · [ ] d Server skeleton FastAPI+SQLite (pytest; check Python 3.11+)
+- [ ] e LangGraph graph, rule planner (pytest) · [ ] f LangChain tools + structured LLM output (pytest, fake model)
+- [ ] g RAG/Chroma memory (pytest) · [ ] h Director link + rare lines · [ ] i Debug panel, fairness, perf, server-killed run
