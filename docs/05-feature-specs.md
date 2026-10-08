@@ -341,7 +341,7 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 - **AC:** 1. Winnable by a valid scripted route. 2. Stats match the run. 3. No input stays blocked after the end.
 - **Order:** a, b, c, d, e, f (room by room), g, h, i, j, k, l. Each: EditMode first, PlayMode second, one file per commit.
 
-## F-15 Strategic AI layer (Python server: LangGraph + LangChain + RAG + LLM) — TODO
+## F-15 Strategic AI layer (Python server: LangGraph + LangChain + RAG + LLM) — IN_PROGRESS (UNVERIFIED as a whole; F-15a done)
 **Principle:** Unity's real-time AI (F-14a-e: HearingModel, EntityBrain, StalkerAgent, HideSpot) owns every frame. The strategic layer only answers "what should the entity try?" via a validated, time-limited `StrategyCommand` that biases probabilities and utility weights. The game must run identically without the server. The existing `TensionDirector` and `HorrorEventRunner` (F-09) stay the Horror Director; F-15 only feeds them. F-15 absorbs F-14i (entity memory, adaptive AI, rare lines).
 - **Exclusions:** the LLM never sets transforms, targets, speed, or positions; never sees exact hide spot; no RAG for deterministic state (doors, keys); no shipping of API keys; no cloud dependency required to play; no new art or audio.
 - **Layout:** Unity `Assets/_Project/Scripts/Strategy/` (StrategyCommand, StrategyValidator, StrategyExecutor, PlayerBehaviorTracker, GameEventBus, StrategyClient, StrategyDebugPanel). Python `Server/` (main.py, api/, agents/, tools/, memory/, models/, tests/).
@@ -350,7 +350,7 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 - **LLM cadence:** only on triggers (new room, death, behavior shift over threshold, encounter ended, strategy expired) with 60 s cooldown and cache by profile hash; timeout 2 s; failure keeps the current strategy, else the deterministic rule planner.
 
 ### Sub-steps (one commit per file, EditMode/pytest first)
-- **F-15a Command contract (Unity):** StrategyCommand, StrategyValidator, StrategyExecutor (expiry, apply to inspect chance and investigation weight). AC: 1 invalid enum, out-of-range, or expired command rejected. 2 valid command raises inspect chance but never to 0 or 1. 3 expiry restores baseline. 4 executor never touches transform or speed. Test: EditMode.
+- **F-15a Command contract (Unity) — DONE 2026-10-08 (StrategyExecutorTests 14/14 EditMode, filtered run):** StrategyCommand, StrategyValidator, StrategyExecutor (expiry, apply to inspect chance and investigation weight). AC: 1 invalid enum, out-of-range, or expired command rejected. 2 valid command raises inspect chance but never to 0 or 1. 3 expiry restores baseline. 4 executor never touches transform or speed. Test: EditMode.
 - **F-15b PlayerBehaviorTracker + GameEventBus (Unity):** counts run/walk/crouch ratio, noise, hide usage per spot type, routes, deaths, chase duration, risk tolerance. AC: 1 ratios sum to 1. 2 profile snapshot is deterministic for a scripted session. 3 profile contains no positions or hide-spot ids. Test: EditMode.
 - **F-15c StrategyClient (Unity):** async HTTP, request ids, 2 s timeout, 1 retry, offline = no-op, debug state. AC: 1 timeout leaves the active strategy unchanged. 2 bad JSON rejected. 3 never called from Update. Test: EditMode with fake transport.
 - **F-15d Server skeleton (Python):** FastAPI, Pydantic models, SQLite store, `/health`, `/events`, `/profile`, `/strategy`. AC: 1 schema rejects unknown strategy. 2 events persist. 3 request ids logged. Test: pytest.
