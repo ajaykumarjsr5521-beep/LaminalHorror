@@ -33,8 +33,8 @@ Branch `feature/F-15-strategic-ai` (from F-13 branch, owner request 2026-10-08; 
 - Owner to confirm: Indexer replaced by this entity (D4 yes); Level_B1 = room 1; start with a-e on B1
 
 ## PLAYTEST FIXES (owner, 2026-10-08) — do first; spec F-14m, F-14n in doc 05
-- [ ] F-14m strike: StrikeModel + EditMode tests -> StalkerArms (shoulder pivots, builder) -> StalkerAgent attack flow -> PlayMode hit/miss tests
-- [ ] F-14n lighting: ambient up, fill lights for Hall/Stacks/Records in LevelB1Builder, rebuild scene + bake, coverage test, screenshots for owner
+- [x] F-14m strike (tests pass; feel UNVERIFIED): StrikeModel + EditMode tests -> StalkerArms (shoulder pivots, builder) -> StalkerAgent attack flow -> PlayMode hit/miss tests
+- [x] F-14n lighting (light count/range tested; brightness UNVERIFIED by eye): ambient up, fill lights for Hall/Stacks/Records in LevelB1Builder, rebuild scene + bake, coverage test, screenshots for owner
 - [ ] Owner replays and confirms both (UNVERIFIED until then)
 
 ## NEXT, in priority order (spec: doc 05 "F-14 priority and sequencing"; game works offline, F-15 only suggests)
