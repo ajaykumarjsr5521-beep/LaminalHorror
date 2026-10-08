@@ -2,6 +2,7 @@ using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using NocturneAnnex.Entity;
 
@@ -14,9 +15,13 @@ namespace NocturneAnnex.Tests.PlayMode
         NoiseHub _hub;
         Transform _player;
 
-        [SetUp]
-        public void SetUp()
+        [UnitySetUp]
+        public IEnumerator SetUp()
         {
+            // An earlier fixture may have left Level_B1 loaded; its own entity, lights and NavMesh would disturb this arena.
+            foreach (var go in SceneManager.GetActiveScene().GetRootGameObjects()) Object.Destroy(go);
+            Time.timeScale = 1f;
+            yield return null;
             _root = new GameObject("Arena");
             var floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
             floor.transform.SetParent(_root.transform);
