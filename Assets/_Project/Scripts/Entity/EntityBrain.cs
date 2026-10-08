@@ -123,6 +123,13 @@ namespace NocturneAnnex.Entity
             Enter(EntityState.Investigate);
         }
 
+        /// <summary>Back to calm patrol, forgetting targets and contact. Used after a death.</summary>
+        public void Reset()
+        {
+            _sinceContact = 0f; _pendingSeen = false; HasTarget = false;
+            Enter(EntityState.Patrol);
+        }
+
         void StartChase(Vector3 at) { SetTarget(at); _sinceContact = 0f; Enter(EntityState.Chase); }
 
         void SetTarget(Vector3 t) { Target = t; HasTarget = true; }
