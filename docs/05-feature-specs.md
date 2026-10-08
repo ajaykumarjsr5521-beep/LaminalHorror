@@ -333,7 +333,7 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 - **AC:** 1. Each room validates: exactly one progression door, no softlock (script). 2. The room 5 key opens room 7. 3. Difficulty values rise monotonically. 4. Return changes happen once and are saved.
 - **Note:** one commit series and one PlayMode run per room; art stays greybox.
 
-### F-14g Lives, checkpoints and death sequence — TODO
+### F-14g Lives, checkpoints and death sequence — IN_PROGRESS (2026-10-08: RunLives, DeathSequence, DeathController in Level_B1; RunLivesTests + DeathSequenceTests 13/13, DeathFlowTests 5/5; full run EditMode 372/372, PlayMode 189/189. AC1-4 pass in tests. Open: pause-screen lives tally UI, how the sequence feels to a person (UNVERIFIED), room 6 case needs F-14f)
 - **Scope:** 2 lives per run; checkpoints after rooms 1, 3, 5, 7; death sequence (about 4 s); `DeathMemory` saved; lives shown without a HUD bar (pause screen tally).
 - **AC:** 1. Death in room 6 restarts at the last checkpoint with solved puzzles kept. 2. A second death ends the run. 3. The sequence lasts at most 5 s. 4. Save and load keep lives and memory.
 
