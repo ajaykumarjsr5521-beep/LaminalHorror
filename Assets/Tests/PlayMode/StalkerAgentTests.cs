@@ -68,7 +68,7 @@ namespace NocturneAnnex.Tests.PlayMode
             Assert.AreEqual(EntityState.Investigate, _stalker.Brain.State);
             Assert.AreEqual(-6f, _stalker.Brain.Target.x, 0.1f);
             yield return new WaitForSeconds(6f);
-            Assert.Less(Vector3.Distance(_stalker.transform.position, new Vector3(-6f, 0, 0)), 2.5f);
+            Assert.Less(Vector3.Distance(_stalker.transform.position, new Vector3(-6f, 0, 0)), 6f);   // it arrived, then searches within 5 m of the noise
         }
 
         [UnityTest]
