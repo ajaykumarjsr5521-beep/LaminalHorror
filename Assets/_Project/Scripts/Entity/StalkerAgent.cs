@@ -32,6 +32,11 @@ namespace NocturneAnnex.Entity
         /// <summary>Set by the strategic layer; null means baseline. Only probabilities and durations change.</summary>
         public IStrategyModifiers Modifiers;
 
+        /// <summary>Optional arm rig that shows the swing; the timing lives in <see cref="Strike"/>.</summary>
+        public StalkerArms Arms;
+        public StrikeModel Strike { get; } = new StrikeModel();
+        bool _forceHit;
+
         /// <summary>True while the entity can see the player this frame (range, light, no wall, not hidden).</summary>
         public bool SeesPlayerNow { get; private set; }
         public int InspectedCount { get; private set; }
@@ -74,6 +79,8 @@ namespace NocturneAnnex.Entity
         public void ResetToHome()
         {
             _caught = false; _inspecting = null; _travelled = 0f;
+            Strike.Cancel(); _forceHit = false;
+            if (Arms != null) Arms.Pose(0f);
             Hearing.Clear();
             Brain.Reset();
             _agent.Warp(_home);
@@ -115,11 +122,15 @@ namespace NocturneAnnex.Entity
             Drive(before, dt);
             Step(dt);
 
-            if (Brain.State == EntityState.Chase && Player != null &&
-                Vector3.Distance(transform.position, Player.position) <= CatchDistance)
+            float dist = Player != null ? Vector3.Distance(transform.position, Player.position) : float.MaxValue;
+            if (Strike.Phase == StrikePhase.Idle && Brain.State == EntityState.Chase && Strike.CanStart(dist)) Strike.Start();
+            if (Strike.Phase != StrikePhase.Idle)
             {
-                _caught = true; _agent.isStopped = true;
-                CaughtPlayer?.Invoke();
+                _agent.isStopped = true;
+                if (Player != null) FaceDirection(Player.position - transform.position, dt);
+                if (Strike.Step(dt, _forceHit ? 0f : dist)) { _caught = true; _forceHit = false; CaughtPlayer?.Invoke(); }
+                if (Arms != null) Arms.Pose(Strike.Raise);
+                if (Strike.Phase == StrikePhase.Idle && !_caught) _agent.isStopped = false;
             }
         }
 
@@ -172,10 +183,11 @@ namespace NocturneAnnex.Entity
                 _inspectedAt[spot] = Time.time;
                 InspectedCount++;
                 if (spot.Inspect((float)_rng.NextDouble(), Modifiers != null ? Modifiers.HideBonus : 0f) == InspectOutcome.FoundPlayer && !_caught)
+                    && Strike.Phase == StrikePhase.Idle)
                 {
-                    _caught = true; _agent.isStopped = true;
+                    _forceHit = true; _agent.isStopped = true;   // the swing plays toward the cupboard, then it counts as caught
                     FoundHidingPlayer?.Invoke(spot);
-                    CaughtPlayer?.Invoke();
+                    Strike.Start();
                 }
                 return true;
             }
