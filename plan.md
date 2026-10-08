@@ -27,9 +27,9 @@ Branch `feature/F-13-liminal-framework` (redesign removed 2026-10-07; code = F-1
 - [ ] Owner actions: branch protection (X-01), CI secrets (X-02), Git LFS (X-03)
 
 ## F-14 Stilt-Walker (spec in doc 05; a-e logic built, scene placement next)
-- [x] a Noise + HearingModel · [~] b AI (brain + StalkerAgent tested on an arena; placing it in Level_B1 open) · [~] c footsteps (rhythm done; clips, rig, captions open) · [~] d player noise (emitters done; throwing open)
+- [x] a Noise + HearingModel · [~] b AI (placed in Level_B1, tested) · [~] c footsteps (rhythm done; clips, rig, captions open) · [~] d player noise (emitters done; throwing open)
 - [~] e Hiding (chance logic done; HideSpot component open) · f Rooms 2-10 (one room per series) · g Lives/checkpoints/death · h Heartbeat + mixing
 - [ ] i Entity memory · j Scares · k Haptics · l Final escape
 - Owner to confirm: Indexer replaced by this entity (D4 yes); Level_B1 = room 1; start with a-e on B1
 
-Tests 2026-10-08 after F-14a-e logic: EditMode 312/312, PlayMode 172/172.
+Tests 2026-10-08: EditMode 312/312, PlayMode 177/177 (entity placed in Level_B1, stand-in footstep clips).
