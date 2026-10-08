@@ -29,6 +29,9 @@ namespace NocturneAnnex.Entity
         public event Action CaughtPlayer;
         public event Action<HideSpot> FoundHidingPlayer;
 
+        /// <summary>Set by the strategic layer; null means baseline. Only probabilities and durations change.</summary>
+        public IStrategyModifiers Modifiers;
+
         /// <summary>True while the entity can see the player this frame (range, light, no wall, not hidden).</summary>
         public bool SeesPlayerNow { get; private set; }
         public int InspectedCount { get; private set; }
@@ -107,6 +110,7 @@ namespace NocturneAnnex.Entity
             }
 
             var before = Brain.State;
+            Brain.SearchScale = Modifiers != null ? Modifiers.InvestigationMultiplier : 1f;
             Brain.Step(dt, input);
             Drive(before, dt);
             Step(dt);
@@ -167,7 +171,7 @@ namespace NocturneAnnex.Entity
                 var spot = _inspecting; _inspecting = null;
                 _inspectedAt[spot] = Time.time;
                 InspectedCount++;
-                if (spot.Inspect((float)_rng.NextDouble()) == InspectOutcome.FoundPlayer && !_caught)
+                if (spot.Inspect((float)_rng.NextDouble(), Modifiers != null ? Modifiers.HideBonus : 0f) == InspectOutcome.FoundPlayer && !_caught)
                 {
                     _caught = true; _agent.isStopped = true;
                     FoundHidingPlayer?.Invoke(spot);
