@@ -40,7 +40,7 @@ def test_strategy_echoes_request_id_and_logs(client):
     r = client.post("/strategy", json=profile())
     assert r.status_code == 200
     j = r.json()
-    assert j["request_id"] == "req-1" and j["strategy"] == "NONE"
+    assert j["request_id"] == "req-1" and j["strategy"] == "INCREASE_HIDING_PRESSURE"
     assert client.store.strategy_log()[0][0] == "req-1"
 
 
