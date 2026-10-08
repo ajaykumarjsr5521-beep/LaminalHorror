@@ -10,6 +10,7 @@ namespace NocturneAnnex.Controls
         public bool Sprint;            // held
         public bool Crouch;            // held
         public bool InteractPressed;   // true for one frame
+        public bool ThrowPressed;      // true for one frame
         public bool PausePressed;      // true for one frame
     }
 }
