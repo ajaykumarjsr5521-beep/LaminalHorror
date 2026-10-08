@@ -7,7 +7,9 @@ from fastapi import APIRouter
 from memory.memory_manager import MemoryManager
 from memory.store import Store
 from models.commands import StrategyCommand, StrategyResponse
+from agents.horror_director import HorrorDirector
 from models.events import GameEvent, StrategyRequest
+from models.horror import HorrorRequest, HorrorSuggestion
 
 
 log = logging.getLogger("strategy")
@@ -20,8 +22,10 @@ def _safely(fn) -> None:
         log.exception("memory write failed; continuing")
 
 
-def build_router(store: Store, planner: Callable[[StrategyRequest], StrategyCommand], memory: MemoryManager | None = None) -> APIRouter:
+def build_router(store: Store, planner: Callable[[StrategyRequest], StrategyCommand], memory: MemoryManager | None = None,
+                 director: HorrorDirector | None = None) -> APIRouter:
     r = APIRouter()
+    director = director or HorrorDirector()
 
     @r.get("/health")
     def health() -> dict:
@@ -40,5 +44,9 @@ def build_router(store: Store, planner: Callable[[StrategyRequest], StrategyComm
         cmd = StrategyCommand.model_validate(planner(req).model_dump())  # re-validate whatever the planner returned
         store.log_strategy(req.request_id, req.trigger, cmd.strategy.value, cmd.confidence, cmd.reason_code)
         return StrategyResponse(request_id=req.request_id, **cmd.model_dump())
+
+    @r.post("/horror", response_model=HorrorSuggestion)
+    def horror(req: HorrorRequest) -> HorrorSuggestion:
+        return director.decide(req)
 
     return r
