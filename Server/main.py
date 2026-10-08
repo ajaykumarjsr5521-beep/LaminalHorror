@@ -8,6 +8,7 @@ from fastapi import FastAPI, Request
 
 from api.entity import build_router
 from memory.store import Store
+from agents.llm_proposer import from_env
 from agents.strategic_graph import StrategicPlanner
 from models.commands import StrategyCommand
 from models.events import StrategyRequest
@@ -17,9 +18,9 @@ Planner = Callable[[StrategyRequest], StrategyCommand]
 
 
 def create_app(store: Store | None = None, planner: Planner | None = None) -> FastAPI:
-    planner = planner or StrategicPlanner()
-    app = FastAPI(title="Strategic AI", version="0.1")
     store = store or Store(os.environ.get("STRATEGY_DB", ":memory:"))
+    planner = planner or StrategicPlanner(proposer=from_env(store))  # no STRATEGY_LLM: rules only
+    app = FastAPI(title="Strategic AI", version="0.1")
     app.state.store = store
 
     @app.middleware("http")
