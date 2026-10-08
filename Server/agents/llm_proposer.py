@@ -4,6 +4,7 @@ The model only sees tool output and retrieved memory summaries, answers with the
 Anything wrong (timeout, provider error, schema violation) raises, and the graph falls back to the deterministic rules.
 """
 import json
+import logging
 import os
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
@@ -66,5 +67,6 @@ def from_env(store: Store | None = None) -> LlmProposer | None:
 
         model = init_chat_model(spec, temperature=0, timeout=2, max_retries=0)
         return LlmProposer(model.with_structured_output(StrategyCommand), store, float(os.environ.get("STRATEGY_LLM_TIMEOUT", "2")))
-    except Exception:
+    except Exception as e:
+        logging.getLogger("strategy").warning("LLM %s not available (%s); using rules only", spec, type(e).__name__)
         return None  # missing package, key or provider: stay on rules
