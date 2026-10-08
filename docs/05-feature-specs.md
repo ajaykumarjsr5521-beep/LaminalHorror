@@ -320,7 +320,7 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 - **Scope:** 2.3-2.7 m greybox rig (placeholder parts until art), limp cycle, alternating `normal` and `wood` footsteps with 4 variants each, distance mixing (far: quiet and filtered; near: loud with low-frequency), AI-driven silence, breathing layer under 5 m.
 - **AC:** 1. Rhythm alternates two different clips. 2. Volume and filter change across 3 distance bands. 3. No variant repeats twice in a row. 4. Silence happens only in Listen or Watch. 5. Every cue has a caption.
 
-### F-14d Player noise generation — IN_PROGRESS (2026-10-08: mapping, floor scale, NoiseBus done, PlayerNoiseTests 5/5; open: scene emitters on footsteps, doors, drops, throws)
+### F-14d Player noise generation — IN_PROGRESS (2026-10-08: footsteps, doors, drops and thrown bottles emit in Level_B1; ImpactNoiseRuleTests + ThrowInputTests 7/7, BottleThrowTests 5/5; full run EditMode 379/379, PlayMode 194/194. AC1-7 pass in tests. Open: touch Throw button not placed on the HUD, throw feel and bottle placement UNVERIFIED by a person, interaction noise for puzzles comes with F-14f)
 - **Scope:** player emits `NoiseEvent`s from walk, run, crouch, doors, drops, interactions, noisy floors and thrown objects.
 - **AC:** 1. Each action emits the right kind and loudness. 2. A thrown bottle makes an impact noise at the landing point. 3. A slammed door is louder than a gently closed one.
 - **Already done:** footsteps (`PlayerNoiseEmitter`) and doors (`DoorNoise`) emit in Level_B1 (StalkerBuilder).
