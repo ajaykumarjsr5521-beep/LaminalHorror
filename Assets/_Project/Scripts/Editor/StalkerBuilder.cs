@@ -54,8 +54,12 @@ namespace NocturneAnnex.Editor
             var eyeMat = Mat("Stalker_Eye", new Color(0.02f, 0.02f, 0.02f));
 
             Part(root.transform, PrimitiveType.Capsule, "Torso", new Vector3(0f, 1.55f, 0f), new Vector3(0.5f, 0.75f, 0.35f), cloth);
-            Part(root.transform, PrimitiveType.Capsule, "ArmL", new Vector3(-0.38f, 1.15f, 0f), new Vector3(0.1f, 0.65f, 0.1f), skin);
-            Part(root.transform, PrimitiveType.Capsule, "ArmR", new Vector3(0.38f, 1.15f, 0f), new Vector3(0.1f, 0.65f, 0.1f), skin);
+            var shoulderL = new GameObject("ShoulderL").transform;
+            shoulderL.SetParent(root.transform, false); shoulderL.localPosition = new Vector3(-0.38f, 1.75f, 0f);
+            var shoulderR = new GameObject("ShoulderR").transform;
+            shoulderR.SetParent(root.transform, false); shoulderR.localPosition = new Vector3(0.38f, 1.75f, 0f);
+            Part(shoulderL, PrimitiveType.Capsule, "ArmL", new Vector3(0f, -0.6f, 0f), new Vector3(0.1f, 0.65f, 0.1f), skin);
+            Part(shoulderR, PrimitiveType.Capsule, "ArmR", new Vector3(0f, -0.6f, 0f), new Vector3(0.1f, 0.65f, 0.1f), skin);
             Part(root.transform, PrimitiveType.Cylinder, "LegNormal", new Vector3(-0.15f, 0.55f, 0f), new Vector3(0.18f, 0.55f, 0.18f), cloth);
             Part(root.transform, PrimitiveType.Cylinder, "LegWooden", new Vector3(0.15f, 0.5f, 0f), new Vector3(0.12f, 0.5f, 0.12f), wood);
             var head = Part(root.transform, PrimitiveType.Sphere, "Head", new Vector3(0f, 2.3f, 0.05f), new Vector3(0.38f, 0.45f, 0.4f), skin);
@@ -67,6 +71,9 @@ namespace NocturneAnnex.Editor
             agent.stoppingDistance = 0.5f;
             var stalker = root.AddComponent<StalkerAgent>();
             stalker.Hub = hub;
+            var arms = root.AddComponent<StalkerArms>();
+            arms.ShoulderL = shoulderL; arms.ShoulderR = shoulderR;
+            stalker.Arms = arms;
             stalker.Player = player.transform;
             stalker.Eye = head.transform;
             stalker.NormalSteps = Clips("footstep00", "footstep01", "footstep02", "footstep03");
