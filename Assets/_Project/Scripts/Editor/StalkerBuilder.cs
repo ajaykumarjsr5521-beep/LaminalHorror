@@ -28,6 +28,22 @@ namespace NocturneAnnex.Editor
             foreach (var door in Object.FindObjectsByType<Door>(FindObjectsSortMode.None))
                 door.gameObject.AddComponent<DoorNoise>().Hub = hub;
 
+            var thrower = player.AddComponent<PlayerThrower>();
+            thrower.Aim = player.GetComponentInChildren<Camera>().transform;
+            var glass = Mat("Bottle_Glass", new Color(0.18f, 0.35f, 0.22f));
+            int n = 0;
+            foreach (var at in new[] { new Vector3(2f, 0.4f, 4f), new Vector3(3f, 0.4f, 12.5f), new Vector3(-14f, 0.4f, 13f), new Vector3(15f, 0.4f, 21f) })
+            {
+                var bottle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                bottle.name = "Bottle_" + (++n);
+                bottle.transform.SetParent(geometry, false);
+                bottle.transform.position = at;
+                bottle.transform.localScale = new Vector3(0.09f, 0.14f, 0.09f);
+                bottle.GetComponent<Renderer>().sharedMaterial = glass;
+                bottle.AddComponent<Rigidbody>().mass = 0.4f;
+                bottle.AddComponent<ThrowableBottle>().Hub = hub;
+            }
+
             var root = new GameObject("Stilt-Walker");
             root.transform.position = spawn;
             var skin = Mat("Stalker_Skin", new Color(0.62f, 0.62f, 0.58f));
