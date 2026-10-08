@@ -33,7 +33,7 @@ Branch `feature/F-15-strategic-ai` (from F-13 branch, owner request 2026-10-08; 
 - Owner to confirm: Indexer replaced by this entity (D4 yes); Level_B1 = room 1; start with a-e on B1
 
 ## NEXT, in priority order (spec: doc 05 "F-14 priority and sequencing"; game works offline, F-15 only suggests)
-1. [ ] F-14g lives/checkpoints/death: split wip from `feature/F-14g-lives` per file, test (unblocks F-15 death events)
+1. [~] F-14g: branch `feature/F-14g-lives-v2` (from F-15 tip, 13 per-file commits, code + tests committed). BLOCKED on a Unity Editor being open: close it, then run `Create Level B1 Scene` builder, then `FILTER="NocturneAnnex.Tests.EditMode.RunLivesTests;...DeathSequenceTests" run-tests.sh EditMode`, then PlayMode DeathFlowTests. Not run: UNVERIFIED
 2. [ ] F-14d scene emitters: footsteps, doors, drops, throws (test: PlayerNoiseTests + PlayMode noise)
 3. [ ] F-15 integration: StrategyRunner in B1, publish GameEvents, StalkerAgent reads HideBonus/InvestigationMultiplier, HorrorSuggestionGate, live uvicorn + HTTP, real LLM key
 4. [ ] F-14h heartbeat/DangerLevel · 5. [ ] F-14i EntityMemory (local wins over RAG)
