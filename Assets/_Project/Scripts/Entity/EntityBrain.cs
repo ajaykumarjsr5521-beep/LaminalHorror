@@ -26,6 +26,9 @@ namespace NocturneAnnex.Entity
     {
         public const float ListenSeconds = 1.2f;
         public const float SearchSeconds = 15f;
+
+        /// <summary>Multiplies the search time. Set from the strategic layer, 1 = baseline.</summary>
+        public float SearchScale = 1f;
         public const float ChaseLoseSeconds = 20f;
         public const float CooldownSeconds = 8f;
         public const float WatchSeconds = 6f;
@@ -82,7 +85,7 @@ namespace NocturneAnnex.Entity
                 case EntityState.Search:
                     if (input.Sees) { StartChase(input.SeenPos); break; }
                     if (input.Heard) { Enter(EntityState.Listen); _pending = input.NoisePos; _pendingSeen = false; break; }
-                    if (StateTime >= SearchSeconds) Enter(EntityState.Cooldown);
+                    if (StateTime >= SearchSeconds * SearchScale) Enter(EntityState.Cooldown);
                     break;
 
                 case EntityState.Chase:
