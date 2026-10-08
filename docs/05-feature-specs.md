@@ -307,7 +307,7 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 - **Scope:** player emits `NoiseEvent`s from walk, run, crouch, doors, drops, interactions, noisy floors and thrown objects.
 - **AC:** 1. Each action emits the right kind and loudness. 2. A thrown bottle makes an impact noise at the landing point. 3. A slammed door is louder than a gently closed one.
 
-### F-14e Hiding system — TODO
+### F-14e Hiding system — IN_PROGRESS (2026-10-08: inspection chance logic done, HideInspectionTests 6/6, AC1-3 logic; open: HideSpot scene component, enter/exit with noise, entity search hookup, AC4 exit check)
 - **Scope:** `HideSpot` (cupboard, under bed or table, curtain, closet; safety 0-1; noise on enter and exit). Entering during Chase only out of the entity's line of sight. Entity inspection chance from safety, entry noise and memory.
 - **AC:** 1. Spots differ in safety. 2. A noisy entry raises inspection chance. 3. Inspected and found means death; inspected and not found means it leaves. 4. The player can always exit.
 
