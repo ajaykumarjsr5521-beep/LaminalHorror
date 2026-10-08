@@ -58,6 +58,11 @@ namespace NocturneAnnex.Editor
             new GameObject("InputRouter").AddComponent<InputRouter>();
             var player = BuildPlayer(db, out var interactor, out var inventory);
             LevelAudio.Build(player);
+            StalkerBuilder.Build(player, geo, new Vector3(-12f, 0.1f, 20f), new[]
+            {
+                new Vector3(0f, 0.1f, 20f), new Vector3(-12f, 0.1f, 18f), new Vector3(3f, 0.1f, 14f),
+                new Vector3(12f, 0.1f, 18f), new Vector3(-3f, 0.1f, 22f),
+            });
 
             var cps = BuildCheckpoints();
             var exit = new GameObject("Exit", typeof(BoxCollider));
@@ -375,7 +380,7 @@ namespace NocturneAnnex.Editor
             _brass = Mat("Brass", new Color(0.72f, 0.55f, 0.2f));
         }
 
-        static Material Mat(string name, Color color)
+        internal static Material Mat(string name, Color color)
         {
             string path = $"{MatDir}/{name}.mat";
             var m = AssetDatabase.LoadAssetAtPath<Material>(path);
