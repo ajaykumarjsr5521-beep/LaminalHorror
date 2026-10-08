@@ -15,7 +15,7 @@ namespace NocturneAnnex.Entity
             Position = position; Kind = kind; Radius = radius; Time = time;
         }
 
-        public static NoiseEvent Make(Vector3 position, NoiseKind kind, float time, bool story = false) =>
-            new NoiseEvent(position, kind, NoiseTable.Radius(kind, story), time);
+        public static NoiseEvent Make(Vector3 position, NoiseKind kind, float time, bool story = false, float scale = 1f) =>
+            new NoiseEvent(position, kind, NoiseTable.Radius(kind, story) * scale, time);
     }
 }
