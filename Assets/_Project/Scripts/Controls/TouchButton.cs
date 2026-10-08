@@ -5,7 +5,7 @@ namespace NocturneAnnex.Controls
 {
     public class TouchButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        public enum Kind { Interact, Sprint, Crouch, Pause }
+        public enum Kind { Interact, Sprint, Crouch, Pause, Throw }
         [SerializeField] Kind _kind;
 
         public void OnPointerDown(PointerEventData e)
@@ -16,6 +16,7 @@ namespace NocturneAnnex.Controls
             {
                 case Kind.Interact: t.PressInteract(); break;
                 case Kind.Pause: t.PressPause(); break;
+                case Kind.Throw: t.PressThrow(); break;
                 case Kind.Sprint: t.SetSprint(true); break;
                 case Kind.Crouch: t.SetCrouch(true); break;
             }
