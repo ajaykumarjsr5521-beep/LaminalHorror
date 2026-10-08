@@ -12,6 +12,7 @@
     "NocturneAnnex.Horror",
     "NocturneAnnex.Audio",
     "NocturneAnnex.Entity",
+    "NocturneAnnex.Strategy",
     "NocturneAnnex.Save",
     "NocturneAnnex.Settings",
     "NocturneAnnex.UI",
