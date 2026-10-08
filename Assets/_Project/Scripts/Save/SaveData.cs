@@ -16,6 +16,10 @@ namespace NocturneAnnex.Save
         public string[] SolvedPuzzleIds = new string[0];
         // Added after the first release of the format. Absent in older saves, which then read as "nothing fired yet", so Version stays 1.
         public string[] FiredEventIds = new string[0];
+        // Run state (F-14g). -1 means "not recorded": a full set of lives.
+        public int LivesLeft = -1;
+        public int DeathCount;
+        public DeathRecord[] DeathLog = new DeathRecord[0];
         public string SavedAtUtc = "";
     }
 }
