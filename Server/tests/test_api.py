@@ -81,3 +81,24 @@ def test_valid_planner_flows_through():
     c = TestClient(create_app(Store(), planner=lambda req: cmd))
     j = c.post("/strategy", json=profile()).json()
     assert j["strategy"] == "INCREASE_HIDING_PRESSURE" and j["duration_seconds"] == 90
+
+
+def test_strategy_request_writes_semantic_memory():
+    app = create_app(Store())
+    c = TestClient(app)
+    c.post("/strategy", json=profile())
+    assert app.state.memory.vectors.count() >= 1
+
+
+def test_death_event_creates_memory_and_vector_failure_does_not_break_api():
+    app = create_app(Store())
+    c = TestClient(app)
+    c.post("/events", json=[{"type": "DEATH", "time": 4, "tag": "ROOM_6"}])
+    assert app.state.memory.vectors.get("death:ROOM_6") is not None
+
+    def boom(*a, **k):
+        raise RuntimeError("chroma down")
+
+    app.state.memory.vectors.upsert = boom
+    assert c.post("/events", json=[{"type": "DEATH", "time": 9, "tag": "ROOM_7"}]).status_code == 200
+    assert c.post("/strategy", json=profile()).status_code == 200
