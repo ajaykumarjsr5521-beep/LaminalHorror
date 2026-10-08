@@ -46,7 +46,7 @@ namespace NocturneAnnex.Editor
             var db = AssetDatabase.LoadAssetAtPath<ItemDatabase>(LevelItems.DatabasePath);
             MakeMaterials();
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
-            RenderSettings.ambientLight = new Color(0.16f, 0.16f, 0.19f);
+            RenderSettings.ambientLight = new Color(0.27f, 0.27f, 0.31f);   // F-14n: floors and furniture must stay readable
 
             var geo = new GameObject("Geometry").transform;
             BuildShell(geo);
@@ -281,6 +281,26 @@ namespace NocturneAnnex.Editor
                 l.range = Mathf.Max(x1 - x0, z1 - z0) * 0.9f;
                 l.transform.position = new Vector3((x0 + x1) / 2f, 2.6f, (z0 + z1) / 2f);
                 LevelLighting.ConfigureLight(l, name);
+
+                // F-14n: one light cannot cover a 12 m room, so big areas get two fill lights at a quarter and three quarters of the long side.
+                if (Mathf.Max(x1 - x0, z1 - z0) > 10f)
+                {
+                    bool alongX = (x1 - x0) >= (z1 - z0);
+                    for (int i = 0; i < 2; i++)
+                    {
+                        float t = i == 0 ? 0.25f : 0.75f;
+                        var f = new GameObject("Light_" + name + "_Fill" + (i + 1)).AddComponent<Light>();
+                        f.transform.SetParent(parent, false);
+                        f.type = LightType.Point;
+                        f.color = new Color(1f, 0.88f, 0.7f);
+                        f.intensity = 5f;
+                        f.range = 10f;
+                        f.transform.position = alongX
+                            ? new Vector3(Mathf.Lerp(x0, x1, t), 2.6f, (z0 + z1) / 2f)
+                            : new Vector3((x0 + x1) / 2f, 2.6f, Mathf.Lerp(z0, z1, t));
+                        f.lightmapBakeType = LightmapBakeType.Baked;   // baked so the level keeps at most two realtime lights (mobile budget); events only flicker Light_<name>
+                    }
+                }
             }
         }
 
