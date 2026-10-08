@@ -38,4 +38,6 @@ Tests 2026-10-08: EditMode 312/312, PlayMode 184/184.
 - [x] a StrategyCommand/Validator/Executor (EditMode 14/14) · [x] b PlayerBehaviorTracker + GameEventBus (EditMode 7/7; emitters not wired yet)
 - [x] c StrategyClient with fake transport (EditMode 13/13) · [x] d Server skeleton FastAPI+SQLite (pytest 10/10; packages OK on 3.14)
 - [x] e LangGraph graph, rule planner (pytest 14 graph tests) · [x] f LangChain tools + structured LLM output (pytest, fake model only)
-- [x] g RAG/Chroma memory (pytest 12 memory tests) · [x] h Director link + rare lines (server + Unity gate; not wired to HorrorEventRunner) · [ ] i Debug panel, fairness, perf, server-killed run
+- [x] g RAG/Chroma memory (pytest 12 memory tests) · [x] h Director link + rare lines (server + Unity gate; not wired to HorrorEventRunner) · [x] i Debug panel, fairness, perf (code+tests)
+- F-15 open (integration, next): place StrategyRunner in Level_B1; publish GameEvents from player/hide/death code; StalkerAgent reads Executor.HideBonus/InvestigationMultiplier (after F-14g branch merges, it edits StalkerAgent); HorrorEventRunner uses HorrorSuggestionGate; live uvicorn + Unity HTTP run; real LLM key test.
+- F-14g work is preserved on `feature/F-14g-lives` (one wip commit, UNVERIFIED; split per file before merge).
