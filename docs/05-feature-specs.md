@@ -360,6 +360,19 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 ### F-14l Final escape and ending — TODO
 - **Scope:** silence beat, chase to exit, door slam, "YOU ESCAPED" screen with time, deaths, lives, rooms and secrets; closing shot of two eyes in an upper window.
 - **AC:** 1. Winnable by a valid scripted route. 2. Stats match the run. 3. No input stays blocked after the end.
+
+### F-14m Entity strike: a visible hit before death — IN_PROGRESS (owner playtest 2026-10-08: "I die without any action of the entity")
+- **Problem:** `StalkerAgent` raises `CaughtPlayer` the instant a chasing entity is within 1.2 m, so the death sequence starts with no attack. Unfair and not frightening.
+- **Scope:** `StrikeModel` (plain C#): states Idle, Windup 0.5 s, Strike 0.25 s, Recover 1.0 s; a hit lands at the end of the Strike only if the player is within `HitReach` 2.0 m then, else it is a miss and the chase continues. The entity stops, faces the player and swings an arm (greybox shoulder pivots, `StalkerArms`); the same swing plays toward the cupboard when it finds a hider. `CaughtPlayer` fires on the hit, not on arrival. Starts at `StrikeDistance` 1.8 m during Chase only.
+- **Exclusions:** real animation rig, hit sound clips and captions (placeholder cue only), blood or gore, camera shake beyond one short kick, entity grabbing the player.
+- **AC:** 1. Chase contact within 1.8 m starts Windup and does not kill by itself. 2. A hit lands only after Windup + Strike (0.75 s) and only when still within 2.0 m. 3. Moving out of reach during the swing makes a miss; the entity recovers 1 s then chases again. 4. Finding a hider plays the same swing, then `CaughtPlayer`. 5. The arm visibly rotates during Windup and Strike (PlayMode checks arm rotation). 6. Death sequence, lives and checkpoint behaviour from F-14g are unchanged.
+- **Test:** EditMode `StrikeModelTests`; PlayMode on Level_B1 with the real stalker and a stationary player (hit) and a teleported player (miss). Feel is UNVERIFIED until played.
+
+### F-14n Lighting readability — IN_PROGRESS (owner playtest 2026-10-08: "2nd room is very dark, floor and furniture not visible")
+- **Problem:** each area has one point light (intensity 7, range 0.9 x longest side) at 2.6 m and a flat ambient of 0.16; the Hall (12 x 16 m, second room), Stacks and Records have unlit corners, and the realtime Hall and Stacks get no baked bounce.
+- **Scope:** raise ambient to (0.27, 0.27, 0.31); add fill lights for areas with a side over 10 m (Hall, Stacks, Records): two extra point lights per area at one quarter and three quarters of the long axis, intensity 5, range 10, warm tint, baked in Records and realtime in Hall and Stacks (fill lights are not flickered by horror events). Darkness stays moody: the dim corridor Dock and the dark-zone events are untouched.
+- **AC:** 1. Every floor sample point of a 2 m grid in Hall, Stacks and Records receives at least a target illuminance (script samples `LightmapSettings`/realtime light sum, threshold set in the test). 2. Break Room and Dock are unchanged. 3. Flicker events still only change the main area light. 4. Owner confirms by eye (UNVERIFIED until then).
+- **Test:** EditMode/PlayMode light coverage script on the built scene; screenshot at 3 points for the owner to review.
 - **Order:** a, b, c, d, e, f (room by room), g, h, i, j, k, l. Each: EditMode first, PlayMode second, one file per commit.
 
 ## F-15 Strategic AI layer (Python server: LangGraph + LangChain + RAG + LLM) — IN_PROGRESS (UNVERIFIED as a whole; a-i built and unit-tested; open: scene wiring, emitters, StalkerAgent and HorrorEventRunner use, real LLM and HTTP run, play feel)
