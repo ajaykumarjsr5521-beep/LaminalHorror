@@ -59,7 +59,24 @@ namespace NocturneAnnex.Entity
             _lastPos = transform.position;
         }
 
-        void Start() => _spots = FindObjectsByType<HideSpot>(FindObjectsSortMode.None);
+        Vector3 _home;
+
+        void Start()
+        {
+            _spots = FindObjectsByType<HideSpot>(FindObjectsSortMode.None);
+            _home = transform.position;
+        }
+
+        /// <summary>Puts the entity back where it started, calm and with no memory of noises. Used after the player dies.</summary>
+        public void ResetToHome()
+        {
+            _caught = false; _inspecting = null; _travelled = 0f;
+            Hearing.Clear();
+            Brain.Reset();
+            _agent.Warp(_home);
+            _agent.isStopped = false;
+            _lastPos = transform.position;
+        }
 
         bool PlayerHidden { get { foreach (var s in _spots) if (s.Occupied) return true; return false; } }
 
