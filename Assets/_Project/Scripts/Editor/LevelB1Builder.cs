@@ -359,7 +359,7 @@ namespace NocturneAnnex.Editor
             return door;
         }
 
-        static GameObject Box(Transform parent, string name, Vector3 centre, Vector3 size, Material mat)
+        internal static GameObject Box(Transform parent, string name, Vector3 centre, Vector3 size, Material mat)
         {
             var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.name = name;
