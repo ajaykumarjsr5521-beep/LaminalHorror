@@ -25,7 +25,7 @@ namespace NocturneAnnex.Entity
             gameObject.SetActive(!held);
         }
 
-        internal void Launch(Vector3 from, Vector3 velocity)
+        public void Launch(Vector3 from, Vector3 velocity)
         {
             transform.position = from;
             SetHeld(false);
