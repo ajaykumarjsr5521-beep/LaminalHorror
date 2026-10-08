@@ -62,7 +62,26 @@ namespace NocturneAnnex.Editor
                 t.position = p;
                 return t;
             }).ToArray();
+            HideSpotAt(geometry, "Cupboard_Stacks", new Vector3(-16.5f, 0f, 12.7f), new Vector3(1.4f, 2.2f, 0.9f), new Vector3(0f, 0f, 1.3f), 0.8f, hub, stalker);
+            HideSpotAt(geometry, "Cupboard_Hall", new Vector3(5.4f, 0f, 11.5f), new Vector3(0.9f, 2.2f, 1.4f), new Vector3(-1.3f, 0f, 0f), 0.3f, hub, stalker);
+            HideSpotAt(geometry, "Cupboard_Records", new Vector3(17.2f, 0f, 22.5f), new Vector3(0.9f, 2.2f, 1.4f), new Vector3(-1.3f, 0f, 0f), 0.55f, hub, stalker);
             return stalker;
+        }
+
+        /// <summary>A solid cupboard the player can hide in: hide point inside it, exit point in front of it.</summary>
+        static void HideSpotAt(Transform parent, string name, Vector3 floorPos, Vector3 size, Vector3 exitOffset, float safety, NoiseHub hub, StalkerAgent stalker)
+        {
+            var box = LevelB1Builder.Box(parent, name, floorPos + Vector3.up * size.y / 2f, size, Mat("Cupboard", new Color(0.22f, 0.15f, 0.1f)));
+            var spot = box.AddComponent<HideSpot>();
+            spot.Safety = safety; spot.Hub = hub; spot.Stalker = stalker;
+            var hide = new GameObject("HidePoint").transform;
+            hide.SetParent(box.transform, true);
+            hide.position = floorPos + Vector3.up * 0.1f;
+            var exit = new GameObject("ExitPoint").transform;
+            exit.SetParent(box.transform, true);
+            exit.position = floorPos + exitOffset + Vector3.up * 0.1f;
+            exit.rotation = Quaternion.LookRotation(exitOffset.normalized);
+            spot.HidePoint = hide; spot.ExitPoint = exit;
         }
 
         static GameObject Part(Transform parent, PrimitiveType type, string name, Vector3 local, Vector3 scale, Material mat)
