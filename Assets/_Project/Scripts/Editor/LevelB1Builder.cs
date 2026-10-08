@@ -58,7 +58,7 @@ namespace NocturneAnnex.Editor
             new GameObject("InputRouter").AddComponent<InputRouter>();
             var player = BuildPlayer(db, out var interactor, out var inventory);
             LevelAudio.Build(player);
-            StalkerBuilder.Build(player, geo, new Vector3(-12f, 0.1f, 20f), new[]
+            var stalker = StalkerBuilder.Build(player, geo, new Vector3(-12f, 0.1f, 20f), new[]
             {
                 new Vector3(0f, 0.1f, 20f), new Vector3(-12f, 0.1f, 18f), new Vector3(3f, 0.1f, 14f),
                 new Vector3(12f, 0.1f, 18f), new Vector3(-3f, 0.1f, 22f),
@@ -92,6 +92,9 @@ namespace NocturneAnnex.Editor
                     Hide = new[] { props.transform.Find("BrassStamp").gameObject },
                 },
             };
+
+            var death = new GameObject("DeathController").AddComponent<NocturneAnnex.Entity.DeathController>();
+            death.Stalker = stalker; death.Level = level; death.Save = save;
 
             LevelEvents.Build(level, save, player.GetComponentInChildren<Camera>());
             LevelHudBuilder.Build(interactor, inventory, finalLock, level);
