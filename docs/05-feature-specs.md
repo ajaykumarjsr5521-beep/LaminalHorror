@@ -299,11 +299,11 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 - **AC:** 1. Hears a sound, stops, turns, walks to it, searches 15 s, returns to patrol. 2. Cannot see through walls or closed doors. 3. Search inspects nearby hide spots with a probability per spot. 4. Watch and ignore outcomes occur and never lead to a kill without a new trigger. 5. No state skips Listen. 6. A valid escape route exists per room (script).
 - **Test:** EditMode machine tests; PlayMode on the real level with a scripted noisy and a scripted quiet player.
 
-### F-14c Wooden-leg body, animation and footsteps — TODO
+### F-14c Wooden-leg body, animation and footsteps — IN_PROGRESS (2026-10-08: rhythm logic done, WoodenLegRhythmTests 5/5, AC1-3 logic pass; open: rig and animation, audio clips and cue registration, silence in Listen/Watch, captions)
 - **Scope:** 2.3-2.7 m greybox rig (placeholder parts until art), limp cycle, alternating `normal` and `wood` footsteps with 4 variants each, distance mixing (far: quiet and filtered; near: loud with low-frequency), AI-driven silence, breathing layer under 5 m.
 - **AC:** 1. Rhythm alternates two different clips. 2. Volume and filter change across 3 distance bands. 3. No variant repeats twice in a row. 4. Silence happens only in Listen or Watch. 5. Every cue has a caption.
 
-### F-14d Player noise generation — TODO
+### F-14d Player noise generation — IN_PROGRESS (2026-10-08: mapping, floor scale, NoiseBus done, PlayerNoiseTests 5/5; open: scene emitters on footsteps, doors, drops, throws)
 - **Scope:** player emits `NoiseEvent`s from walk, run, crouch, doors, drops, interactions, noisy floors and thrown objects.
 - **AC:** 1. Each action emits the right kind and loudness. 2. A thrown bottle makes an impact noise at the landing point. 3. A slammed door is louder than a gently closed one.
 
