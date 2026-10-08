@@ -20,6 +20,8 @@ namespace NocturneAnnex.Strategy
 
         void Awake()
         {
+            Online = PlayerPrefs.GetInt("strategy.online", Online ? 1 : 0) == 1;
+            ServerUrl = PlayerPrefs.GetString("strategy.url", ServerUrl);
             Bus = new GameEventBus();
             Tracker = new PlayerBehaviorTracker();
             Tracker.Attach(Bus);
