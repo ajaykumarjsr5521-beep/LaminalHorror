@@ -289,7 +289,7 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 - **Exclusions:** iOS, multiplayer, real microphone input, procedural level generation, device profiling (needs an Android device).
 - **Fairness rules (all sub-features):** the entity never knows the player position without a sound event, never teleports, never ignores walls, never knows which hide spot is used; memory only changes probabilities (patrol, investigation, search, suspicion), never speed beyond the per-room table. Every death is explainable from a logged `DeathCause`.
 
-### F-14a Noise model and hearing (plain C#, EditMode) — TODO
+### F-14a Noise model and hearing (plain C#, EditMode) — DONE (2026-10-08: HearingModelTests 7/7, AC1-6 pass; SoundMemory folded into HearingModel as MarkHandled)
 - **Scope:** `NoiseEvent {position, loudness, time, kind}`, `NoiseTable` (crouch 2 m, walk 6, run 14, door slam 20, dropped object 12, thrown object impact 16, machinery/alarm 30; Story x0.5), `HearingModel` (score = loudness / distance, decays with age, reduced by walls), `SoundMemory` (best candidate location).
 - **AC:** 1. Run is heard farther than walk; crouch is quietest. 2. A sound outside its radius is never heard. 3. Each wall between halves the effective radius. 4. Older events decay and expire. 5. The strongest recent event wins. 6. Story mode halves radii.
 - **Test:** EditMode, deterministic.
