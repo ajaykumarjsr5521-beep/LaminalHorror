@@ -32,6 +32,11 @@ Branch `feature/F-15-strategic-ai` (from F-13 branch, owner request 2026-10-08; 
 - [ ] i Entity memory · j Scares · k Haptics · l Final escape
 - Owner to confirm: Indexer replaced by this entity (D4 yes); Level_B1 = room 1; start with a-e on B1
 
+## PLAYTEST FIXES (owner, 2026-10-08) — do first; spec F-14m, F-14n in doc 05
+- [ ] F-14m strike: StrikeModel + EditMode tests -> StalkerArms (shoulder pivots, builder) -> StalkerAgent attack flow -> PlayMode hit/miss tests
+- [ ] F-14n lighting: ambient up, fill lights for Hall/Stacks/Records in LevelB1Builder, rebuild scene + bake, coverage test, screenshots for owner
+- [ ] Owner replays and confirms both (UNVERIFIED until then)
+
 ## NEXT, in priority order (spec: doc 05 "F-14 priority and sequencing"; game works offline, F-15 only suggests)
 1. [x] F-14g code + tests done on `feature/F-14g-lives-v2` (EditMode 372/372, PlayMode 189/189); open: pause-screen lives tally, person playtest. Merge order: this branch is built on F-15, owner reviews
 2. [x] F-14d throw + drop noise done (EditMode 379/379, PlayMode 194/194); open: touch Throw button on HUD, person playtest
