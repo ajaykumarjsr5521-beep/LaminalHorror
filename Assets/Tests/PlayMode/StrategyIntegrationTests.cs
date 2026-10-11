@@ -9,6 +9,7 @@ using UnityEngine.TestTools;
 using NocturneAnnex.Core;
 using NocturneAnnex.Entity;
 using NocturneAnnex.Flow;
+using NocturneAnnex.Horror;
 using NocturneAnnex.Strategy;
 
 namespace NocturneAnnex.Tests.PlayMode
@@ -45,6 +46,35 @@ namespace NocturneAnnex.Tests.PlayMode
 
         [TearDown]
         public void TearDown() { ModalGate.Reset(); Time.timeScale = 1f; }
+
+        sealed class FakeHorrorTransport : IStrategyTransport
+        {
+            public string Id, Json; public System.Action<TransportResult> Done;
+            public void Send(string id, string json, System.Action<TransportResult> done) { Id = id; Json = json; Done = done; }
+        }
+
+        [UnityTest]
+        public IEnumerator Horror_Offline_SendsNothing()
+        {
+            yield return new WaitForSeconds(2.2f);
+            Assert.AreEqual(ServerState.Offline, _runner.HorrorClient.State);
+            Assert.AreEqual(0, _runner.HorrorClient.RequestsSent);
+            Assert.IsNotNull(_runner.Horror, "bridge finds the HorrorEventRunner");
+        }
+
+        [UnityTest]
+        public IEnumerator Horror_FakeServerSuggestion_PlaysTheLocalEvent()
+        {
+            var t = new FakeHorrorTransport();
+            _runner.UseHorrorTransport(t);
+            yield return new WaitForSeconds(1.5f);   // the bridge asks on its one-second tick
+            Assert.IsNotNull(t.Json, "a request was sent");
+            StringAssert.DoesNotContain("position", t.Json);
+            t.Done(new TransportResult { Ok = true, Body = "{\"request_id\":\"" + t.Id + "\",\"event\":\"LIGHT_FLICKER\",\"tension\":0.4,\"reason_code\":\"TEST\"}" });
+            yield return null;
+            var spot = System.Array.Find(Object.FindObjectsByType<HorrorEventSpot>(FindObjectsSortMode.None), x => x.Event != null && x.Event.Id == "flicker_hall");
+            Assert.IsTrue(spot.IsPlaying, "the suggested flicker is playing");
+        }
 
         [UnityTest]
         public IEnumerator LevelHasRunnerAndBridgeAndPlaysOffline()
