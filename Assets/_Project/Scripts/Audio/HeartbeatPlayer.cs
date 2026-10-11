@@ -15,6 +15,8 @@ namespace NocturneAnnex.Audio
 
         public HeartbeatMix Mix { get; } = new HeartbeatMix();
         public int BeatsPlayed { get; private set; }
+        /// <summary>Raised on every beat, even when Silent, so haptics can follow the heartbeat.</summary>
+        public event System.Action Beat;
 
         AudioSource _source;
         AudioClip _clip;
@@ -42,6 +44,7 @@ namespace NocturneAnnex.Audio
             if (now < _nextBeat) return;
             _nextBeat = now + 60f / Mix.Bpm;
             BeatsPlayed++;
+            Beat?.Invoke();
             if (Silent || _source == null) return;
             float bus = Director != null ? Director.Bus.Gain(CueCatalog.Sfx) : 1f;
             _source.PlayOneShot(_clip, Mix.Heartbeat * bus);
