@@ -40,7 +40,7 @@ Branch `feature/F-14g-lives-v2` (built on F-15; owner reviews before main). Prev
 ## NEXT, in priority order (spec: doc 05 "F-14 priority and sequencing"; game works offline, F-15 only suggests)
 1. [x] F-14g code + tests done on `feature/F-14g-lives-v2` (EditMode 372/372, PlayMode 189/189); open: pause-screen lives tally, person playtest. Merge order: this branch is built on F-15, owner reviews
 2. [x] F-14d throw + drop noise done (EditMode 379/379, PlayMode 194/194); open: touch Throw button on HUD, person playtest
-3. [x] F-15j integration done (EditMode 379/379, PlayMode 199 + 1 skipped live test; live server + OpenAI key checked once). F-15k done: HorrorSuggestionBridge (Strategy) -> HorrorEventRunner.FireCatalogue (HorrorEventsSceneTests 22/22; Horror cannot reference Strategy, cycle). Open: nothing calls the bridge from StrategyRunner yet; person playtest
+3. [x] F-15j integration done (EditMode 379/379, PlayMode 199 + 1 skipped live test; live server + OpenAI key checked once). F-15k done: HorrorSuggestionBridge (Strategy) -> HorrorEventRunner.FireCatalogue (HorrorEventsSceneTests 22/22; Horror cannot reference Strategy, cycle). Wired: StrategyBridge asks /horror each 45 s when Online (StrategyIntegrationTests 7/7). Open: live uvicorn run of /horror, real stress/darkness inputs (F-14h), person playtest
 4. [ ] F-14h heartbeat/DangerLevel · 5. [ ] F-14i EntityMemory (local wins over RAG)
 6. [ ] F-14f room template + validator; M1 rooms 2-5 (room 5 key opens room 7); M2 rooms 6-10
 7. [ ] F-14j scares · F-14k haptics · F-14l final escape · F-14c rig/clips/captions alongside
