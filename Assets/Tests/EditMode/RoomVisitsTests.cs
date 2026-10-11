@@ -59,6 +59,20 @@ namespace NocturneAnnex.Tests.EditMode
         }
 
         [Test]
+        public void OpenedDoorsAndTakenItems_AreRememberedAcrossSaveAndLoad()
+        {
+            var a = new RoomVisits();
+            a.MarkDoorOpened(4, "prog"); a.MarkItemTaken(4, "key_r4a");
+            var b = new RoomVisits();
+            b.Restore(a.Snapshot());
+            Assert.IsTrue(b.IsDoorOpened(4, "prog"));
+            Assert.IsFalse(b.IsDoorOpened(5, "prog"), "rooms are independent");
+            Assert.IsTrue(b.IsItemTaken(4, "key_r4a"));
+            b.Clear();
+            Assert.IsFalse(b.IsDoorOpened(4, "prog"));
+        }
+
+        [Test]
         public void Clear_StartsOver()
         {
             var v = new RoomVisits();
