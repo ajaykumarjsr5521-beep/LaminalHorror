@@ -22,6 +22,9 @@ namespace NocturneAnnex.Core
 
             // Lives
             { "run.lives_left_1", "One life remains." },
+            { "memory.again", "Again?" },
+            { "memory.remember", "I remember." },
+            { "memory.you_again", "You again." },
             { "run.over", "The building keeps you. It begins again." },
 
             // Pickups and notes
