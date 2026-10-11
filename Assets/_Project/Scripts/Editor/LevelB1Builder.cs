@@ -95,6 +95,8 @@ namespace NocturneAnnex.Editor
 
             var death = new GameObject("DeathController").AddComponent<NocturneAnnex.Entity.DeathController>();
             death.Stalker = stalker; death.Level = level; death.Save = save;
+            var recorder = death.gameObject.AddComponent<NocturneAnnex.Entity.EntityMemoryRecorder>();
+            recorder.Save = save; recorder.Stalker = stalker; recorder.Motor = player.GetComponent<PlayerMotor>(); recorder.Thrower = player.GetComponent<NocturneAnnex.Entity.PlayerThrower>();
 
             LevelEvents.Build(level, save, player.GetComponentInChildren<Camera>());
             LevelHudBuilder.Build(interactor, inventory, finalLock, level);
