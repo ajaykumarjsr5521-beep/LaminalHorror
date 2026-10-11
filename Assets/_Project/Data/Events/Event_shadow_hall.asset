@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: NocturneAnnex.Horror::NocturneAnnex.Horror.HorrorEventAsset
   Id: shadow_hall
   Kind: 5
+  Tag: 0
   Once: 1
   CooldownSeconds: 0
   MinTension: 0.75
