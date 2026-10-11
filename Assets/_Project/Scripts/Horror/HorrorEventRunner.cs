@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using NocturneAnnex.Core;
@@ -23,6 +24,7 @@ namespace NocturneAnnex.Horror
         public event System.Action<string> EventFired;
 
         readonly Dictionary<string, HorrorEventSpot> _byId = new Dictionary<string, HorrorEventSpot>();
+        readonly Dictionary<string, string> _catalogueToLocalId = new Dictionary<string, string>(StringComparer.Ordinal);
         readonly FlashBudget _budget = new FlashBudget();
 
         public bool StoryMode
@@ -38,6 +40,7 @@ namespace NocturneAnnex.Horror
         public void Build()
         {
             _byId.Clear();
+            _catalogueToLocalId.Clear();
             var candidates = new List<EventCandidate>();
             foreach (var spot in Spots)
             {
@@ -45,6 +48,7 @@ namespace NocturneAnnex.Horror
                 if (string.IsNullOrEmpty(spot.Event.Id)) { Debug.LogError($"HorrorEventRunner: event asset '{spot.Event.name}' has an empty Id; skipped.", spot); continue; }
                 if (_byId.ContainsKey(spot.Event.Id)) { Debug.LogError($"HorrorEventRunner: duplicate event id '{spot.Event.Id}'; second one skipped.", spot); continue; }
                 _byId[spot.Event.Id] = spot;
+                _catalogueToLocalId[CatalogueName(spot.Event.Id)] = spot.Event.Id;
                 candidates.Add(spot.Event.ToCandidate());
             }
             Director = new TensionDirector(Settings, _storyMode);
@@ -78,6 +82,10 @@ namespace NocturneAnnex.Horror
 
         bool IsSpotFree(string id) => _byId.TryGetValue(id, out var spot) && !spot.IsPlaying;
 
+        /// <summary>Plays the local event that backs a server catalogue name (e.g. LIGHT_FLICKER). False if none maps to it or its spot is busy.</summary>
+        public bool FireCatalogue(string catalogueName) =>
+            _catalogueToLocalId.TryGetValue(catalogueName ?? "", out var localId) && Fire(localId);
+
         /// <summary>Plays an event now, bypassing pacing. For tests and the debug overlay. False if the id is unknown or its spot is busy.</summary>
         public bool Fire(string id)
         {
@@ -106,6 +114,20 @@ namespace NocturneAnnex.Horror
             Director.Reset();
             Picker.ClearCooldowns();   // cooldown times belong to the old clock
             GameTime = 0f;
+        }
+
+        static string CatalogueName(string id)
+        {
+            switch (id)
+            {
+                case "flicker_hall": return "LIGHT_FLICKER";
+                case "whisper_stacks": return "DISTANT_BREATHING";
+                case "door_slam_stacks": return "DOOR_MOVEMENT";
+                case "prop_shift_counter": return "OBJECT_FALL";
+                case "shadow_hall": return "SHADOW_EVENT";
+                case "misfile_alcove": return "FALSE_ENTITY_SIGHTING";
+                default: return id;
+            }
         }
     }
 }
