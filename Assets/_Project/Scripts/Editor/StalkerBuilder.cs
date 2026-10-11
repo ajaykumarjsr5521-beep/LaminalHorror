@@ -94,6 +94,14 @@ namespace NocturneAnnex.Editor
             var runner = strategy.AddComponent<StrategyRunner>();   // Online stays false: the level plays with no server
             var bridge = strategy.AddComponent<StrategyBridge>();
             bridge.Runner = runner; bridge.Hub = hub; bridge.Stalker = stalker; bridge.Motor = player.GetComponent<PlayerMotor>();
+
+            var dangerGo = new GameObject("Danger");
+            var heart = dangerGo.AddComponent<NocturneAnnex.Audio.HeartbeatPlayer>();
+            heart.Director = Object.FindFirstObjectByType<NocturneAnnex.Audio.AudioDirector>();
+            var danger = dangerGo.AddComponent<DangerController>();
+            danger.Stalker = stalker; danger.Player = player.transform; danger.Heartbeat = heart;
+            danger.ShakeCamera = player.GetComponentInChildren<Camera>();
+            bridge.Danger = danger;
             return stalker;
         }
 
