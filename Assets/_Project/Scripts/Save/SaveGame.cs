@@ -30,6 +30,7 @@ namespace NocturneAnnex.Save
         public RunLives Lives { get; } = new RunLives();
         public EntityMemory Memory { get; } = new EntityMemory();
         public RoomVisits Rooms { get; } = new RoomVisits();
+        public RunStats Stats { get; } = new RunStats();
 
         SaveStore _store;
         public SaveStore Store => _store ??= new SaveStore(
@@ -63,7 +64,8 @@ namespace NocturneAnnex.Save
                 DeathCount = Lives.Deaths,
                 DeathLog = System.Linq.Enumerable.ToArray(Lives.Log),
                 Memory = Memory.Snapshot(),
-                Rooms = Rooms.Snapshot()
+                Rooms = Rooms.Snapshot(),
+                Stats = Stats.Snapshot()
             };
         }
 
@@ -93,6 +95,7 @@ namespace NocturneAnnex.Save
             Lives.Restore(data.LivesLeft, data.DeathCount, data.DeathLog);
             Memory.Restore(data.Memory);
             Rooms.Restore(data.Rooms);
+            Stats.Restore(data.Stats);
             LastCheckpointId = data.CheckpointId;
         }
 
@@ -107,6 +110,7 @@ namespace NocturneAnnex.Save
             Lives.ClearLog();
             Memory.Clear();
             Rooms.Clear();
+            Stats.Clear();
             return Store.ClearForNewGame();
         }
     }
