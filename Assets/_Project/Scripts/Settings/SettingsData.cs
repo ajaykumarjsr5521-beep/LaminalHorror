@@ -29,6 +29,10 @@ namespace NocturneAnnex.Settings
         public bool ReduceFlicker;
         public bool ReduceMotion;
 
+        /// <summary>Gamepad rumble and phone vibration (F-14k). Added after v1; older files load the defaults (on, 0.7).</summary>
+        public bool HapticsEnabled = true;
+        public float HapticsStrength = 0.7f;
+
         /// <summary>True once the player has seen the first-launch content notice. Added after v1; older files load false.</summary>
         public bool ContentNoticeAccepted;
 
@@ -54,6 +58,8 @@ namespace NocturneAnnex.Settings
             TextSize = o.TextSize;
             ReduceFlicker = o.ReduceFlicker;
             ReduceMotion = o.ReduceMotion;
+            HapticsEnabled = o.HapticsEnabled;
+            HapticsStrength = o.HapticsStrength;
             ContentNoticeAccepted = o.ContentNoticeAccepted;
         }
 
@@ -65,6 +71,7 @@ namespace NocturneAnnex.Settings
             && CaptionsEnabled == o.CaptionsEnabled && TouchControlsScale == o.TouchControlsScale
             && StoryMode == o.StoryMode && QualityLevel == o.QualityLevel
             && TextSize == o.TextSize && ReduceFlicker == o.ReduceFlicker && ReduceMotion == o.ReduceMotion
+            && HapticsEnabled == o.HapticsEnabled && HapticsStrength == o.HapticsStrength
             && ContentNoticeAccepted == o.ContentNoticeAccepted;
 
         /// <summary>Forces all values into range. NaN and infinity fall back to the default value.</summary>
@@ -78,6 +85,7 @@ namespace NocturneAnnex.Settings
             TouchControlsScale = Clamp(TouchControlsScale, InputMath.MinControlsScale, InputMath.MaxControlsScale, d.TouchControlsScale);
             if (QualityLevel < -1 || QualityLevel >= qualityLevelCount) QualityLevel = -1;
             TextSize = Mathf.Clamp(TextSize, 0, 2);
+            HapticsStrength = Clamp(HapticsStrength, 0f, 1f, d.HapticsStrength);
         }
 
         static float Clamp(float v, float min, float max, float fallback) =>
