@@ -127,6 +127,9 @@ namespace NocturneAnnex.Editor
             danger.Stalker = stalker; danger.Player = player.transform; danger.Heartbeat = heart;
             danger.ShakeCamera = player.GetComponentInChildren<Camera>();
             bridge.Danger = danger;
+
+            var haptics = dangerGo.AddComponent<HapticsPlayer>();   // the horror runner is added by LevelEvents
+            haptics.Stalker = stalker; haptics.Heartbeat = heart;
             return stalker;
         }
 
