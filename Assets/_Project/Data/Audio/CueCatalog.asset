@@ -186,7 +186,7 @@ MonoBehaviour:
     MaxVolume: 1
   - Id: music.drone
     Clips:
-    - {fileID: 8300000, guid: 977bd96bba2ca654c9ec768fd2a5894c, type: 3}
+    - {fileID: 8300000, guid: 244bd76821545a641832afc557a29a42, type: 3}
     Group: Music
     GameplayRelevant: 0
     CaptionKey: 
