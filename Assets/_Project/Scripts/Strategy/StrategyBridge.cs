@@ -16,6 +16,7 @@ namespace NocturneAnnex.Strategy
         public StalkerAgent Stalker;
         public PlayerMotor Motor;
         public string RoomId = "B1";
+        public DangerController Danger;   // optional: real stress for the horror request
 
         HideSpot[] _spots = new HideSpot[0];
         bool[] _wasOccupied = new bool[0];
@@ -95,7 +96,7 @@ namespace NocturneAnnex.Strategy
             {
                 EntityProximity = proximity,
                 ChasePressure = chasing ? 1f : 0f,
-                Stress = Mathf.Max(proximity * 0.6f, chasing ? 0.9f : 0f),
+                Stress = Danger != null ? Danger.Stress : Mathf.Max(proximity * 0.6f, chasing ? 0.9f : 0f),
                 Darkness = 0.5f,
                 RecentNoise = Mathf.Clamp01(_lastNoiseLevel * (1f - (Time.time - _lastNoise) / 30f)),
                 Isolation = 1f - proximity,
