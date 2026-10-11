@@ -24,6 +24,8 @@ namespace NocturneAnnex.Save
         public EntityMemoryData Memory = new EntityMemoryData();
         // Room progress (F-14f). Absent in older saves: reads as room 1, nothing changed.
         public RoomVisitsData Rooms = new RoomVisitsData();
+        // Run statistics for the ending (F-14l). Absent in older saves: reads as a fresh run.
+        public RunStatsData Stats = new RunStatsData();
         public string SavedAtUtc = "";
     }
 }
