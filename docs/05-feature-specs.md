@@ -341,9 +341,12 @@ Details and rationale in [13-engineering-process.md](13-engineering-process.md).
 - **Scope:** 2 lives per run; checkpoints after rooms 1, 3, 5, 7; death sequence (about 4 s); `DeathMemory` saved; lives shown without a HUD bar (pause screen tally).
 - **AC:** 1. Death in room 6 restarts at the last checkpoint with solved puzzles kept. 2. A second death ends the run. 3. The sequence lasts at most 5 s. 4. Save and load keep lives and memory.
 
-### F-14h Dynamic heartbeat, breathing and mixing — TODO
+### F-14h Dynamic heartbeat, breathing and mixing — IN_PROGRESS (UNVERIFIED; spec refined 2026-10-11)
 - **Scope:** `DangerLevel` 0-4 from entity distance and state; gains per level in a data table; hide-mode mix; screen pulse, vignette and shake limited by the existing reduce-motion and flicker settings.
 - **AC:** 1. Gains follow the table at each level. 2. Reduce motion removes shake and pulse. 3. Hide mode lowers ambience to the table value. 4. Transitions smooth within 1 s.
+- **Levels:** 0 safe (entity far or not tracking), 1 aware (within 25 m), 2 near (within 15 m or Investigate/Search), 3 close (within 8 m or Listen/Watch), 4 chase (Chase state or within 3 m). Distance is entity to player, straight line. Level rises at once and falls only after 2 s below the current level (no flapping).
+- **Exclusions:** new audio clips (existing heartbeat/ambience cues only, procedural pulse if no clip), positions in any output, haptics (F-14k).
+- **Test:** EditMode for the level model and the mix table; PlayMode on Level_B1 for the wiring. Sub-steps (one commit per file): 1 this spec, 2 `DangerModel` + tests, 3 `HeartbeatMix` (gain table, hide mix, 1 s smoothing) + tests, 4 `HeartbeatPlayer` component, 5 `DangerPulse` screen effect honouring ReduceMotion/ReduceFlicker + tests, 6 Level_B1 wiring, PlayMode test, and feed `StrategyBridge.HorrorSignals` stress from the level.
 
 ### F-14i Entity memory and adaptive AI — TODO
 - **Scope:** `EntityMemory` (death rooms and spots, preferred hide spots, routes, run and throw habits), levels 0-5 from recorded events, effects limited to probabilities, rare captioned lines ("Again?", "I remember.", "You again."; at most one per 10 minutes, optional in settings).
