@@ -24,11 +24,14 @@ namespace NocturneAnnex.Entity
             return true;
         }
 
+        public event Action Thrown;
+
         public bool Throw()
         {
             if (Held == null || Aim == null) return false;
             var b = Held; Held = null;
             b.Launch(Aim.position + Aim.forward * 0.5f, Aim.forward * Speed + Vector3.up * Lift);
+            Thrown?.Invoke();
             return true;
         }
 
