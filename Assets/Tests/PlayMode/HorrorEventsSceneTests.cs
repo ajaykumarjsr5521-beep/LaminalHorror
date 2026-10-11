@@ -29,6 +29,7 @@ namespace NocturneAnnex.Tests.PlayMode
 
         string _dir;
         HorrorEventRunner _runner;
+        readonly NocturneAnnex.Strategy.HorrorSuggestionBridge _bridge = new NocturneAnnex.Strategy.HorrorSuggestionBridge();
         LevelBootstrap _level;
         Transform _player;
         CharacterController _cc;
@@ -91,6 +92,24 @@ namespace NocturneAnnex.Tests.PlayMode
             var kinds = _runner.Spots.Select(s => s.Event.Kind).Distinct().ToList();
             Assert.GreaterOrEqual(kinds.Count, 6);
             Assert.AreEqual(_runner.Spots.Length, _runner.Spots.Select(s => s.Event.Id).Distinct().Count());
+        }
+
+        [UnityTest]
+        public IEnumerator FireSuggestion_KnownEvent_FiresLocalSpot_AndTooSoonIsRefused()
+        {
+            Assert.IsTrue(_bridge.Apply(_runner, "{\"event\":\"LIGHT_FLICKER\"}", 100f));
+            yield return null;
+            Assert.IsTrue(SpotFor("flicker_hall").IsPlaying);
+            Assert.IsFalse(_bridge.Apply(_runner, "{\"event\":\"DOOR_MOVEMENT\"}", 110f), "second scare inside the minimum gap");
+        }
+
+        [UnityTest]
+        public IEnumerator FireSuggestion_BadJson_UnknownEvent_AndPause()
+        {
+            Assert.IsFalse(_bridge.Apply(_runner, "not json", 100f));
+            Assert.IsFalse(_bridge.Apply(_runner, "{\"event\":\"NOPE\"}", 100f));
+            yield return null;
+            Assert.IsFalse(SpotFor("flicker_hall").IsPlaying);
         }
 
         [UnityTest]
