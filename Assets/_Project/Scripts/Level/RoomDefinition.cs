@@ -98,6 +98,7 @@ namespace NocturneAnnex.Level
         public DifficultySpec Difficulty;
         public ReturnChangeKind ReturnChange;
         public string RevealedKeyId = "";   // for ReturnChange RevealKey
+        public string ToyBoxKeyId = "";     // an Open key that lies in the toy box set instead of on a table
 
         public DoorSpec Progression => Doors.FirstOrDefault(d => d.Kind == DoorKind.Progression);
         public DoorSpec Door(string id) => Doors.FirstOrDefault(d => d.Id == id);
