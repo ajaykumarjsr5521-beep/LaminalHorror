@@ -192,3 +192,131 @@ MonoBehaviour:
     CaptionKey: 
     MinVolume: 0.8
     MaxVolume: 1
+  - Id: event.mannequin
+    Clips:
+    - {fileID: 8300000, guid: ac8383e05d1e7d44395aae7d1b8e613d, type: 3}
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: event.mannequin
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: event.light_off
+    Clips:
+    - {fileID: 8300000, guid: 53fcabeebad03894ba865b84f20a1aee, type: 3}
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: event.light_off
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: event.door_open
+    Clips:
+    - {fileID: 8300000, guid: 79984e5ee80c52847bbca7f79399fb4d, type: 3}
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: event.door_open
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: event.whisper_behind
+    Clips:
+    - {fileID: 8300000, guid: 98598cc4eed997c42ae75d1ac5aefe07, type: 3}
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: event.whisper_behind
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: event.false_steps
+    Clips:
+    - {fileID: 8300000, guid: ac8383e05d1e7d44395aae7d1b8e613d, type: 3}
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: event.false_steps
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: event.sighting
+    Clips:
+    - {fileID: 8300000, guid: 685c811aadc889744b8df8fb703c4424, type: 3}
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: event.sighting
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: toybox.spring
+    Clips:
+    - {fileID: 8300000, guid: 41f3672d7d074bb40bb54deb49b407f9, type: 3}
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: toybox.spring
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: toybox.beat
+    Clips:
+    - {fileID: 8300000, guid: 85b33c09ca6a77641a7d7143bad19a9e, type: 3}
+    Group: Sfx
+    GameplayRelevant: 1
+    CaptionKey: toybox.beat
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: entity.step.normal.0
+    Clips:
+    - {fileID: 8300000, guid: 7732ae11d463357448bd040afcbc49e8, type: 3}
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: entity.step.normal.1
+    Clips:
+    - {fileID: 8300000, guid: 4ee5c4f606a31d4479f15da5fc7d3ca0, type: 3}
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: entity.step.normal.2
+    Clips:
+    - {fileID: 8300000, guid: 908436a06c0ed6f40a130726ecd6e568, type: 3}
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: entity.step.normal.3
+    Clips:
+    - {fileID: 8300000, guid: 939cb4ce143ba3841924cc96af4b1a66, type: 3}
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: entity.step.wood.0
+    Clips:
+    - {fileID: 8300000, guid: 08575fcab9c032048a1d6e2a52ab3ba7, type: 3}
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: entity.step.wood.1
+    Clips:
+    - {fileID: 8300000, guid: b1afcbe0e9f0f224eb0a04a66219855d, type: 3}
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: entity.step.wood.2
+    Clips:
+    - {fileID: 8300000, guid: 85b33c09ca6a77641a7d7143bad19a9e, type: 3}
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
+  - Id: entity.step.wood.3
+    Clips:
+    - {fileID: 8300000, guid: 70ae35e629e687e4a86abe66fb160ee1, type: 3}
+    Group: Sfx
+    GameplayRelevant: 0
+    CaptionKey: 
+    MinVolume: 0.8
+    MaxVolume: 1
