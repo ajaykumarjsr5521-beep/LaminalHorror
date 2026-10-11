@@ -28,9 +28,9 @@ namespace NocturneAnnex.Editor
         public const string ScenePath = "Assets/_Project/Scenes/Level_B1.unity";
         const string MatDir = "Assets/_Project/Materials";
 
-        const float OpenAngle = 100f;
-        const float WallH = 3f, WallT = 0.3f, DoorW = 1.5f, DoorH = 2.2f;
-        static Material _wall, _floor, _prop, _paper, _brass;
+        internal const float OpenAngle = 100f;
+        internal const float WallH = 3f, WallT = 0.3f, DoorW = 1.5f, DoorH = 2.2f;
+        internal static Material _wall, _floor, _prop, _paper, _brass;
 
         [MenuItem("Build/Create Level B1 Scene")]
         public static void Create()
@@ -92,6 +92,15 @@ namespace NocturneAnnex.Editor
                     Hide = new[] { props.transform.Find("BrassStamp").gameObject },
                 },
             };
+
+            var advance = new GameObject("RoomFlow");
+            advance.AddComponent<NocturneAnnex.Level.LevelAdvance>().Level = level;
+            advance.GetComponent<NocturneAnnex.Level.LevelAdvance>().Save = save;
+            var backSpawn = new GameObject("BackSpawn").transform;
+            backSpawn.position = new Vector3(0f, 0.1f, 36f);
+            backSpawn.rotation = Quaternion.Euler(0f, 180f, 0f);
+            var runtime = advance.AddComponent<NocturneAnnex.Level.RoomRuntime>();
+            runtime.Save = save; runtime.Player = player.transform; runtime.RoomIndex = 1; runtime.BackSpawn = backSpawn;
 
             var death = new GameObject("DeathController").AddComponent<NocturneAnnex.Entity.DeathController>();
             death.Stalker = stalker; death.Level = level; death.Save = save;
@@ -226,7 +235,7 @@ namespace NocturneAnnex.Editor
         }
 
         /// <summary>World-space text on the -Z face of a board, sized so a two-digit number fits.</summary>
-        static void AddBoardText(Transform board, string name, string caption, string big, Color color, int bigPercent = 250)
+        internal static void AddBoardText(Transform board, string name, string caption, string big, Color color, int bigPercent = 250)
         {
             var textGo = new GameObject(name + "_Text", typeof(RectTransform));
             textGo.transform.SetParent(board, false);
@@ -243,7 +252,7 @@ namespace NocturneAnnex.Editor
 
         // ---------- player, lights, checkpoints ----------
 
-        static GameObject BuildPlayer(ItemDatabase db, out Interactor interactor, out PlayerInventory inventory)
+        internal static GameObject BuildPlayer(ItemDatabase db, out Interactor interactor, out PlayerInventory inventory)
         {
             var player = new GameObject("Player");
             player.transform.position = new Vector3(0f, 0.1f, 2f);
@@ -318,7 +327,7 @@ namespace NocturneAnnex.Editor
             };
         }
 
-        static CheckpointTrigger Checkpoint(Transform parent, string id, Vector3 floorPos, Vector3 size)
+        internal static CheckpointTrigger Checkpoint(Transform parent, string id, Vector3 floorPos, Vector3 size)
         {
             var go = new GameObject("Checkpoint_" + id, typeof(BoxCollider));
             go.transform.SetParent(parent, false);
@@ -338,7 +347,7 @@ namespace NocturneAnnex.Editor
         // ---------- geometry helpers ----------
 
         /// <summary>Wall along the X axis at depth z, from x0 to x1, with an optional doorway centred on gapX.</summary>
-        static void WallX(Transform parent, string name, float z, float x0, float x1, float? gapX = null)
+        internal static void WallX(Transform parent, string name, float z, float x0, float x1, float? gapX = null)
         {
             if (gapX == null) { Box(parent, name, new Vector3((x0 + x1) / 2f, WallH / 2f, z), new Vector3(x1 - x0, WallH, WallT), _wall); return; }
             float g0 = gapX.Value - DoorW / 2f, g1 = gapX.Value + DoorW / 2f;
@@ -348,7 +357,7 @@ namespace NocturneAnnex.Editor
         }
 
         /// <summary>Wall along the Z axis at x, from z0 to z1, with an optional doorway centred on gapZ.</summary>
-        static void WallZ(Transform parent, string name, float x, float z0, float z1, float? gapZ = null)
+        internal static void WallZ(Transform parent, string name, float x, float z0, float z1, float? gapZ = null)
         {
             if (gapZ == null) { Box(parent, name, new Vector3(x, WallH / 2f, (z0 + z1) / 2f), new Vector3(WallT, WallH, z1 - z0), _wall); return; }
             float g0 = gapZ.Value - DoorW / 2f, g1 = gapZ.Value + DoorW / 2f;
@@ -359,7 +368,7 @@ namespace NocturneAnnex.Editor
 
         /// <summary>A hinged door filling a doorway. The hinge is a child so the Door can rotate it without losing the base orientation.</summary>
         /// <remarks>The sign of openAngle picks the swing side: every door is set to swing away from the side the player approaches from.</remarks>
-        static Door MakeDoor(Transform parent, string name, Vector3 doorwayCentre, bool alongX, string key, float openAngle)
+        internal static Door MakeDoor(Transform parent, string name, Vector3 doorwayCentre, bool alongX, string key, float openAngle)
         {
             var root = new GameObject(name).transform;
             root.SetParent(parent, false);
@@ -395,7 +404,7 @@ namespace NocturneAnnex.Editor
             return go;
         }
 
-        static void MakeMaterials()
+        internal static void MakeMaterials()
         {
             Directory.CreateDirectory(MatDir);
             _wall = Mat("Wall", new Color(0.32f, 0.33f, 0.35f));
