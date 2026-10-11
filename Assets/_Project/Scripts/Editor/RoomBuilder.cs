@@ -201,6 +201,16 @@ namespace NocturneAnnex.Editor
             var recorder = death.gameObject.AddComponent<EntityMemoryRecorder>();
             recorder.Save = save; recorder.Stalker = stalker; recorder.Motor = player.GetComponent<PlayerMotor>(); recorder.Thrower = player.GetComponent<PlayerThrower>();
 
+            var stats = runtime.gameObject.AddComponent<NocturneAnnex.Level.RunStatsRecorder>();
+            stats.Save = save; stats.Runner = Object.FindFirstObjectByType<NocturneAnnex.Horror.HorrorEventRunner>();
+            var ending = new GameObject("EndingController").AddComponent<EndingController>();
+            ending.Save = save; ending.Player = player.transform;
+            if (room.Index == RoomCatalog.Count)
+            {
+                var chase = new GameObject("FinalChase").AddComponent<FinalChase>();
+                chase.ExitDoor = doors[room.Progression.Id]; chase.Hub = Object.FindFirstObjectByType<NoiseHub>();
+            }
+
             LevelHudBuilder.Build(interactor, inventory, codeLock, level);
 
             string path = RoomFlow.ScenePath(room.Index);
