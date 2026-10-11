@@ -29,6 +29,7 @@ namespace NocturneAnnex.Save
         /// <summary>The run's lives and death log; saved and restored with each checkpoint.</summary>
         public RunLives Lives { get; } = new RunLives();
         public EntityMemory Memory { get; } = new EntityMemory();
+        public RoomVisits Rooms { get; } = new RoomVisits();
 
         SaveStore _store;
         public SaveStore Store => _store ??= new SaveStore(
@@ -61,7 +62,8 @@ namespace NocturneAnnex.Save
                 LivesLeft = Lives.Left,
                 DeathCount = Lives.Deaths,
                 DeathLog = System.Linq.Enumerable.ToArray(Lives.Log),
-                Memory = Memory.Snapshot()
+                Memory = Memory.Snapshot(),
+                Rooms = Rooms.Snapshot()
             };
         }
 
@@ -90,6 +92,7 @@ namespace NocturneAnnex.Save
             Horror?.Picker?.RestoreFiredOnce(data.FiredEventIds);
             Lives.Restore(data.LivesLeft, data.DeathCount, data.DeathLog);
             Memory.Restore(data.Memory);
+            Rooms.Restore(data.Rooms);
             LastCheckpointId = data.CheckpointId;
         }
 
@@ -103,6 +106,7 @@ namespace NocturneAnnex.Save
             Lives.NewRun();
             Lives.ClearLog();
             Memory.Clear();
+            Rooms.Clear();
             return Store.ClearForNewGame();
         }
     }
