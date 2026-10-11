@@ -108,6 +108,8 @@ namespace NocturneAnnex.Editor
             recorder.Save = save; recorder.Stalker = stalker; recorder.Motor = player.GetComponent<PlayerMotor>(); recorder.Thrower = player.GetComponent<NocturneAnnex.Entity.PlayerThrower>();
 
             LevelEvents.Build(level, save, player.GetComponentInChildren<Camera>());
+            var stats = runtime.gameObject.AddComponent<NocturneAnnex.Level.RunStatsRecorder>();
+            stats.Save = save; stats.Runner = Object.FindFirstObjectByType<NocturneAnnex.Horror.HorrorEventRunner>();
             LevelHudBuilder.Build(interactor, inventory, finalLock, level);
 
             EditorSceneManager.SaveScene(scene, ScenePath);
