@@ -27,6 +27,8 @@ namespace NocturneAnnex.Entity
         public HearingModel Hearing { get; } = new HearingModel();
         public WoodenLegRhythm Rhythm { get; } = new WoodenLegRhythm();
         public event Action CaughtPlayer;
+        /// <summary>Raised on each of the entity's footsteps with its distance to the player, whether or not a clip is assigned.</summary>
+        public event Action<float> StepTaken;
         public event Action<HideSpot> FoundHidingPlayer;
 
         /// <summary>Set by the strategic layer; null means baseline. Only probabilities and durations change.</summary>
@@ -236,6 +238,7 @@ namespace NocturneAnnex.Entity
             if (Player == null) return;
             float dist = Vector3.Distance(transform.position, Player.position);
             var step = Rhythm.Next(dist, (float)_rng.NextDouble());
+            StepTaken?.Invoke(dist);
             var bank = step.Foot == Foot.Wood ? WoodSteps : NormalSteps;
             if (bank.Length == 0) return;
             _lowPass.cutoffFrequency = step.LowPassHz;
