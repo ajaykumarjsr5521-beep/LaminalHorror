@@ -1,6 +1,6 @@
 {
   "name": "NocturneAnnex.Strategy",
   "rootNamespace": "NocturneAnnex.Strategy",
-  "references": ["NocturneAnnex.Core", "NocturneAnnex.Entity", "NocturneAnnex.Player"],
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Entity", "NocturneAnnex.Player", "NocturneAnnex.Horror"],
   "autoReferenced": true
 }
