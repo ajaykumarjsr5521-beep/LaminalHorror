@@ -46,6 +46,12 @@ namespace NocturneAnnex.Audio
             var cat = CreateInstance<CueCatalog>();
             foreach (var id in new[] { "light_buzz", "door_slam", "prop_shift", "whisper", "misfile", "figure" })
                 cat.Cues.Add(new CueDefinition("event." + id, Sfx, true, "event." + id));
+            foreach (var id in new[] { "mannequin", "light_off", "door_open", "whisper_behind", "false_steps", "sighting" })   // F-14j
+                cat.Cues.Add(new CueDefinition("event." + id, Sfx, true, "event." + id));
+            foreach (var id in new[] { "toybox.spring", "toybox.beat" })
+                cat.Cues.Add(new CueDefinition(id, Sfx, true, id));
+            foreach (var foot in new[] { "normal", "wood" })   // the entity's recorded steps, also used for the false footsteps
+                for (int v = 0; v < 4; v++) cat.Cues.Add(new CueDefinition("entity.step." + foot + "." + v, Sfx, false));
             cat.Cues.Add(new CueDefinition("checkpoint.chime", Sfx, true, "level.checkpoint_saved"));
             foreach (var id in new[] { "door.open", "door.close", "door.locked", "pickup.take", "note.open" })
                 cat.Cues.Add(new CueDefinition(id, Sfx, false));
