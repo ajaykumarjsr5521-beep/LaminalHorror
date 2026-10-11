@@ -31,6 +31,9 @@ namespace NocturneAnnex.Horror
 
         public bool IsOpened(int box) => box >= 0 && box < BoxCount && _opened[box];
 
+        /// <summary>What a box holds, without opening it. Empty for an opened or unknown box.</summary>
+        public ToyBoxContent Peek(int box) => box < 0 || box >= BoxCount || _opened[box] ? ToyBoxContent.Empty : _contents[box];
+
         /// <summary>Opens a box and returns what was inside. A box already opened, or an unknown index, gives Empty.</summary>
         public ToyBoxContent Open(int box)
         {

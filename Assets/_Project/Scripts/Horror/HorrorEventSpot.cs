@@ -21,13 +21,16 @@ namespace NocturneAnnex.Horror
         public AudioSource Audio;
         public GameObject Reveal;
         public GameObject Figure;
+        [Tooltip("The player's camera: WhisperBehind and Mannequin use where it is and which way it looks.")] public Transform Listener;
+        [Tooltip("How far the mannequin turns when it moves.")] public float MannequinTurnDegrees = 150f;
 
         const float SlamSpeedMultiplier = 4f;
 
         public bool IsPlaying { get; private set; }
 
-        bool _captured, _slamming, _figureShown, _flickering, _revealStart, _figureStart;
+        bool _captured, _slamming, _figureShown, _flickering, _revealStart, _figureStart, _lightsOff;
         Vector3 _propStart;
+        Quaternion _propRotStart;
         float _doorSpeed;
         float[] _lightBases = new float[0];
 
@@ -35,7 +38,7 @@ namespace NocturneAnnex.Horror
         {
             if (_captured) return;
             _captured = true;
-            if (Prop != null) _propStart = Prop.position;
+            if (Prop != null) { _propStart = Prop.position; _propRotStart = Prop.rotation; }
             if (Reveal != null) _revealStart = Reveal.activeSelf;
             if (Figure != null) _figureStart = Figure.activeSelf;
         }
@@ -45,7 +48,7 @@ namespace NocturneAnnex.Horror
         {
             Capture();
             Interrupt();
-            if (Prop != null) Prop.position = _propStart;
+            if (Prop != null) { Prop.position = _propStart; Prop.rotation = _propRotStart; }
             if (Reveal != null) Reveal.SetActive(_revealStart);
             if (Figure != null) Figure.SetActive(_figureStart);
         }
@@ -66,6 +69,11 @@ namespace NocturneAnnex.Horror
             {
                 for (int i = 0; i < Lights.Length && i < _lightBases.Length; i++) if (Lights[i] != null) Lights[i].intensity = _lightBases[i];
                 _flickering = false;
+            }
+            if (_lightsOff)
+            {
+                for (int i = 0; i < Lights.Length && i < _lightBases.Length; i++) if (Lights[i] != null) Lights[i].intensity = _lightBases[i];
+                _lightsOff = false;
             }
             if (_slamming)
             {
@@ -106,6 +114,11 @@ namespace NocturneAnnex.Horror
                 case HorrorEventKind.AudioCue: if (Audio != null) Audio.Play(); break;
                 case HorrorEventKind.MisfileReveal: if (Reveal != null) Reveal.SetActive(true); break;
                 case HorrorEventKind.ShadowFigure: yield return ShowFigure(shake); break;
+                case HorrorEventKind.LightOff: yield return LightsOut(); break;
+                case HorrorEventKind.DoorOpen: if (Door != null && !Door.IsLocked && !Door.IsOpen) Door.Interact(null); break;
+                case HorrorEventKind.WhisperBehind: WhisperBehind(); break;
+                case HorrorEventKind.Mannequin: yield return TurnMannequin(); break;
+                case HorrorEventKind.FalseFootsteps: yield return PlayFalseFootsteps(); break;
             }
             IsPlaying = false;
         }
@@ -120,6 +133,10 @@ namespace NocturneAnnex.Horror
                 case HorrorEventKind.PropShift: if (Prop != null) return Prop.position; break;
                 case HorrorEventKind.MisfileReveal: if (Reveal != null) return Reveal.transform.position; break;
                 case HorrorEventKind.ShadowFigure: if (Figure != null) return Figure.transform.position; break;
+                case HorrorEventKind.LightOff: if (Lights.Length > 0 && Lights[0] != null) return Lights[0].transform.position; break;
+                case HorrorEventKind.DoorOpen: if (Door != null) return Door.transform.position; break;
+                case HorrorEventKind.Mannequin: if (Prop != null) return Prop.position; break;
+                case HorrorEventKind.WhisperBehind: return BehindListener();
             }
             return transform.position;
         }
@@ -139,6 +156,52 @@ namespace NocturneAnnex.Horror
             }
             for (int i = 0; i < Lights.Length; i++) if (Lights[i] != null) Lights[i].intensity = bases[i];   // always restore
             _flickering = false;
+        }
+
+        /// <summary>The lights go dark for DurationSeconds and come back. One drop and one return, so it never counts as flicker.</summary>
+        IEnumerator LightsOut()
+        {
+            var bases = _lightBases = new float[Lights.Length];
+            for (int i = 0; i < Lights.Length; i++) bases[i] = Lights[i] != null ? Lights[i].intensity : 0f;
+            _lightsOff = true;
+            for (int i = 0; i < Lights.Length; i++) if (Lights[i] != null) Lights[i].intensity = 0f;
+            yield return new WaitForSeconds(Mathf.Max(1f, Event.DurationSeconds));
+            for (int i = 0; i < Lights.Length; i++) if (Lights[i] != null) Lights[i].intensity = bases[i];
+            _lightsOff = false;
+        }
+
+        Vector3 BehindListener() =>
+            Listener != null ? Listener.position - Listener.forward * 1.5f : transform.position;
+
+        void WhisperBehind()
+        {
+            var at = BehindListener();
+            if (Audio != null) { Audio.transform.position = at; Audio.Play(); }
+        }
+
+        /// <summary>Waits until the player is not looking at the mannequin (or 12 s pass), then turns it. Never while it is in view.</summary>
+        IEnumerator TurnMannequin()
+        {
+            if (Prop == null) yield break;
+            float waited = 0f;
+            while (Listener != null && ViewMath.InView(Listener.position, Listener.forward, Prop.position, 55f) && waited < 12f)
+            {
+                waited += Time.deltaTime;
+                yield return null;
+            }
+            if (Listener == null || !ViewMath.InView(Listener.position, Listener.forward, Prop.position, 55f))
+                Prop.Rotate(0f, MannequinTurnDegrees, 0f);
+        }
+
+        IEnumerator PlayFalseFootsteps()
+        {
+            var steps = FalseFootsteps.Make(Mathf.RoundToInt(Time.time * 1000f));
+            var at = transform.position;
+            for (int i = 0; i < steps.Length; i++)
+            {
+                Cues.Play(FalseFootsteps.CueFor(steps[i], i % 4), at);
+                yield return new WaitForSeconds(steps[i].GapSeconds);
+            }
         }
 
         IEnumerator Slam(CameraShake shake)
