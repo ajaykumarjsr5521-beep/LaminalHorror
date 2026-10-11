@@ -127,6 +127,8 @@ namespace NocturneAnnex.Core
             { "settings.text_size.medium", "Medium" },
             { "settings.text_size.large", "Large" },
             { "settings.reduce_flicker", "Reduce flicker and flashing" },
+            { "settings.haptics", "Vibration and rumble" },
+            { "settings.haptics_strength", "Vibration strength" },
             { "settings.reduce_motion", "Reduce camera motion" },
 
             // Settings (shown to the player)
