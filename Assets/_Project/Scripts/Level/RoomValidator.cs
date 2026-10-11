@@ -139,6 +139,8 @@ namespace NocturneAnnex.Level
 
         static void CheckReturnChange(RoomDefinition r, string at, List<string> problems)
         {
+            if (!string.IsNullOrEmpty(r.ToyBoxKeyId) && !r.Keys.Any(k => k.Id == r.ToyBoxKeyId && k.Placement == KeyPlacement.Open))
+                problems.Add($"{at}: toy box key '{r.ToyBoxKeyId}' must be an Open key of the room");
             bool reveals = r.ReturnChange == ReturnChangeKind.RevealKey;
             var after = r.Keys.Where(k => k.Placement == KeyPlacement.AfterReturn).ToList();
             if (reveals && !after.Any(k => k.Id == r.RevealedKeyId)) problems.Add($"{at}: RevealKey names '{r.RevealedKeyId}' which is not an AfterReturn key");
