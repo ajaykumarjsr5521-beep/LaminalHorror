@@ -80,6 +80,7 @@ namespace NocturneAnnex.Strategy
 
         void OnNoise(NoiseEvent e)
         {
+            if (e.Kind == NoiseKind.Machinery) return;   // environment and scares make this noise; only the player's own noise describes the player
             _lastNoise = Time.time; _lastNoiseLevel = Mathf.Clamp01(e.Radius / 20f);
             Runner.Bus.Publish(new GameEvent(GameEventType.Noise, Time.time, _lastNoiseLevel, e.Kind.ToString()));
         }
