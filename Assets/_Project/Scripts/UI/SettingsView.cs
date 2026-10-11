@@ -24,6 +24,8 @@ namespace NocturneAnnex.UI
         public TMP_Dropdown TextSize;
         public Toggle ReduceFlicker;
         public Toggle ReduceMotion;
+        public Toggle Haptics;
+        public Slider HapticsStrength;
         public Button SaveButton;
         public Button BackButton;
         public Button ResetButton;
@@ -50,6 +52,8 @@ namespace NocturneAnnex.UI
                 Listen(StoryMode, v => _model.Working.StoryMode = v);
                 Listen(ReduceFlicker, v => _model.Working.ReduceFlicker = v);
                 Listen(ReduceMotion, v => _model.Working.ReduceMotion = v);
+                Listen(Haptics, v => _model.Working.HapticsEnabled = v);
+                Listen(HapticsStrength, v => _model.Working.HapticsStrength = v);
                 TextSize.onValueChanged.AddListener(i => { _model.Working.TextSize = i; _model.NotifyChanged(); Render(); });
                 Quality.onValueChanged.AddListener(i => { _model.Working.QualityLevel = i - 1; _model.NotifyChanged(); Render(); });
                 SaveButton.onClick.AddListener(() => { _model.Save(); Render(); });
@@ -105,6 +109,8 @@ namespace NocturneAnnex.UI
             TextSize.SetValueWithoutNotify(w.TextSize);
             ReduceFlicker.SetIsOnWithoutNotify(w.ReduceFlicker);
             ReduceMotion.SetIsOnWithoutNotify(w.ReduceMotion);
+            Haptics.SetIsOnWithoutNotify(w.HapticsEnabled);
+            HapticsStrength.SetValueWithoutNotify(w.HapticsStrength);
 
             SaveButton.interactable = _model.IsDirty;
             ErrorText.text = _model.Error ?? string.Empty;
