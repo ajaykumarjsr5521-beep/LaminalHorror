@@ -51,7 +51,7 @@ namespace NocturneAnnex.Editor
             ("amb.records", new[] { "Ambience/amb_Final_Captains_Log.mp3" }),
             ("amb.break_room", new[] { "Ambience/amb_Cage_of_the_Cryptid.mp3" }),
             ("amb.dock", new[] { "Ambience/amb_The_Depths_of_Hell.mp3" }),
-            ("music.drone", new[] { "Ambience/amb_The_Depths_of_Hell.mp3" }),
+            ("music.drone", new[] { "Ambience/amb_Cage_of_the_Cryptid.mp3" }),
         };
 
         /// <summary>All project-relative clip paths used by <see cref="Map"/>, without duplicates. For the register check.</summary>
