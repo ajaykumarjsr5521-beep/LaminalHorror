@@ -71,6 +71,7 @@ namespace NocturneAnnex.Level
             var r3 = Room(3, "Waiting Room", new DifficultySpec(0.35f, 3.6f, 9f, 5), 3, 4, ReturnChangeKind.NewSound,
                 Back(), Prog(UnlockKind.Key, "key_r3"), KeyDoor("r03_closet", "key_r3a"), Fake("r03_fake"), Blocked("r03_blocked"));
             r3.Keys.Add(new KeySpec("key_r3a"));
+            r3.ToyBoxKeyId = "key_r3a";
             r3.Keys.Add(new KeySpec("key_r3", KeyPlacement.BehindDoor, "r03_closet"));
             rooms.Add(r3);
 
