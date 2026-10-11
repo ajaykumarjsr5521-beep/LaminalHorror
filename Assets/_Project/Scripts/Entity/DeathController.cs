@@ -73,6 +73,7 @@ namespace NocturneAnnex.Entity
 
             if (spot != null) spot.Leave();
             LastOutcome = Save.Lives.LoseLife(record);
+            Save.Memory.RecordDeath(record);
             DeathsHandled++;
             if (LastOutcome == LifeOutcome.Respawn)
             {
