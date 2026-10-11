@@ -1,5 +1,6 @@
 using UnityEngine;
 using NocturneAnnex.Entity;
+using NocturneAnnex.Horror;
 using NocturneAnnex.Player;
 
 namespace NocturneAnnex.Strategy
@@ -21,6 +22,9 @@ namespace NocturneAnnex.Strategy
         bool _found;
         float _chaseStart = -1f, _moveClock;
         CharacterController _cc;
+        HorrorEventRunner _horror;
+        float _lastNoise = -999f, _lastNoiseLevel, _lastScare = -999f;
+        readonly System.Collections.Generic.Queue<float> _scareTimes = new System.Collections.Generic.Queue<float>();
 
         public float HideBonus => Runner != null && Runner.Executor != null ? Runner.Executor.HideBonus : 0f;
         public float InvestigationMultiplier => Runner != null && Runner.Executor != null ? Runner.Executor.InvestigationMultiplier : 1f;
@@ -32,11 +36,24 @@ namespace NocturneAnnex.Strategy
             if (Motor != null) _cc = Motor.GetComponent<CharacterController>();
             if (Stalker != null) Stalker.Modifiers = this;
             Subscribe();
+            _horror = Runner.Horror != null ? Runner.Horror : FindFirstObjectByType<HorrorEventRunner>();
+            Runner.Horror = _horror;
+            if (_horror != null) _horror.EventFired += OnScare;
             Runner.Bus.Publish(new GameEvent(GameEventType.RoomEntered, Time.time, 0f, RoomId));
             Runner.Trigger("NEW_ROOM");
         }
 
-        void OnDestroy() => Unsubscribe();
+        void OnDestroy()
+        {
+            Unsubscribe();
+            if (_horror != null) _horror.EventFired -= OnScare;
+        }
+
+        void OnScare(string id)
+        {
+            _lastScare = Time.time;
+            _scareTimes.Enqueue(Time.time);
+        }
 
         void Subscribe()
         {
@@ -60,8 +77,32 @@ namespace NocturneAnnex.Strategy
             }
         }
 
-        void OnNoise(NoiseEvent e) =>
-            Runner.Bus.Publish(new GameEvent(GameEventType.Noise, Time.time, Mathf.Clamp01(e.Radius / 20f), e.Kind.ToString()));
+        void OnNoise(NoiseEvent e)
+        {
+            _lastNoise = Time.time; _lastNoiseLevel = Mathf.Clamp01(e.Radius / 20f);
+            Runner.Bus.Publish(new GameEvent(GameEventType.Noise, Time.time, _lastNoiseLevel, e.Kind.ToString()));
+        }
+
+        /// <summary>Categories only. Darkness and stress are rough until F-14h (DangerLevel): darkness is a fixed 0.5, stress follows chase and proximity.</summary>
+        public HorrorInputs HorrorSignals()
+        {
+            while (_scareTimes.Count > 0 && Time.time - _scareTimes.Peek() > 300f) _scareTimes.Dequeue();
+            float proximity = 0f;
+            bool chasing = Stalker != null && Stalker.Brain.State == EntityState.Chase;
+            if (Stalker != null && Motor != null)
+                proximity = Mathf.Clamp01(1f - Vector3.Distance(Stalker.transform.position, Motor.transform.position) / 25f);
+            return new HorrorInputs
+            {
+                EntityProximity = proximity,
+                ChasePressure = chasing ? 1f : 0f,
+                Stress = Mathf.Max(proximity * 0.6f, chasing ? 0.9f : 0f),
+                Darkness = 0.5f,
+                RecentNoise = Mathf.Clamp01(_lastNoiseLevel * (1f - (Time.time - _lastNoise) / 30f)),
+                Isolation = 1f - proximity,
+                SecondsSinceScare = Time.time - _lastScare,
+                RecentScares = _scareTimes.Count,
+            };
+        }
 
         public void OnCaught()
         {
@@ -106,6 +147,7 @@ namespace NocturneAnnex.Strategy
                 float speed = _cc != null ? new Vector2(_cc.velocity.x, _cc.velocity.z).magnitude : 0f;
                 var mode = speed < 0.1f ? MoveMode.Still : (Motor.IsCrouched ? MoveMode.Crouch : (Motor.IsSprinting ? MoveMode.Run : MoveMode.Walk));
                 Runner.Bus.Publish(new GameEvent(GameEventType.Move, Time.time, 1f, null, mode));
+                Runner.AskHorror(HorrorSignals());
             }
         }
 
