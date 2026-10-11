@@ -36,6 +36,18 @@ namespace NocturneAnnex.Editor
                 "\"...if you are hearing this, I could not stay. The calendar by the loading dock has one day circled in red. Do not trust the clock in the Records Office. Use the dates.\""),
         };
 
+        /// <summary>Keys and the fuse that rooms 2-10 place (F-14f). Plain placeholder names; owner to review.</summary>
+        static System.Collections.Generic.IEnumerable<(string id, string name, ItemKind kind, string body)> RoomItemDefs()
+        {
+            foreach (var id in NocturneAnnex.Level.RoomCatalog.AllItemIds())
+            {
+                if (Defs.Any(d => d.id == id)) continue;
+                bool fuse = id == NocturneAnnex.Level.RoomCatalog.FuseId;
+                string name = fuse ? "Glass Fuse" : "Key " + id.Replace("key_", "").ToUpperInvariant();
+                yield return (id, name, ItemKind.Key, fuse ? "A glass fuse, still warm." : "A small key on a loop of string.");
+            }
+        }
+
         [MenuItem("Build/Create Level Items")]
         public static ItemDatabase CreateAll()
         {
@@ -47,7 +59,7 @@ namespace NocturneAnnex.Editor
                 AssetDatabase.CreateAsset(db, DatabasePath);
             }
             db.Items.Clear();
-            foreach (var (id, name, kind, body) in Defs)
+            foreach (var (id, name, kind, body) in Defs.Concat(RoomItemDefs()))
             {
                 string path = $"{DataDir}/Item_{id}.asset";
                 var item = AssetDatabase.LoadAssetAtPath<ItemDefinition>(path);
