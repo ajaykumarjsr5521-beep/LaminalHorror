@@ -35,6 +35,7 @@ namespace NocturneAnnex.Editor
             if (problems.Count > 0) throw new System.InvalidOperationException("Room table is invalid:\n" + string.Join("\n", problems));
             LevelItems.CreateAll();
             LevelAudio.CreateAssets();
+            LevelEvents.CreateAssets();
             if (!File.Exists(GameplayUiBuilder.KeypadPath)) GameplayUiBuilder.CreateAll();
             foreach (var room in RoomCatalog.All.Where(r => r.Index >= 2)) Create(room);
             AssetDatabase.SaveAssets();
@@ -92,7 +93,7 @@ namespace NocturneAnnex.Editor
             // items, switches, code
             var pickups = new Dictionary<string, GameObject>();
             var rng = new System.Random(room.Index * 7919);
-            foreach (var key in room.Keys)
+            foreach (var key in room.Keys.Where(k => k.Id != room.ToyBoxKeyId))   // the toy box key lies in the boxes
             {
                 Vector3 at = key.Placement == KeyPlacement.BehindDoor && closets.TryGetValue(key.BehindDoorId, out var c)
                     ? c + new Vector3(0f, 0f, 0.3f)
@@ -105,6 +106,8 @@ namespace NocturneAnnex.Editor
                 pickups[key.Id] = go;
                 if (key.Placement == KeyPlacement.AfterReturn) go.SetActive(false);
             }
+
+            if (!string.IsNullOrEmpty(room.ToyBoxKeyId)) BuildToyBoxes(props, room);
 
             foreach (var sw in room.Switches)
             {
@@ -145,12 +148,14 @@ namespace NocturneAnnex.Editor
 
             // lights: two realtime points, the second is the one that can die on a return visit
             var lights = new GameObject("Lights").transform;
+            var roomLights = new List<Light>();
             for (int i = 0; i < 2; i++)
             {
                 var l = new GameObject("Light_" + (i + 1)).AddComponent<Light>();
                 l.transform.SetParent(lights, false);
                 l.type = LightType.Point; l.color = new Color(1f, 0.85f, 0.65f); l.intensity = 7f; l.range = 14f;
                 l.transform.position = new Vector3(0f, 2.6f, d * (i == 0 ? 0.3f : 0.7f));
+                roomLights.Add(l);
                 if (i == 1) deadLight = l;
             }
 
@@ -177,6 +182,8 @@ namespace NocturneAnnex.Editor
             level.FinalLock = codeLock;
             level.SaveGame = save;
             level.Player = player.transform;
+
+            LevelEvents.BuildForRoom(level, save, player.GetComponentInChildren<Camera>(), roomLights.ToArray(), doors[backSpec.Id], d);
 
             // transitions: forward through the progression closet, back through the vestibule
             Transition(save, "To_" + (room.Index + 1), new Vector3(progX, 1.25f, d + ClosetD / 2f), room.Index + 1, false);
@@ -307,6 +314,23 @@ namespace NocturneAnnex.Editor
                 pts[i] = new Vector3(i % 2 == 0 ? -3.5f : 3.5f, 0.1f, Mathf.Lerp(5f, d - 4f, t));   // down the central corridor between the shelf rows
             }
             return pts;
+        }
+
+        /// <summary>Eight toy boxes in two rows near the entrance; one holds the room's key (see ToyBoxSet).</summary>
+        static void BuildToyBoxes(Transform props, RoomDefinition room)
+        {
+            var set = new GameObject("ToyBoxes").AddComponent<NocturneAnnex.Horror.ToyBoxSet>();
+            set.transform.SetParent(props, false);
+            set.KeyItemId = room.ToyBoxKeyId;
+            set.Seed = room.Index * 31 + 7;
+            var boxes = new List<Transform>();
+            for (int i = 0; i < NocturneAnnex.Horror.ToyBoxModel.BoxCount; i++)
+            {
+                float x = -2.25f + 1.5f * (i % 4), z = 6.5f + 1.6f * (i / 4);
+                var go = LevelB1Builder.Box(set.transform, "ToyBox_" + i, new Vector3(x, 0.3f, z), new Vector3(0.7f, 0.6f, 0.7f), LevelB1Builder._brass);
+                boxes.Add(go.transform);
+            }
+            set.Boxes = boxes.ToArray();
         }
 
         static void Transition(SaveGame save, string name, Vector3 centre, int target, bool back)
