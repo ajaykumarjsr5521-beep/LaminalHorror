@@ -112,6 +112,7 @@ namespace NocturneAnnex.Editor
 
             level.Horror = runner;
             save.Horror = runner;
+            LinkHaptics(runner);
         }
 
         /// <summary>Generic scares for a generated room: flicker, lights out, a whisper behind the player, false footsteps and a self-opening back door.</summary>
@@ -133,6 +134,13 @@ namespace NocturneAnnex.Editor
             LinkEntityScares(root, runner, spots);
             level.Horror = runner;
             save.Horror = runner;
+            LinkHaptics(runner);
+        }
+
+        static void LinkHaptics(HorrorEventRunner runner)
+        {
+            var haptics = UnityEngine.Object.FindFirstObjectByType<NocturneAnnex.Entity.HapticsPlayer>();
+            if (haptics != null) haptics.Horror = runner;
         }
 
         /// <summary>Entity-linked events also make a real noise at their spot, so the stalker may come to look.</summary>
