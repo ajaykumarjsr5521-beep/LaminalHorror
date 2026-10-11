@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using NocturneAnnex.Core;
 using NocturneAnnex.Interaction;
@@ -11,6 +12,9 @@ namespace NocturneAnnex.Level
         public string RequiredItemId = "";
 
         public bool Used { get; private set; }
+
+        /// <summary>Raised when the player uses the switch (not when a saved use is restored).</summary>
+        public event Action Activated;
 
         public string Prompt => Used ? "" : Loc.Get("switch.prompt");
 
@@ -26,6 +30,7 @@ namespace NocturneAnnex.Level
             Used = true;
             if (TargetDoor != null) TargetDoor.Unlock();
             Captions.Post("switch.message.done");
+            Activated?.Invoke();
         }
 
         /// <summary>Restores a switch that was already used before a reload.</summary>
