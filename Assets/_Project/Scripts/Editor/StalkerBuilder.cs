@@ -18,12 +18,39 @@ namespace NocturneAnnex.Editor
     {
         const string SfxDir = "Assets/_Project/Audio/Sfx/";
 
-        public static StalkerAgent Build(GameObject player, Transform geometry, Vector3 spawn, Vector3[] patrol)
+        public struct Cupboard
         {
+            public string Name; public Vector3 FloorPos, Size, ExitOffset; public float Safety;
+        }
+
+        /// <summary>Where the throwables and hiding places go, and where the runtime NavMesh is built. Null means the Level_B1 layout.</summary>
+        public sealed class Layout
+        {
+            public Vector3[] Bottles;
+            public Cupboard[] Cupboards;
+            public Vector3 NavOrigin = new Vector3(0f, 0f, 20f);
+            public Vector3 NavSize = new Vector3(120f, 20f, 120f);
+        }
+
+        static Layout B1Layout() => new Layout
+        {
+            Bottles = new[] { new Vector3(2f, 0.4f, 4f), new Vector3(3f, 0.4f, 12.5f), new Vector3(-14f, 0.4f, 13f), new Vector3(15f, 0.4f, 21f) },
+            Cupboards = new[]
+            {
+                new Cupboard { Name = "Cupboard_Stacks", FloorPos = new Vector3(-16.5f, 0f, 12.7f), Size = new Vector3(1.4f, 2.2f, 0.9f), ExitOffset = new Vector3(0f, 0f, 1.3f), Safety = 0.8f },
+                new Cupboard { Name = "Cupboard_Hall", FloorPos = new Vector3(5.4f, 0f, 11.5f), Size = new Vector3(0.9f, 2.2f, 1.4f), ExitOffset = new Vector3(-1.3f, 0f, 0f), Safety = 0.3f },
+                new Cupboard { Name = "Cupboard_Records", FloorPos = new Vector3(17.2f, 0f, 22.5f), Size = new Vector3(0.9f, 2.2f, 1.4f), ExitOffset = new Vector3(-1.3f, 0f, 0f), Safety = 0.55f },
+            }
+        };
+
+        public static StalkerAgent Build(GameObject player, Transform geometry, Vector3 spawn, Vector3[] patrol, Layout layout = null)
+        {
+            layout ??= B1Layout();
             var hub = new GameObject("NoiseHub").AddComponent<NoiseHub>();
             var nav = new GameObject("LevelNavMesh").AddComponent<LevelNavMesh>();
             nav.Player = player.transform;
-            nav.transform.position = new Vector3(0f, 0f, 20f);
+            nav.transform.position = layout.NavOrigin;
+            nav.Size = layout.NavSize;
 
             var emitter = player.AddComponent<PlayerNoiseEmitter>();
             emitter.Hub = hub;
@@ -34,7 +61,7 @@ namespace NocturneAnnex.Editor
             thrower.Aim = player.GetComponentInChildren<Camera>().transform;
             var glass = Mat("Bottle_Glass", new Color(0.18f, 0.35f, 0.22f));
             int n = 0;
-            foreach (var at in new[] { new Vector3(2f, 0.4f, 4f), new Vector3(3f, 0.4f, 12.5f), new Vector3(-14f, 0.4f, 13f), new Vector3(15f, 0.4f, 21f) })
+            foreach (var at in layout.Bottles)
             {
                 var bottle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                 bottle.name = "Bottle_" + (++n);
@@ -87,9 +114,7 @@ namespace NocturneAnnex.Editor
                 t.position = p;
                 return t;
             }).ToArray();
-            HideSpotAt(geometry, "Cupboard_Stacks", new Vector3(-16.5f, 0f, 12.7f), new Vector3(1.4f, 2.2f, 0.9f), new Vector3(0f, 0f, 1.3f), 0.8f, hub, stalker);
-            HideSpotAt(geometry, "Cupboard_Hall", new Vector3(5.4f, 0f, 11.5f), new Vector3(0.9f, 2.2f, 1.4f), new Vector3(-1.3f, 0f, 0f), 0.3f, hub, stalker);
-            HideSpotAt(geometry, "Cupboard_Records", new Vector3(17.2f, 0f, 22.5f), new Vector3(0.9f, 2.2f, 1.4f), new Vector3(-1.3f, 0f, 0f), 0.55f, hub, stalker);
+            foreach (var c in layout.Cupboards) HideSpotAt(geometry, c.Name, c.FloorPos, c.Size, c.ExitOffset, c.Safety, hub, stalker);
             var strategy = new GameObject("Strategy");
             var runner = strategy.AddComponent<StrategyRunner>();   // Online stays false: the level plays with no server
             var bridge = strategy.AddComponent<StrategyBridge>();
