@@ -20,6 +20,8 @@ namespace NocturneAnnex.Save
         public int LivesLeft = -1;
         public int DeathCount;
         public DeathRecord[] DeathLog = new DeathRecord[0];
+        // Entity memory (F-14i). Absent in older saves: reads as an empty memory.
+        public EntityMemoryData Memory = new EntityMemoryData();
         public string SavedAtUtc = "";
     }
 }
