@@ -1,6 +1,6 @@
 {
   "name": "NocturneAnnex.Entity",
   "rootNamespace": "NocturneAnnex.Entity",
-  "references": ["NocturneAnnex.Core", "NocturneAnnex.Controls", "NocturneAnnex.Player", "NocturneAnnex.Audio", "NocturneAnnex.Interaction", "NocturneAnnex.Level", "NocturneAnnex.Flow", "NocturneAnnex.Save", "Unity.TextMeshPro", "UnityEngine.UI"],
+  "references": ["NocturneAnnex.Core", "NocturneAnnex.Controls", "NocturneAnnex.Player", "NocturneAnnex.Audio", "NocturneAnnex.Horror", "NocturneAnnex.Interaction", "NocturneAnnex.Level", "NocturneAnnex.Flow", "NocturneAnnex.Save", "Unity.TextMeshPro", "UnityEngine.UI"],
   "autoReferenced": true
 }
