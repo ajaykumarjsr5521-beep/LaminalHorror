@@ -32,6 +32,9 @@ namespace NocturneAnnex.Entity
         /// <summary>Set by the strategic layer; null means baseline. Only probabilities and durations change.</summary>
         public IStrategyModifiers Modifiers;
 
+        /// <summary>What the entity remembers (F-14i). Only adds a capped inspection bonus per hide spot; null means no memory.</summary>
+        public NocturneAnnex.Save.EntityMemory Memory;
+
         /// <summary>Optional arm rig that shows the swing; the timing lives in <see cref="Strike"/>.</summary>
         public StalkerArms Arms;
         public StrikeModel Strike { get; } = new StrikeModel();
@@ -182,7 +185,7 @@ namespace NocturneAnnex.Entity
                 var spot = _inspecting; _inspecting = null;
                 _inspectedAt[spot] = Time.time;
                 InspectedCount++;
-                if (spot.Inspect((float)_rng.NextDouble(), Modifiers != null ? Modifiers.HideBonus : 0f) == InspectOutcome.FoundPlayer && !_caught
+                if (spot.Inspect((float)_rng.NextDouble(), (Modifiers != null ? Modifiers.HideBonus : 0f) + (Memory != null ? Memory.HideBonus(spot.name, HideInspection.MaxMemoryBonus) : 0f)) == InspectOutcome.FoundPlayer && !_caught
                     && Strike.Phase == StrikePhase.Idle)
                 {
                     _forceHit = true; _agent.isStopped = true;   // the swing plays toward the cupboard, then it counts as caught
