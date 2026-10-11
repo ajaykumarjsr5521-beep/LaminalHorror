@@ -31,6 +31,16 @@ namespace NocturneAnnex.Core
             { "room.change.sound", "Something moved behind you." },
             { "room.change.light", "A light has died." },
             { "room.change.key", "Something new lies on the floor." },
+            { "ending.congrats", "CONGRATULATIONS! You made it out." },
+            { "ending.title", "YOU ESCAPED" },
+            { "ending.time", "Time: {0}" },
+            { "ending.deaths", "Deaths: {0}" },
+            { "ending.lives", "Lives left: {0} of {1}" },
+            { "ending.rooms", "Rooms: {0} of {1}" },
+            { "ending.secrets", "Secrets found: {0}" },
+            { "ending.menu", "Main menu" },
+            { "ending.slam", "[a heavy door slams shut behind you]" },
+            { "ending.run", "It heard that. Run." },
             { "run.over", "The building keeps you. It begins again." },
 
             // Pickups and notes
