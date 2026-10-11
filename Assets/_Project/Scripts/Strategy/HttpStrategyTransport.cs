@@ -16,9 +16,9 @@ namespace NocturneAnnex.Strategy
         readonly string _url;
         readonly int _timeoutSeconds;
 
-        public HttpStrategyTransport(MonoBehaviour host, string baseUrl = "http://127.0.0.1:8765", int timeoutSeconds = 2)
+        public HttpStrategyTransport(MonoBehaviour host, string baseUrl = "http://127.0.0.1:8765", int timeoutSeconds = 2, string path = "/strategy")
         {
-            _host = host; _url = baseUrl.TrimEnd('/') + "/strategy"; _timeoutSeconds = timeoutSeconds;
+            _host = host; _url = baseUrl.TrimEnd('/') + path; _timeoutSeconds = timeoutSeconds;
         }
 
         public void Send(string requestId, string json, Action<TransportResult> done) =>
