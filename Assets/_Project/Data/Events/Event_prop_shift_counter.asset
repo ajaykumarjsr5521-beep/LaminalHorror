@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: NocturneAnnex.Horror::NocturneAnnex.Horror.HorrorEventAsset
   Id: prop_shift_counter
   Kind: 2
+  Tag: 0
   Once: 1
   CooldownSeconds: 0
   MinTension: 0.65
