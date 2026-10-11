@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using NocturneAnnex.Core;
 using NocturneAnnex.Entity;
+using NocturneAnnex.Horror;
 using NocturneAnnex.Flow;
 using NocturneAnnex.Interaction;
 using NocturneAnnex.Inventory;
@@ -76,9 +77,13 @@ namespace NocturneAnnex.Tests.PlayMode
             var transitions = Object.FindObjectsByType<RoomTransition>(FindObjectsSortMode.None);
             Assert.AreEqual(1, transitions.Count(t => !t.Back && t.TargetRoom == room + 1), "one forward transition");
             Assert.AreEqual(1, transitions.Count(t => t.Back && t.TargetRoom == room - 1), "one back transition");
-            foreach (var key in def.Keys)
+            foreach (var key in def.Keys.Where(k => k.Id != def.ToyBoxKeyId))
                 Assert.IsTrue(Object.FindObjectsByType<Pickup>(FindObjectsInactive.Include, FindObjectsSortMode.None).Any(p => p.ItemId == key.Id), "pickup " + key.Id);
             Assert.AreEqual(def.Code != null, Object.FindFirstObjectByType<CodeLock>() != null, "code lock");
+            var toys = Object.FindFirstObjectByType<ToyBoxSet>();
+            Assert.AreEqual(!string.IsNullOrEmpty(def.ToyBoxKeyId), toys != null, "toy box set");
+            if (toys != null) Assert.AreEqual(ToyBoxModel.BoxCount, toys.Boxes.Length);
+            Assert.IsNotNull(Object.FindFirstObjectByType<HorrorEventRunner>(), "the room has scares");
             var stalker = Object.FindFirstObjectByType<StalkerAgent>();
             Assert.AreEqual(def.Difficulty.InspectIntervalSeconds, stalker.InspectIntervalSeconds, 0.0001f);
             Assert.AreEqual(def.Difficulty.InspectRange, stalker.InspectRange, 0.0001f);
@@ -126,6 +131,7 @@ namespace NocturneAnnex.Tests.PlayMode
             {
                 foreach (var p in Object.FindObjectsByType<Pickup>(FindObjectsSortMode.None))
                     if (!Inside(p, out var gate) || gate.IsOpen) p.Interact(_interactor);
+                foreach (var box in Object.FindObjectsByType<ToyBox>(FindObjectsSortMode.None)) box.Interact(_interactor);   // every box opens; the key is in one
                 foreach (var s in Object.FindObjectsByType<UnlockSwitch>(FindObjectsSortMode.None))
                     if (!Inside(s, out var gate) || gate.IsOpen) s.Interact(_interactor);
                 if (codeLock != null && !codeLock.IsSolved)
@@ -156,6 +162,53 @@ namespace NocturneAnnex.Tests.PlayMode
             if (room < RoomCatalog.Count) CollectionAssert.AreEqual(new[] { RoomFlow.ScenePath(room + 1) }, _loaded, "moved on to the next room once");
             else Assert.IsTrue(escaped, "the last room ends the game");
             if (room < RoomCatalog.Count) Assert.AreEqual(room + 1, _save.Rooms.Current);
+        }
+
+        [UnityTest]
+        public IEnumerator RoomScares_LightsOut_DoorOpens_WhisperBehind_AndFalseStepsMakeARealNoise()
+        {
+            yield return Load(4);
+            var runner = Object.FindFirstObjectByType<HorrorEventRunner>();
+            var hub = Object.FindFirstObjectByType<NoiseHub>();
+            var cam = _player.GetComponentInChildren<Camera>().transform;
+
+            var light = GameObject.Find("Light_2").GetComponent<Light>();
+            float before = light.intensity;
+            Assert.IsTrue(runner.Fire("room_light_off"));
+            yield return null;
+            Assert.AreEqual(0f, light.intensity, "lights out");
+            yield return new WaitForSeconds(4f);
+            Assert.AreEqual(before, light.intensity, 0.0001f, "and back");
+
+            var back = GameObject.Find("Door_back").GetComponent<Door>();
+            Assert.IsFalse(back.IsOpen);
+            Assert.IsTrue(runner.Fire("room_door_open"));
+            yield return null;
+            Assert.IsTrue(back.IsOpen, "the door opened by itself");
+
+            Assert.IsTrue(runner.Fire("room_whisper_behind"));
+            var src = GameObject.Find("WhisperBehindSource").transform;
+            Assert.Less(Vector3.Distance(src.position, cam.position - cam.forward * 1.5f), 0.01f, "the whisper is behind the player");
+
+            var heard = new List<NoiseKind>();
+            hub.Bus.Emitted += e => heard.Add(e.Kind);
+            Assert.IsTrue(runner.Fire("room_false_steps"));
+            yield return null;
+            CollectionAssert.Contains(heard, NoiseKind.Machinery, "an entity-linked scare is a real noise");
+        }
+
+        [UnityTest]
+        public IEnumerator ToyBoxes_Room3_AnyOrder_GiveTheKeyAndTheScares()
+        {
+            yield return Load(3);
+            var set = Object.FindFirstObjectByType<ToyBoxSet>();
+            var contents = new List<ToyBoxContent>();
+            set.Opened += (i, c) => contents.Add(c);
+            foreach (var box in set.Boxes.Reverse()) box.GetComponent<ToyBox>().Interact(_interactor);
+            Assert.AreEqual(1, contents.Count(c => c == ToyBoxContent.Key));
+            Assert.AreEqual(1, contents.Count(c => c == ToyBoxContent.SpringToy));
+            Assert.AreEqual(1, contents.Count(c => c == ToyBoxContent.FootstepBeat));
+            Assert.IsTrue(_inventory.Has("key_r3a"), "the key is in the inventory");
         }
 
         [UnityTest]
