@@ -22,6 +22,7 @@ namespace NocturneAnnex.Settings
 
             ControlsLayout.Scale = settings.TouchControlsScale;
             Accessibility.Set(settings.CaptionsEnabled, settings.TextSize, settings.ReduceFlicker, settings.ReduceMotion);
+            HapticSettings.Set(settings.HapticsEnabled, settings.HapticsStrength);
             AudioListener.volume = settings.MasterVolume;
             AudioLevels.Set(settings.MusicVolume, settings.SfxVolume);
 
