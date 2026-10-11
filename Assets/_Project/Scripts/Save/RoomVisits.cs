@@ -26,6 +26,9 @@ namespace NocturneAnnex.Save
 
         public int Current { get; private set; } = 1;
 
+        /// <summary>The furthest room ever entered this run, 0 before any entry.</summary>
+        public int HighestRoom { get { int h = 0; foreach (var k in _visits.Keys) if (k > h) h = k; return h; } }
+
         public int VisitCount(int room) => _visits.TryGetValue(room, out var n) ? n : 0;
         public bool HasChanged(int room) => _changed.Contains(room);
 
