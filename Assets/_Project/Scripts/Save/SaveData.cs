@@ -22,6 +22,8 @@ namespace NocturneAnnex.Save
         public DeathRecord[] DeathLog = new DeathRecord[0];
         // Entity memory (F-14i). Absent in older saves: reads as an empty memory.
         public EntityMemoryData Memory = new EntityMemoryData();
+        // Room progress (F-14f). Absent in older saves: reads as room 1, nothing changed.
+        public RoomVisitsData Rooms = new RoomVisitsData();
         public string SavedAtUtc = "";
     }
 }
