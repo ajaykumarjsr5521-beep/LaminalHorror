@@ -102,5 +102,7 @@ namespace NocturneAnnex.Level
         public DoorSpec Progression => Doors.FirstOrDefault(d => d.Kind == DoorKind.Progression);
         public DoorSpec Door(string id) => Doors.FirstOrDefault(d => d.Id == id);
         public string StartCheckpointId => "start_" + Id;
+        /// <summary>The checkpoint saved when the player comes back into this room from the next one (the room is already done up to its far end).</summary>
+        public string EndCheckpointId => Index == 1 ? "dock" : "end_" + Id;
     }
 }
