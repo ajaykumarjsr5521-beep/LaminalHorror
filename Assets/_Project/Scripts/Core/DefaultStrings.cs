@@ -25,6 +25,12 @@ namespace NocturneAnnex.Core
             { "memory.again", "Again?" },
             { "memory.remember", "I remember." },
             { "memory.you_again", "You again." },
+            { "switch.prompt", "Use" },
+            { "switch.message.needs_item", "Something is missing." },
+            { "switch.message.done", "Something clicks nearby." },
+            { "room.change.sound", "Something moved behind you." },
+            { "room.change.light", "A light has died." },
+            { "room.change.key", "Something new lies on the floor." },
             { "run.over", "The building keeps you. It begins again." },
 
             // Pickups and notes
