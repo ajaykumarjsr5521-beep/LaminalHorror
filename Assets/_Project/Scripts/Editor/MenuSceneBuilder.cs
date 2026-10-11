@@ -198,6 +198,8 @@ namespace NocturneAnnex.Editor
             view.TextSize = DropdownRow(content.transform, "settings.text_size");
             view.ReduceFlicker = ToggleRow(content.transform, "settings.reduce_flicker");
             view.ReduceMotion = ToggleRow(content.transform, "settings.reduce_motion");
+            view.Haptics = ToggleRow(content.transform, "settings.haptics");
+            view.HapticsStrength = SliderRow(content.transform, "settings.haptics_strength");
             view.ErrorText = error;
 
             var footer = UiKit.Child("Footer", panel.transform);
