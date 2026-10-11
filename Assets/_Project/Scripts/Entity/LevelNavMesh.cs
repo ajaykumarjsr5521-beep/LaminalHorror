@@ -7,7 +7,7 @@ namespace NocturneAnnex.Entity
 {
     /// <summary>
     /// Builds the level's NavMesh at start from the physics colliders, so no navigation package or baked asset is needed.
-    /// Doors and the player are left out: the entity walks through doorways and opens or passes doors itself.
+    /// Doors, the player and trigger volumes are left out: the entity walks through doorways and opens or passes doors itself.
     /// </summary>
     public class LevelNavMesh : MonoBehaviour
     {
@@ -30,6 +30,8 @@ namespace NocturneAnnex.Entity
             var markups = new List<NavMeshBuildMarkup>();
             foreach (var d in FindObjectsByType<Door>(FindObjectsSortMode.None)) AddIgnore(markups, d.transform);
             if (Player != null) AddIgnore(markups, Player);
+            // Trigger volumes (checkpoints, room transitions, the exit) are not floor or walls; left in, they punch holes in the mesh around the spawn.
+            foreach (var c in FindObjectsByType<Collider>(FindObjectsSortMode.None)) if (c.isTrigger) AddIgnore(markups, c.transform);
             var sources = new List<NavMeshBuildSource>();
             var bounds = new Bounds(transform.position, Size);
             NavMeshBuilder.CollectSources(bounds, ~0, NavMeshCollectGeometry.PhysicsColliders, 0, markups, sources);
@@ -37,7 +39,8 @@ namespace NocturneAnnex.Entity
             var settings = NavMesh.GetSettingsByID(0);
             settings.agentRadius = AgentRadius;
             settings.agentHeight = AgentHeight;
-            _data = NavMeshBuilder.BuildNavMeshData(settings, sources, bounds, transform.position, Quaternion.identity);
+            // the bounds here are local to the position, unlike the world-space bounds CollectSources takes
+            _data = NavMeshBuilder.BuildNavMeshData(settings, sources, new Bounds(Vector3.zero, Size), transform.position, Quaternion.identity);
             _instance = NavMesh.AddNavMeshData(_data);
         }
 
